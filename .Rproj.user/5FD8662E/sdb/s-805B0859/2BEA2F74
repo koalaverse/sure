@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "library(MASS)\nlibrary(ordinal)\nlibrary(VGAM)\n\nordinalize <- function(z, threshold){\n  oo <- function(zz) {\n    ordinal.value <- 1\n    index <- 1\n    while(index <= length(threshold) && zz > threshold[index]) {\n      ordinal.value <- ordinal.value + 1\n      index <- index+1\n    }\n    return(ordinal.value)\n  }\n  return(sapply(z, oo))\n}\n\nsimdata <- function(n = 2000) {\n  alpha <- 16\n  beta <- c(-8, 1)\n  thrd <- c(0, 4, 8)\n  x <- runif(n, min = 1, max = 7)\n  noise <- rnorm(n)\n  z <- alpha + beta[1L] * x + beta[2L] * (x ^ 2) + noise\n  y <- ordinalize(z, c(0, 4, 8))\n  data.frame(y = as.ordered(y), x1 = x, x2 = x ^ 2)\n}\n\nset.seed(101)\nd <- simdata()\n\nfit.polr <- polr(y ~ x1, method = \"probit\", data = d)\nfit.vglm <- vglm(y ~ x1, family = cumulative(link = probit, parallel = TRUE), data = d)\nfit.clm <- clm(y ~ x1, link = \"probit\", data = d)\n\nres.clm <- resids(fit.clm)\nres.polr <- resids(fit.polr)\nres.vglm <- resids(fit.vglm)\n\npar(mfrow = c(2, 2))\nplot(d$x1, res.clm); lines(lowess(d$x1, res.clm), col = \"red\", lwd = 2)\nplot(d$x1, res.polr); lines(lowess(d$x1, res.polr), col = \"red\", lwd = 2)\nplot(d$x1, res.vglm); lines(lowess(d$x1, res.vglm), col = \"red\", lwd = 2)\n",
+    "created" : 1499114483291.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3956100658",
+    "id" : "2BEA2F74",
+    "lastKnownWriteTime" : 1499120984,
+    "last_content_update" : 1499120984581,
+    "path" : "~/Downloads/example.R",
+    "project_path" : null,
+    "properties" : {
+    },
+    "relative_order" : 7,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
