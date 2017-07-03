@@ -1,1 +1,3 @@
-# ordr
+# ordr: Ordinal Regression Diagnostics
+
+An R package constructing [Residuals and Diagnostics for Ordinal Regression Models](http://amstat.tandfonline.com/doi/abs/10.1080/01621459.2017.1292915).
