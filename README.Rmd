@@ -1,3 +1,19 @@
 # ordr: Ordinal Regression Diagnostics
 
 An R package for constructing [residuals and diagnostics for ordinal regression models](http://amstat.tandfonline.com/doi/abs/10.1080/01621459.2017.1292915).
+
+
+## Installation
+
+The `ordr` package is currently only available from GitHub, but can easilly be installed using [`devtools`](https://CRAN.R-project.org/package=devtools):
+```{r, eval=FALSE}
+# install.packages("devtools")
+devtools::install_github("bgreenwell/ordr")
+```
+*Note:* This package is still in development, use at your own risk!
+
+*Note:* The development site for this package will eventually move to https://github.com/AFIT-R. 
+
+## Example usage
+
+Coming soon!
