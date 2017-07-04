@@ -122,3 +122,28 @@ getMeanResponse.polr <- function(object) {
 getMeanResponse.vglm <- function(object) {
   -object@predictors[, 1L, drop = TRUE]  # FIXME: Why the minus sign?
 }
+
+
+#' @keywords internal
+getSurrogateDistribution <- function(object, ...) {
+  UseMethod("getSurrogateDistribution")
+}
+
+
+#' @keywords internal
+getSurrogateDistribution.clm <- function(object, ...) {
+  NULL
+}
+
+
+#' @keywords internal
+getSurrogateDistribution.polr <- function(object, ...) {
+  switch(object$method, logistic = "logis", probit = "norm", loglog = "gumbel",
+         cloglog = "Gumbel", cauchit = "cauchy")
+}
+
+
+#' @keywords internal
+getSurrogateDistribution.vglm <- function(object, ...) {
+  NULL
+}

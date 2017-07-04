@@ -13,12 +13,14 @@ Authors@R: c(
            email = "greenwell.brandon@gmail.com",
            role = c("aut", "cre"))
     )
-Depends:
+Imports:
     stats,
     truncdist,
 Suggests:
     clm,
+    ggplot2,
     MASS,
+    testthat,
     vglm,
 Description: Residuals and diagnostics for ordinal regression models.
 License: GPL (>= 2)
