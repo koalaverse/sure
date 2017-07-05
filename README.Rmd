@@ -14,7 +14,6 @@ devtools::install_github("bgreenwell/ordr")
 ```
 *Note:* This package is still in development, use at your own risk!
 
-*Note:* The development site for this package will eventually move to https://github.com/AFIT-R. 
 
 ## Example usage
 
