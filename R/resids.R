@@ -2,13 +2,23 @@
 #'
 #' Surrogate and jittered residuals for ordinal regression models.
 #'
-#' @param object
+#' @param object An object of class \code{\link[ordinal]{"clm"}},
+#' \code{\link[MASS]{"polr"}}, or \code{\link[VGAM]{"vglm"}}.
 #'
-#' @param type
+#' @param type Character string specifying the type of residuals to 
+#' construct. Should be one of \code{"surrogate"} or \code{"jitter"}.
+#' Default is \code{"surrogate"}.
+#'
+#' @param jitter.scale Character string specifying the scale on which to 
+#' perform the jittering. Should be one of \code{"response"} or 
+#' \code{"probability"}. Only used when \code{type = "jitter"}. Default is
+#' \code{"response"}.
 #'
 #' @param nsim Integer specifying the number of bootstrap replicates to use.
 #'
-#' @return A numeric vector of residuals.
+#' @return A numeric vector (\code{nsim = 1}) or matrix \code{nsim > 1} of 
+#' residuals. If \code{nsim > 1}, then the result will be a matrix with 
+#' \code{nsim} columns, one for each bootstrap repliacte of the residuals.
 #'
 #' @references
 #' Liu, Dungang and Zhang, Heping. Residuals and Diagnostics for Ordinal
@@ -23,8 +33,9 @@ resids <- function(object, ...) {
 
 #' @rdname resids
 #' @export
-resids.default <- function(object, type = c("surrogate", "jitter"), nsim = 1,
-                           ...) {
+resids.default <- function(object, type = c("surrogate", "jitter"), 
+                           jitter.scale = c("response", "probability"), 
+                           nsim = 1, ...) {
 
   # Sanity check
   if (!inherits(object, c("clm", "polr", "vglm"))) {
