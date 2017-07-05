@@ -67,6 +67,15 @@ resids.default <- function(object, type = c("surrogate", "jitter"),
   }
 
   # Return residuals
+  class(res) <- c("numeric", "resid")
   res
 
+}
+
+
+#' @keywords internal
+#' @export
+print.resid <- function(x, ...) {
+  attributes(x) <- NULL
+  print(x, ...)
 }

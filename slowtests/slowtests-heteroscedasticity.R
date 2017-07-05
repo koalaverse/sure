@@ -77,16 +77,20 @@ resplot <- function(object, what = c("qq", "covariate"), x, nsim = 1, alpha = 1,
       qqnorm(res, xlab = xlab, ylab = ylab, main = main)
       qqline(res, col = "red")
     } else {
-      qqnorm(as.numeric(attr(res.vglm, "boot.reps")))
+      qqnorm(as.numeric(attr(res.vglm, "boot.reps")),
+             xlab = xlab, ylab = ylab, main = main)
       qqline(as.numeric(attr(res.vglm, "boot.reps")), col = "red")
     }
   } else if (what == "covariate") {  # residual-by-covariate
+    if (is.null(ylab)) {
+      ylab <- "residual"
+    }
     if (nsim == 1) {
-      plot(x, res)
+      plot(x, res, xlab = xlab, ylab = ylab, main = main)
       lines(lowess(x, res), lwd = 2, col = "red")
       abline(h = c(-2, 2), lty = 2, lwd = 1, col = "red")
     } else {
-      plot(x, res)  # original residuals w/ bootstrap reps
+      plot(x, res, xlab = xlab, ylab = ylab, main = main)  # original residuals w/ bootstrap reps
       boot.reps <- attr(res, "boot.reps")
       boot.id <- attr(res, "boot.id")
       for (i in seq_len(nsim)) {  # add bootstrap residuals
@@ -94,6 +98,6 @@ resplot <- function(object, what = c("qq", "covariate"), x, nsim = 1, alpha = 1,
                col = adjustcolor(1, alpha.f = alpha))
       }
     }
-
+    abline(h = c(-2, 2), lty = 2, lwd = 1, col = "red")
   }
 }

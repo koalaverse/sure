@@ -10,7 +10,10 @@
 #' Regression Models: A Surrogate Approach.
 #' \emph{Journal of the American Statistical Association} (accepted).
 #'
-#' @importFrom stats .checkMFClasses model.frame model.matrix nobs qnorm
+#' @importFrom graphics abline lines plot points
+#' @importFrom grDevices adjustcolor
+#' @importFrom stats .checkMFClasses lowess model.frame model.matrix nobs qnorm
+#' @importFrom stats qqline qqnorm
 #'
 #' @docType package
 #' @name ordr
