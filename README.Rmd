@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/AFIT-R/ordr.svg?branch=master)](https://travis-ci.org/AFIT-R/ordr)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/AFIT-R/ordr?branch=master&svg=true)](https://ci.appveyor.com/project/AFIT-R/ordr)
+[![codecov](https://codecov.io/gh/AFIT-R/ordr/branch/master/graph/badge.svg)](https://codecov.io/gh/AFIT-R/ordr)
+
 
 # ordr: Ordinal Regression Diagnostics
 
