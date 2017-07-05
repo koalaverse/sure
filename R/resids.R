@@ -2,22 +2,23 @@
 #'
 #' Surrogate and jittered residuals for ordinal regression models.
 #'
-#' @param object An object of class \code{\link[ordinal]{"clm"}},
-#' \code{\link[MASS]{"polr"}}, or \code{\link[VGAM]{"vglm"}}.
+#' @param object An object of class \code{\link[ordinal]{clm}},
+#' \code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.
 #'
-#' @param type Character string specifying the type of residuals to 
-#' construct. Should be one of \code{"surrogate"} or \code{"jitter"}.
-#' Default is \code{"surrogate"}.
+#' @param type Character string specifying the type of residuals to construct.
+#' Should be one of \code{"surrogate"} or \code{"jitter"}. Default is
+#' \code{"surrogate"}.
 #'
-#' @param jitter.scale Character string specifying the scale on which to 
-#' perform the jittering. Should be one of \code{"response"} or 
-#' \code{"probability"}. Only used when \code{type = "jitter"}. Default is
-#' \code{"response"}.
+#' @param jitter.scale Character string specifying the scale on which to perform
+#' the jittering. Should be one of \code{"response"} or \code{"probability"}.
+#' Only used when \code{type = "jitter"}. Default is \code{"response"}.
 #'
 #' @param nsim Integer specifying the number of bootstrap replicates to use.
 #'
-#' @return A numeric vector (\code{nsim = 1}) or matrix \code{nsim > 1} of 
-#' residuals. If \code{nsim > 1}, then the result will be a matrix with 
+#' @param ... Additional optional arguments. (Currently ignored.)
+#'
+#' @return A numeric vector (\code{nsim = 1}) or matrix (\code{nsim} > 1) of
+#' residuals. If \code{nsim} > 1, then the result will be a matrix with
 #' \code{nsim} columns, one for each bootstrap repliacte of the residuals.
 #'
 #' @references
@@ -33,8 +34,8 @@ resids <- function(object, ...) {
 
 #' @rdname resids
 #' @export
-resids.default <- function(object, type = c("surrogate", "jitter"), 
-                           jitter.scale = c("response", "probability"), 
+resids.default <- function(object, type = c("surrogate", "jitter"),
+                           jitter.scale = c("response", "probability"),
                            nsim = 1, ...) {
 
   # Sanity check

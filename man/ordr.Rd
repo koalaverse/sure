@@ -8,8 +8,8 @@
 regression models.}
 \description{
 The \code{ordr} package provides surrogate and jittered residuals for fitted
-ordinal regression models of class \code{\link[ordinal]{"clm"}},
-\code{\link[MASS]{"polr"}}, and \code{\link[VGAM]{"vglm"}}.
+ordinal regression models of class \code{\link[ordinal]{clm}},
+\code{\link[MASS]{polr}}, and \code{\link[VGAM]{vglm}}.
 }
 \references{
 Liu, Dungang and Zhang, Heping. Residuals and Diagnostics for Ordinal

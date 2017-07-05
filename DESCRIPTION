@@ -17,11 +17,11 @@ Imports:
     stats,
     truncdist,
 Suggests:
-    clm,
     ggplot2,
     MASS,
+    ordinal,
     testthat,
-    vglm,
+    VGAM,
 Description: Residuals and diagnostics for ordinal regression models.
 License: GPL (>= 2)
 Encoding: UTF-8

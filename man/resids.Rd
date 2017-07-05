@@ -7,18 +7,29 @@
 \usage{
 resids(object, ...)
 
-\method{resids}{default}(object, type = c("surrogate", "jitter"), nsim = 1,
-  ...)
+\method{resids}{default}(object, type = c("surrogate", "jitter"),
+  jitter.scale = c("response", "probability"), nsim = 1, ...)
 }
 \arguments{
-\item{object}{}
+\item{object}{An object of class \code{\link[ordinal]{clm}},
+\code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.}
 
-\item{type}{}
+\item{...}{Additional optional arguments. (Currently ignored.)}
+
+\item{type}{Character string specifying the type of residuals to construct.
+Should be one of \code{"surrogate"} or \code{"jitter"}. Default is
+\code{"surrogate"}.}
+
+\item{jitter.scale}{Character string specifying the scale on which to perform
+the jittering. Should be one of \code{"response"} or \code{"probability"}.
+Only used when \code{type = "jitter"}. Default is \code{"response"}.}
 
 \item{nsim}{Integer specifying the number of bootstrap replicates to use.}
 }
 \value{
-A numeric vector of residuals.
+A numeric vector (\code{nsim = 1}) or matrix (\code{nsim} > 1) of
+residuals. If \code{nsim} > 1, then the result will be a matrix with
+\code{nsim} columns, one for each bootstrap repliacte of the residuals.
 }
 \description{
 Surrogate and jittered residuals for ordinal regression models.

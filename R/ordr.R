@@ -2,13 +2,15 @@
 #' regression models.
 #'
 #' The \code{ordr} package provides surrogate and jittered residuals for fitted
-#' ordinal regression models of class \code{\link[ordinal]{"clm"}},
-#' \code{\link[MASS]{"polr"}}, and \code{\link[VGAM]{"vglm"}}.
+#' ordinal regression models of class \code{\link[ordinal]{clm}},
+#' \code{\link[MASS]{polr}}, and \code{\link[VGAM]{vglm}}.
 #'
 #' @references
 #' Liu, Dungang and Zhang, Heping. Residuals and Diagnostics for Ordinal
 #' Regression Models: A Surrogate Approach.
 #' \emph{Journal of the American Statistical Association} (accepted).
+#'
+#' @importFrom stats .checkMFClasses model.frame model.matrix nobs qnorm
 #'
 #' @docType package
 #' @name ordr
