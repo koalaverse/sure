@@ -1,6 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^\.travis\.yml$
 ^README\.Rmd$
 ^README\.html$
 ^slowtests$
+^appveyor\.yml$
+^\.travis\.yml$
