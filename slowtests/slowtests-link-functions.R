@@ -16,11 +16,11 @@ library(VGAM)      # for fitting ordinal regression models
 
 # Function to simulate latent variable Z from a quadratic function of X plus
 # noise; the ordinal outcome W is obtained by discretizing Z.
-simData <- function(n = 2000, alpha = 36, beta = 4,
-                    threshold = c(0, 30, 70, 100)) {
-  x <- runif(n, min = 2, max = 7)
+simData <- function(n = 2000, alpha = 16, beta = c(-8, 1),
+                    threshold = c(0, 4, 8)) {
+  x <- runif(n, min = 1, max = 7)
   # z <- alpha + beta * x + rnorm(n, mean = 0, sd = x ^ 2)
-  z <- alpha + beta * x + rlogis(n, location = 0, scale = x ^ 2)
+  z <- alpha + beta[1L] * x + beta[2L] * x ^ 2 + rnorm(n)  # rlnorm(n)
   y <- sapply(z, FUN = function(zz) {
     ordinal.value <- 1
     index <- 1
@@ -43,20 +43,29 @@ d <- simData(n = 2000)
 ################################################################################
 
 # Fitted models
-good.clm <- clm(formula = y ~ x, data = d, link = "logit")
-good.polr <- polr(formula = y ~ x, data = d, method = "logistic")
-good.vglm <- vglm(formula = y ~ x, data = d,
-                 family = cumulative(link = logit, parallel = TRUE))
-bad.clm <- clm(formula = y ~ x, data = d, link = "probit")
-bad.polr <- polr(formula = y ~ x, data = d, method = "probit")
-bad.vglm <- vglm(formula = y ~ x, data = d,
-                 family = cumulative(link = probit, parallel = TRUE))
+logit.clm <- clm(formula = y ~ x + I(x ^ 2), data = d, link = "logit")
+logit.polr <- polr(formula = y ~ x + I(x ^ 2), data = d, method = "logistic")
+logit.vglm <- vglm(formula = y ~ x + I(x ^ 2), data = d,
+                   family = cumulative(link = logit, parallel = TRUE))
+probit.clm <- clm(formula = y ~ x + I(x ^ 2), data = d, link = "probit")
+probit.polr <- polr(formula = y ~ x + I(x ^ 2), data = d, method = "probit")
+probit.vglm <- vglm(formula = y ~ x + I(x ^ 2), data = d,
+                    family = cumulative(link = probit, parallel = TRUE))
 
 # Q-Q plots
 par(mfrow = c(2, 3))
-resplot(good.clm, nsim = 10)
-resplot(good.polr, nsim = 10)
-resplot(good.vglm, nsim = 10)
-resplot(bad.clm, nsim = 10)
-resplot(bad.polr, nsim = 10)
-resplot(bad.vglm, nsim = 10)
+resplot(logit.clm, nsim = 10)
+resplot(logit.polr, nsim = 10)
+resplot(logit.vglm, nsim = 10)
+resplot(probit.clm, nsim = 10)
+resplot(probit.polr, nsim = 10)
+resplot(probit.vglm, nsim = 10)
+
+# Residual-by-covariate plot
+par(mfrow = c(2, 3))
+resplot(logit.clm, what = "covariate", x = d$x, nsim = 10)
+resplot(logit.polr, what = "covariate", x = d$x, nsim = 10)
+resplot(logit.vglm, what = "covariate", x = d$x, nsim = 10)
+resplot(probit.clm, what = "covariate", x = d$x, nsim = 10)
+resplot(probit.polr, what = "covariate", x = d$x, nsim = 10)
+resplot(probit.vglm, what = "covariate", x = d$x, nsim = 10)

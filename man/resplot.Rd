@@ -3,17 +3,27 @@
 \name{resplot}
 \alias{resplot}
 \alias{resplot.resid}
-\alias{resplot.default}
+\alias{resplot.clm}
+\alias{resplot.polr}
+\alias{resplot.vglm}
 \title{Residual Plots for Ordinal Regression Models}
 \usage{
 resplot(object, what = c("qq", "covariate"), x = NULL, ...)
 
-\method{resplot}{resid}(object, what = c("qq", "covariate"), x = NULL,
-  distribution = qnorm, alpha = 1, xlab = NULL, ylab = NULL,
+\method{resplot}{resid}(object, what = c("qq", "mean", "covariate"),
+  x = NULL, fit = NULL, distribution = qnorm, alpha = 1, xlab = NULL,
+  ylab = NULL, main = NULL, ...)
+
+\method{resplot}{clm}(object, what = c("qq", "mean", "covariate"), x = NULL,
+  nsim = 1, alpha = 1, xlab = NULL, ylab = NULL, main = NULL, ...)
+
+\method{resplot}{polr}(object, what = c("qq", "mean", "covariate"),
+  x = NULL, nsim = 1, alpha = 1, xlab = NULL, ylab = NULL,
   main = NULL, ...)
 
-\method{resplot}{default}(object, what = c("qq", "covariate"), x = NULL,
-  nsim = 1, alpha = 1, xlab = NULL, ylab = NULL, main = NULL, ...)
+\method{resplot}{vglm}(object, what = c("qq", "mean", "covariate"),
+  x = NULL, nsim = 1, alpha = 1, xlab = NULL, ylab = NULL,
+  main = NULL, ...)
 }
 \arguments{
 \item{object}{An object of class \code{\link[ordinal]{clm}},
@@ -27,6 +37,9 @@ covariate plots (i.e., when \code{what = "covariate"}).}
 
 \item{...}{Additional optional arguments. (Currently ignored.)}
 
+\item{fit}{The fitted model. Only required when \code{object} is of class
+\code{"resid"} and \code{what = "mean"}.}
+
 \item{distribution}{Function that computes the quantiles for the reference
 distribution to use in the quantile-quantile plot. Default is \code{qnorm}
 which is only appropriate for models using a probit link function.}
@@ -35,11 +48,13 @@ which is only appropriate for models using a probit link function.}
 alpha of the plotted points. Only used when \code{nsim} > 1.}
 
 \item{xlab}{Character string giving the text to use for the x-axis label.
-Default is \code{NULL}}
+Default is \code{NULL}.}
 
-\item{ylab}{Character string giving the text to use for the y-axis label.}
+\item{ylab}{Character string giving the text to use for the y-axis label.
+Default is \code{NULL}.}
 
-\item{main}{Character string giving the text to use for the plot title.}
+\item{main}{Character string giving the text to use for the plot title.
+Default is \code{NULL}.}
 
 \item{nsim}{Integer specifying the number of bootstrap replicates to use.}
 }

@@ -8,6 +8,9 @@
 #' @param what Character string specifying what to plot. Default is \code{"qq"}
 #' which produces a quantile-quantile plots of the residuals.
 #'
+#' @param fit The fitted model. Only required when \code{object} is of class
+#' \code{"resid"} and \code{what = "mean"}.
+#'
 #' @param x A vector giving the covariate values to use for residual-by-
 #' covariate plots (i.e., when \code{what = "covariate"}).
 #'
@@ -21,11 +24,13 @@
 #' alpha of the plotted points. Only used when \code{nsim} > 1.
 #'
 #' @param xlab Character string giving the text to use for the x-axis label.
-#' Default is \code{NULL}
+#' Default is \code{NULL}.
 #'
 #' @param ylab Character string giving the text to use for the y-axis label.
+#' Default is \code{NULL}.
 #'
 #' @param main Character string giving the text to use for the plot title.
+#' Default is \code{NULL}.
 #'
 #' @param ... Additional optional arguments. (Currently ignored.)
 #'
@@ -38,23 +43,55 @@ resplot <- function(object, what = c("qq", "covariate"), x = NULL, ...) {
 
 #' @rdname resplot
 #' @export
-resplot.resid <- function(object, what = c("qq", "covariate"), x = NULL,
-                          distribution = qnorm, alpha = 1, xlab = NULL,
-                          ylab = NULL, main = NULL, ...)
-  {
+resplot.resid <- function(object, what = c("qq", "mean", "covariate"),
+                          x = NULL, fit = NULL, distribution = qnorm, alpha = 1,
+                          xlab = NULL, ylab = NULL, main = NULL, ...) {
+
+  # Number of bootstrap replicates
   if (is.null(attr(object, "boot.reps"))) {
     nsim <- 1
   } else {
     nsim <- ncol(attr(object, "boot.reps"))
   }
+
+  # What type of plot to produce
   what <- match.arg(what)
-  if (what == "qq") {  # Q-Q plot
+
+  # Q-Q plot of the residuals
+  if (what == "qq") {
     if (nsim == 1) {
       QQplot(object, distribution = distribution)#xlab = xlab, ylab = ylab, main = main)
     } else {
       QQplot(as.numeric(attr(object, "boot.reps")), distribution = distribution)
     }
-  } else if (what == "covariate") {  # residual-by-covariate
+  }
+
+  # Residual-by-fitted plot
+  if (what == "mean") {
+    if (is.null(fit)) {
+      stop("No fitted values supplied.")
+    }
+    mr <- getMeanResponse(fit)
+    if (nsim == 1) {
+      plot(mr, object, xlab = xlab, ylab = ylab, main = main)
+      lines(lowess(mr, object), lwd = 2, col = "red")
+      abline(h = c(-2, 2), lty = 2, lwd = 1, col = "red")
+    } else {
+      plot(mr, object, xlab = xlab, ylab = ylab, main = main)  # original residuals w/ bootstrap reps
+      boot.reps <- attr(object, "boot.reps")
+      boot.id <- attr(object, "boot.id")
+      for (i in seq_len(nsim)) {  # add bootstrap residuals
+        points(mr[boot.id[, i]], boot.reps[, i],
+               col = adjustcolor(1, alpha.f = alpha))
+      }
+      xx <- rep(mr, times = nsim)
+      lines(lowess(xx, as.numeric(boot.reps)), lwd = 2, col = "red")
+    }
+    abline(h = c(-2, 2), lty = 2, lwd = 1, col = "red")
+  }
+
+  # Residual-by-covariate plot
+  if (what == "covariate") {  # residual-by-covariate
     if (is.null(x)) {
       stop("No covariate supplied.")
     }
@@ -83,11 +120,37 @@ resplot.resid <- function(object, what = c("qq", "covariate"), x = NULL,
 
 #' @rdname resplot
 #' @export
-resplot.default <- function(object, what = c("qq", "covariate"), x = NULL,
-                            nsim = 1, alpha = 1, xlab = NULL, ylab = NULL,
-                            main = NULL, ...) {
+resplot.clm <- function(object, what = c("qq", "mean", "covariate"),
+                        x = NULL, nsim = 1, alpha = 1, xlab = NULL,
+                        ylab = NULL, main = NULL, ...) {
   res <- resids(object, nsim = nsim)
   dist.fun <- getDistributionFunction(object)  # reference distribution
-  resplot.resid(res, what = what, x, distribution = dist.fun, nsim = nsim,
-                alpha = alpha, xlab = xlab, ylab = ylab, main = main, ...)
+  resplot.resid(res, what = what, x, distribution = dist.fun, fit = object,
+                nsim = nsim, alpha = alpha, xlab = xlab, ylab = ylab,
+                main = main, ...)
+}
+
+
+#' @rdname resplot
+#' @export
+resplot.polr <- function(object, what = c("qq", "mean", "covariate"),
+                         x = NULL, nsim = 1, alpha = 1, xlab = NULL,
+                         ylab = NULL, main = NULL, ...) {
+  res <- resids(object, nsim = nsim)
+  dist.fun <- getDistributionFunction(object)  # reference distribution
+  resplot.resid(res, what = what, x, distribution = dist.fun, fit = object,
+                nsim = nsim, alpha = alpha, xlab = xlab, ylab = ylab,
+                main = main, ...)
+}
+
+#' @rdname resplot
+#' @export
+resplot.vglm <- function(object, what = c("qq", "mean", "covariate"),
+                         x = NULL, nsim = 1, alpha = 1, xlab = NULL,
+                         ylab = NULL, main = NULL, ...) {
+  res <- resids(object, nsim = nsim)
+  dist.fun <- getDistributionFunction(object)  # reference distribution
+  resplot.resid(res, what = what, x, distribution = dist.fun, fit = object,
+                nsim = nsim, alpha = alpha, xlab = xlab, ylab = ylab,
+                main = main, ...)
 }

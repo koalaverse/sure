@@ -7,11 +7,12 @@
 #'
 #' @param type Character string specifying the type of residuals to construct.
 #' Should be one of \code{"surrogate"} or \code{"jitter"}. Default is
-#' \code{"surrogate"}.
+#' \code{"surrogate"}. (Currently ignored.)
 #'
 #' @param jitter.scale Character string specifying the scale on which to perform
 #' the jittering. Should be one of \code{"response"} or \code{"probability"}.
 #' Only used when \code{type = "jitter"}. Default is \code{"response"}.
+#' (Currently ignored.)
 #'
 #' @param nsim Integer specifying the number of bootstrap replicates to use.
 #'

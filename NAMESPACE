@@ -2,8 +2,10 @@
 
 S3method(print,resid)
 S3method(resids,default)
-S3method(resplot,default)
+S3method(resplot,clm)
+S3method(resplot,polr)
 S3method(resplot,resid)
+S3method(resplot,vglm)
 export(resids)
 export(resplot)
 importFrom(grDevices,adjustcolor)

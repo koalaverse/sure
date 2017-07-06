@@ -18,11 +18,12 @@ resids(object, ...)
 
 \item{type}{Character string specifying the type of residuals to construct.
 Should be one of \code{"surrogate"} or \code{"jitter"}. Default is
-\code{"surrogate"}.}
+\code{"surrogate"}. (Currently ignored.)}
 
 \item{jitter.scale}{Character string specifying the scale on which to perform
 the jittering. Should be one of \code{"response"} or \code{"probability"}.
-Only used when \code{type = "jitter"}. Default is \code{"response"}.}
+Only used when \code{type = "jitter"}. Default is \code{"response"}.
+(Currently ignored.)}
 
 \item{nsim}{Integer specifying the number of bootstrap replicates to use.}
 }
