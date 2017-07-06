@@ -9,7 +9,8 @@
 resplot(object, what = c("qq", "covariate"), x = NULL, ...)
 
 \method{resplot}{resid}(object, what = c("qq", "covariate"), x = NULL,
-  alpha = 1, xlab = NULL, ylab = NULL, main = NULL, ...)
+  distribution = qnorm, alpha = 1, xlab = NULL, ylab = NULL,
+  main = NULL, ...)
 
 \method{resplot}{vglm}(object, what = c("qq", "covariate"), x = NULL,
   nsim = 1, alpha = 1, xlab = NULL, ylab = NULL, main = NULL, ...)
@@ -25,6 +26,10 @@ which produces a quantile-quantile plots of the residuals.}
 covariate plots (i.e., when \code{what = "covariate"}).}
 
 \item{...}{Additional optional arguments. (Currently ignored.)}
+
+\item{distribution}{Function that computes the quantiles for the reference
+distribution to use in the quantile-quantile plot. Default is \code{qnorm}
+which is only appropriate for models using a probit link function.}
 
 \item{alpha}{A single values in the interval [0, 1] controlling the opacity
 alpha of the plotted points. Only used when \code{nsim} > 1.}

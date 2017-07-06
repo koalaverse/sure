@@ -39,27 +39,14 @@ d <- simData(n = 2000)
 
 
 ################################################################################
-# LS residuals
-################################################################################
-
-# Function to construct LS residuals
-getLSResiduals <- function(object) {
-  cc <- ordr:::getBounds.vglm(object)
-  y <- ordr:::getResponseValues.vglm(object)
-  mr <- ordr:::getMeanResponse.vglm(object)
-  pnorm(cc[y + 1] - mr) + pnorm(cc[y] - mr) - 1
-}
-
-
-################################################################################
 # Fit ordinal regression models with probit link
 ################################################################################
 
 # Fitted models
-fit.clm <- clm(formula = y ~ x, data = d, link = "probit")
-fit.polr <- polr(formula = y ~ x, data = d, method = "probit")
+fit.clm <- clm(formula = y ~ x, data = d, link = "logit")
+fit.polr <- polr(formula = y ~ x, data = d, method = "logistic")
 fit.vglm <- vglm(formula = y ~ x, data = d,
-                 family = cumulative(link = probit, parallel = TRUE))
+                 family = cumulative(link = logit, parallel = TRUE))
 
 # Residuals
 res.clm <- resids(fit.clm, nsim = 50)
@@ -74,7 +61,7 @@ resplot(res.polr, what = "covariate", x = d$x, main = "MASS::polr",
         ylab = "Surrogate residual", alpha = 0.1)
 resplot(res.vglm, what = "covariate", x = d$x, main = "VGAM::vglm",
         ylab = "Surrogate residual", alpha = 0.1)
-plot(d$x, getLSResiduals(fit.vglm), main = "VGAM::vglm",
+plot(d$x, ordr:::getLSResiduals(fit.vglm), main = "VGAM::vglm",
      xlab = "x", ylab = "LS residual")
 abline(h = 0, lwd = 2, col = "red")
 

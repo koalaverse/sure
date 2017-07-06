@@ -11,6 +11,10 @@
 #' @param x A vector giving the covariate values to use for residual-by-
 #' covariate plots (i.e., when \code{what = "covariate"}).
 #'
+#' @param distribution Function that computes the quantiles for the reference
+#' distribution to use in the quantile-quantile plot. Default is \code{qnorm}
+#' which is only appropriate for models using a probit link function.
+#'
 #' @param nsim Integer specifying the number of bootstrap replicates to use.
 #'
 #' @param alpha A single values in the interval [0, 1] controlling the opacity
@@ -35,7 +39,8 @@ resplot <- function(object, what = c("qq", "covariate"), x = NULL, ...) {
 #' @rdname resplot
 #' @export
 resplot.resid <- function(object, what = c("qq", "covariate"), x = NULL,
-                          alpha = 1, xlab = NULL, ylab = NULL, main = NULL, ...)
+                          distribution = qnorm, alpha = 1, xlab = NULL,
+                          ylab = NULL, main = NULL, ...)
   {
   if (is.null(attr(object, "boot.reps"))) {
     nsim <- 1
@@ -45,12 +50,9 @@ resplot.resid <- function(object, what = c("qq", "covariate"), x = NULL,
   what <- match.arg(what)
   if (what == "qq") {  # Q-Q plot
     if (nsim == 1) {
-      qqnorm(object, xlab = xlab, ylab = ylab, main = main)
-      qqline(object, col = "red")
+      QQplot(object, distribution = distribution)#xlab = xlab, ylab = ylab, main = main)
     } else {
-      qqnorm(as.numeric(attr(object, "boot.reps")),
-             xlab = xlab, ylab = ylab, main = main)
-      qqline(as.numeric(attr(object, "boot.reps")), col = "red")
+      QQplot(as.numeric(attr(object, "boot.reps")), distribution = distribution)
     }
   } else if (what == "covariate") {  # residual-by-covariate
     if (is.null(x)) {
@@ -85,6 +87,7 @@ resplot.vglm <- function(object, what = c("qq", "covariate"), x = NULL,
                          nsim = 1, alpha = 1, xlab = NULL, ylab = NULL,
                          main = NULL, ...) {
   res <- resids(object, nsim = nsim)
-  resplot.resid(res, what = what, x, nsim = nsim, alpha = alpha, xlab = xlab,
-                ylab = ylab, main = main, ...)
+  dist.fun <- getDistributionFunction(object)  # reference distribution
+  resplot.resid(res, what = what, x, distribution = dist.fun, nsim = nsim,
+                alpha = alpha, xlab = xlab, ylab = ylab, main = main, ...)
 }

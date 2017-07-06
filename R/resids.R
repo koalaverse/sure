@@ -51,7 +51,7 @@ resids.default <- function(object, type = c("surrogate", "jitter"),
 
   # Construct residuals
   mr <- getMeanResponse(object)
-  res <- getSurrogateResiduals(y, n.obs = n.obs, mean.response = mr,
+  res <- getSurrogateResiduals(object, y = y, n.obs = n.obs, mean.response = mr,
                                bounds = bounds)
   if (nsim > 1) {  # bootstrap
     boot.res <- boot.index <- matrix(nrow = n.obs, ncol = nsim)
@@ -59,7 +59,7 @@ resids.default <- function(object, type = c("surrogate", "jitter"),
       boot.index[, i] <- sample(n.obs, replace = TRUE)
       mr <- getMeanResponse(object)[boot.index[, i]]
       boot.res[, i] <-
-        getSurrogateResiduals(y[boot.index[, i]], n.obs = n.obs,
+        getSurrogateResiduals(object, y = y[boot.index[, i]], n.obs = n.obs,
                               mean.response = mr, bounds = bounds)
     }
     attr(res, "boot.reps") <- boot.res
