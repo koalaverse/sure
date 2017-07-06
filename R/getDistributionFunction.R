@@ -12,10 +12,10 @@ getDistributionFunction.clm <- function(object) {
                  "loglog" = "gumbel",
                  "cloglog" = "Gumbel",
                  "cauchit" = qcauchy)
-  if (spec == "gumbel") {
+  if (!is.function(spec) && spec == "gumbel") {
     stop("The log-log link is not currently supported.")
   }
-  if (spec == "Gumbel") {
+  if (!is.function(spec) && spec == "Gumbel") {
     stop("The complimentary log-log link is not currently supported.")
   }
   spec
@@ -30,10 +30,10 @@ getDistributionFunction.polr <- function(object) {
                  "loglog" = "gumbel",
                  "cloglog" = "Gumbel",
                  "cauchit" = qcauchy)
-  if (spec == "gumbel") {
+  if (!is.function(spec) && spec == "gumbel") {
     stop("The log-log link is not currently supported.")
   }
-  if (spec == "Gumbel") {
+  if (!is.function(spec) && spec == "Gumbel") {
     stop("The complimentary log-log link is not currently supported.")
   }
   spec
@@ -48,10 +48,10 @@ getDistributionFunction.vglm <- function(object) {
                  "loglog" = "gumbel",
                  "cloglog" = "Gumbel",
                  "cauchit" = qcauchy)
-  if (spec == "gumbel") {
+  if (!is.function(spec) && spec == "gumbel") {
     stop("The log-log link is not currently supported.")
   }
-  if (spec == "Gumbel") {
+  if (!is.function(spec) && spec == "Gumbel") {
     stop("The complimentary log-log link is not currently supported.")
   }
   spec

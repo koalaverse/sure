@@ -83,9 +83,9 @@ resplot.resid <- function(object, what = c("qq", "covariate"), x = NULL,
 
 #' @rdname resplot
 #' @export
-resplot.vglm <- function(object, what = c("qq", "covariate"), x = NULL,
-                         nsim = 1, alpha = 1, xlab = NULL, ylab = NULL,
-                         main = NULL, ...) {
+resplot.default <- function(object, what = c("qq", "covariate"), x = NULL,
+                            nsim = 1, alpha = 1, xlab = NULL, ylab = NULL,
+                            main = NULL, ...) {
   res <- resids(object, nsim = nsim)
   dist.fun <- getDistributionFunction(object)  # reference distribution
   resplot.resid(res, what = what, x, distribution = dist.fun, nsim = nsim,

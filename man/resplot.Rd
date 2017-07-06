@@ -3,7 +3,7 @@
 \name{resplot}
 \alias{resplot}
 \alias{resplot.resid}
-\alias{resplot.vglm}
+\alias{resplot.default}
 \title{Residual Plots for Ordinal Regression Models}
 \usage{
 resplot(object, what = c("qq", "covariate"), x = NULL, ...)
@@ -12,7 +12,7 @@ resplot(object, what = c("qq", "covariate"), x = NULL, ...)
   distribution = qnorm, alpha = 1, xlab = NULL, ylab = NULL,
   main = NULL, ...)
 
-\method{resplot}{vglm}(object, what = c("qq", "covariate"), x = NULL,
+\method{resplot}{default}(object, what = c("qq", "covariate"), x = NULL,
   nsim = 1, alpha = 1, xlab = NULL, ylab = NULL, main = NULL, ...)
 }
 \arguments{

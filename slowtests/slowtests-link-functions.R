@@ -21,7 +21,7 @@ simData <- function(n = 2000, alpha = 36, beta = 4,
   x <- runif(n, min = 2, max = 7)
   # z <- alpha + beta * x + rnorm(n, mean = 0, sd = x ^ 2)
   z <- alpha + beta * x + rlogis(n, location = 0, scale = x ^ 2)
-  y <-   sapply(z, FUN = function(zz) {
+  y <- sapply(z, FUN = function(zz) {
     ordinal.value <- 1
     index <- 1
     while(index <= length(threshold) && zz > threshold[index]) {
@@ -43,29 +43,20 @@ d <- simData(n = 2000)
 ################################################################################
 
 # Fitted models
-fit.clm <- clm(formula = y ~ x, data = d, link = "logit")
-fit.polr <- polr(formula = y ~ x, data = d, method = "logistic")
-fit.vglm <- vglm(formula = y ~ x, data = d,
+good.clm <- clm(formula = y ~ x, data = d, link = "logit")
+good.polr <- polr(formula = y ~ x, data = d, method = "logistic")
+good.vglm <- vglm(formula = y ~ x, data = d,
                  family = cumulative(link = logit, parallel = TRUE))
+bad.clm <- clm(formula = y ~ x, data = d, link = "probit")
+bad.polr <- polr(formula = y ~ x, data = d, method = "probit")
+bad.vglm <- vglm(formula = y ~ x, data = d,
+                 family = cumulative(link = probit, parallel = TRUE))
 
-# Residuals
-res.clm <- resids(fit.clm, nsim = 50)
-res.polr <- resids(fit.polr, nsim = 50)
-res.vglm <- resids(fit.vglm, nsim = 50)
-
-# Compare to Figure 6
-par(mfrow = c(2, 2))
-resplot(res.clm, what = "covariate", x = d$x, main = "ordinal::clm",
-        ylab = "Surrogate residual", alpha = 0.1)
-resplot(res.polr, what = "covariate", x = d$x, main = "MASS::polr",
-        ylab = "Surrogate residual", alpha = 0.1)
-resplot(res.vglm, what = "covariate", x = d$x, main = "VGAM::vglm",
-        ylab = "Surrogate residual", alpha = 0.1)
-plot(d$x, ordr:::getLSResiduals(fit.vglm), main = "VGAM::vglm",
-     xlab = "x", ylab = "LS residual")
-abline(h = 0, lwd = 2, col = "red")
-
-
-fit2 <- polr(y ~ x, data = d)
-res.fit2 <- resids(fit2)
-resplot(res.fit2)
+# Q-Q plots
+par(mfrow = c(2, 3))
+resplot(good.clm, nsim = 10)
+resplot(good.polr, nsim = 10)
+resplot(good.vglm, nsim = 10)
+resplot(bad.clm, nsim = 10)
+resplot(bad.polr, nsim = 10)
+resplot(bad.vglm, nsim = 10)
