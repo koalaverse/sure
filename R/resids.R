@@ -46,8 +46,8 @@ resids.default <- function(object, type = c("surrogate", "jitter"),
   }
 
   # Extract number of observations, response values, and truncation bounds
-  n.obs <- nobs(object)
   y <- getResponseValues(object)
+  n.obs <- length(y)
   bounds <- getBounds(object)
 
   # Construct residuals

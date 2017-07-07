@@ -62,7 +62,7 @@ resplot.resid <- function(object, what = c("qq", "mean", "covariate"),
     if (nsim == 1) {
       QQplot(object, distribution = distribution)#xlab = xlab, ylab = ylab, main = main)
     } else {
-      QQplot(as.numeric(attr(object, "boot.reps")), distribution = distribution)
+      QQplot(as.vector(attr(object, "boot.reps")), distribution = distribution)
     }
   }
 
@@ -71,23 +71,23 @@ resplot.resid <- function(object, what = c("qq", "mean", "covariate"),
     if (is.null(fit)) {
       stop("No fitted values supplied.")
     }
+    if (is.null(ylab)) {
+      ylab <- "Residual"
+    }
+    if (is.null(xlab)) {
+      xlab <- "Fitted value"
+    }
     mr <- getMeanResponse(fit)
     if (nsim == 1) {
       plot(mr, object, xlab = xlab, ylab = ylab, main = main)
       lines(lowess(mr, object), lwd = 2, col = "red")
-      abline(h = c(-2, 2), lty = 2, lwd = 1, col = "red")
     } else {
-      plot(mr, object, xlab = xlab, ylab = ylab, main = main)  # original residuals w/ bootstrap reps
-      boot.reps <- attr(object, "boot.reps")
-      boot.id <- attr(object, "boot.id")
-      for (i in seq_len(nsim)) {  # add bootstrap residuals
-        points(mr[boot.id[, i]], boot.reps[, i],
-               col = adjustcolor(1, alpha.f = alpha))
-      }
-      xx <- rep(mr, times = nsim)
-      lines(lowess(xx, as.numeric(boot.reps)), lwd = 2, col = "red")
+      boot.reps <- as.vector(attr(object, "boot.reps"))
+      boot.id <- as.vector(attr(object, "boot.id"))
+      plot(mr[boot.id], boot.reps, col = adjustcolor(1, alpha.f = alpha),
+           xlab = xlab, ylab = ylab, main = main)
+      lines(lowess(rep(mr, times = nsim), boot.reps), lwd = 2, col = "red")
     }
-    abline(h = c(-2, 2), lty = 2, lwd = 1, col = "red")
   }
 
   # Residual-by-covariate plot
@@ -96,24 +96,22 @@ resplot.resid <- function(object, what = c("qq", "mean", "covariate"),
       stop("No covariate supplied.")
     }
     if (is.null(ylab)) {
-      ylab <- "residual"
+      ylab <- "Residual"
+    }
+    if (is.null(xlab)) {
+      xlab <- deparse(substitute(x))
     }
     if (nsim == 1) {
       plot(x, object, xlab = xlab, ylab = ylab, main = main)
       lines(lowess(x, object), lwd = 2, col = "red")
       abline(h = c(-2, 2), lty = 2, lwd = 1, col = "red")
     } else {
-      plot(x, object, xlab = xlab, ylab = ylab, main = main)  # original residuals w/ bootstrap reps
-      boot.reps <- attr(object, "boot.reps")
-      boot.id <- attr(object, "boot.id")
-      for (i in seq_len(nsim)) {  # add bootstrap residuals
-        points(x[boot.id[, i]], boot.reps[, i],
-               col = adjustcolor(1, alpha.f = alpha))
-      }
-      xx <- rep(x, times = nsim)
-      lines(lowess(xx, as.numeric(boot.reps)), lwd = 2, col = "red")
+      boot.reps <- as.vector(attr(object, "boot.reps"))
+      boot.id <- as.vector(attr(object, "boot.id"))
+      plot(x[boot.id], boot.reps, col = adjustcolor(1, alpha.f = alpha),
+           xlab = xlab, ylab = ylab, main = main)
+      lines(lowess(rep(x, times = nsim), boot.reps), lwd = 2, col = "red")
     }
-    abline(h = c(-2, 2), lty = 2, lwd = 1, col = "red")
   }
 }
 

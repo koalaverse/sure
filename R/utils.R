@@ -1,10 +1,4 @@
 #' @keywords internal
-nobs.vglm <- function(object, ...) {
-  attributes(object)$misc$n
-}
-
-
-#' @keywords internal
 ncat <- function(object, ...) {
   UseMethod("ncat")
 }
