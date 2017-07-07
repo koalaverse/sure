@@ -3,7 +3,7 @@
 [![codecov](https://codecov.io/gh/AFIT-R/ordr/branch/master/graph/badge.svg)](https://codecov.io/gh/AFIT-R/ordr)
 
 
-# ordr: Ordinal Regression Diagnostics
+# ordr: Ordinal Regression Diagnostics <img src="tools/ordr-logo.png" align="right" width="120" height="139" />
 
 An R package for constructing [residuals and diagnostics for ordinal regression models](http://amstat.tandfonline.com/doi/abs/10.1080/01621459.2017.1292915).
 
