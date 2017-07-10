@@ -13,13 +13,16 @@ autoplot.resid(object, what = c("qq", "mean", "covariate"), x = NULL,
   smooth.col = "red", fill = NULL, ...)
 
 autoplot.clm(object, what = c("qq", "mean", "covariate"), x = NULL,
-  nsim = 1, alpha = 1, xlab = NULL, ylab = NULL, main = NULL, ...)
+  nsim = 1, alpha = 1, xlab = NULL, ylab = NULL, main = NULL,
+  col = "black", smooth = TRUE, smooth.col = "red", fill = NULL, ...)
 
 autoplot.polr(object, what = c("qq", "mean", "covariate"), x = NULL,
-  nsim = 1, alpha = 1, xlab = NULL, ylab = NULL, main = NULL, ...)
+  nsim = 1, alpha = 1, xlab = NULL, ylab = NULL, main = NULL,
+  col = "black", smooth = TRUE, smooth.col = "red", fill = NULL, ...)
 
 autoplot.vglm(object, what = c("qq", "mean", "covariate"), x = NULL,
-  nsim = 1, alpha = 1, xlab = NULL, ylab = NULL, main = NULL, ...)
+  nsim = 1, alpha = 1, xlab = NULL, ylab = NULL, main = NULL,
+  col = "black", smooth = TRUE, smooth.col = "red", fill = NULL, ...)
 }
 \arguments{
 \item{object}{An object of class \code{\link[ordinal]{clm}},

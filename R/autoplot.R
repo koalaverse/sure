@@ -176,7 +176,8 @@ autoplot.resid <- function(object, what = c("qq", "mean", "covariate"),
 #' @export
 autoplot.clm <- function(object, what = c("qq", "mean", "covariate"),
                          x = NULL, nsim = 1, alpha = 1, xlab = NULL,
-                         ylab = NULL, main = NULL, ...) {
+                         ylab = NULL, main = NULL, col = "black", smooth = TRUE,
+                         smooth.col = "red", fill = NULL, ...) {
   res <- resids(object, nsim = nsim)
   dist.fun <- getDistributionFunction(object)  # reference distribution
   if (is.null(xlab)) {
@@ -184,7 +185,8 @@ autoplot.clm <- function(object, what = c("qq", "mean", "covariate"),
   }
   autoplot.resid(res, what = what, x = x, distribution = dist.fun, fit = object,
                  nsim = nsim, alpha = alpha, xlab = xlab, ylab = ylab,
-                 main = main, ...)
+                 main = main, col = col, smooth = smooth,
+                 smooth.col = smooth.col, fill = fill, ...)
 }
 
 
@@ -192,7 +194,8 @@ autoplot.clm <- function(object, what = c("qq", "mean", "covariate"),
 #' @export
 autoplot.polr <- function(object, what = c("qq", "mean", "covariate"),
                           x = NULL, nsim = 1, alpha = 1, xlab = NULL,
-                          ylab = NULL, main = NULL, ...) {
+                          ylab = NULL, main = NULL, col = "black",
+                          smooth = TRUE, smooth.col = "red", fill = NULL, ...) {
   res <- resids(object, nsim = nsim)
   dist.fun <- getDistributionFunction(object)  # reference distribution
   if (is.null(xlab)) {
@@ -200,7 +203,8 @@ autoplot.polr <- function(object, what = c("qq", "mean", "covariate"),
   }
   autoplot.resid(res, what = what, x = x, distribution = dist.fun, fit = object,
                  nsim = nsim, alpha = alpha, xlab = xlab, ylab = ylab,
-                 main = main, ...)
+                 main = main, col = col, smooth = smooth,
+                 smooth.col = smooth.col, fill = fill, ...)
 }
 
 
@@ -208,7 +212,8 @@ autoplot.polr <- function(object, what = c("qq", "mean", "covariate"),
 #' @export
 autoplot.vglm <- function(object, what = c("qq", "mean", "covariate"),
                           x = NULL, nsim = 1, alpha = 1, xlab = NULL,
-                          ylab = NULL, main = NULL, ...) {
+                          ylab = NULL, main = NULL, col = "black",
+                          smooth = TRUE, smooth.col = "red", fill = NULL, ...) {
   res <- resids(object, nsim = nsim)
   dist.fun <- getDistributionFunction(object)  # reference distribution
   if (is.null(xlab)) {
@@ -216,5 +221,6 @@ autoplot.vglm <- function(object, what = c("qq", "mean", "covariate"),
   }
   autoplot.resid(res, what = what, x = x, distribution = dist.fun, fit = object,
                  nsim = nsim, alpha = alpha, xlab = xlab, ylab = ylab,
-                 main = main, ...)
+                 main = main, col = col, smooth = smooth,
+                 smooth.col = smooth.col, fill = fill, ...)
 }
