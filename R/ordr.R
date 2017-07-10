@@ -12,8 +12,9 @@
 #'
 #' @importFrom graphics abline lines plot points
 #' @importFrom grDevices adjustcolor
-#' @importFrom stats .checkMFClasses lowess model.frame model.matrix nobs pnorm
-#' @importFrom stats ppoints qcauchy qlogis qnorm qqline qqplot qqnorm runif
+#' @importFrom stats .checkMFClasses lowess model.frame model.matrix
+#' @importFrom stats model.response nobs pnorm ppoints qcauchy qlogis qnorm
+#' @importFrom stats qqline qqplot qqnorm runif
 #'
 #' @docType package
 #' @name ordr
