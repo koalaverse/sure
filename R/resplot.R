@@ -36,7 +36,7 @@
 #'
 #' @rdname resplot
 #' @export
-resplot <- function(object, what = c("qq", "covariate"), x = NULL, ...) {
+resplot <- function(object, what = c("qq", "mean", "covariate"), x = NULL, ...) {
   UseMethod("resplot")
 }
 

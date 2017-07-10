@@ -8,7 +8,7 @@
 \alias{resplot.vglm}
 \title{Residual Plots for Ordinal Regression Models}
 \usage{
-resplot(object, what = c("qq", "covariate"), x = NULL, ...)
+resplot(object, what = c("qq", "mean", "covariate"), x = NULL, ...)
 
 \method{resplot}{resid}(object, what = c("qq", "mean", "covariate"),
   x = NULL, fit = NULL, distribution = qnorm, alpha = 1, xlab = NULL,
