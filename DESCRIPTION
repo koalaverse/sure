@@ -14,9 +14,9 @@ Authors@R: c(
            role = c("aut", "cre"))
     )
 Imports:
+    ggplot2,
     stats,
 Suggests:
-    ggplot2,
     MASS,
     ordinal,
     testthat,
