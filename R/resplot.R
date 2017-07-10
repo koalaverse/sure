@@ -108,8 +108,7 @@ resplot.resid <- function(object, what = c("qq", "mean", "covariate"),
     } else {
       boot.reps <- as.vector(attr(object, "boot.reps"))
       boot.id <- as.vector(attr(object, "boot.id"))
-      plot(x[boot.id], boot.reps, col = adjustcolor(1, alpha.f = alpha),
-           xlab = xlab, ylab = ylab, main = main)
+      plot(x[boot.id], boot.reps, xlab = xlab, ylab = ylab, main = main)
       lines(lowess(rep(x, times = nsim), boot.reps), lwd = 2, col = "red")
     }
   }
