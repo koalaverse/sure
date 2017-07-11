@@ -42,29 +42,115 @@ table(d$y)
 
 
 ################################################################################
-# Fit ordinal regression models with probit link
+# Model diagnosis when the model is specified correctly
+################################################################################
+
+# Function to generate data for Figure 1(a)-(b)
+figure1 <- function(model, data) {
+  alpha.hat <- -coef(model)[1L]
+  beta_1.hat <- -coef(model)[4L]
+  beta_2.hat <- -coef(model)[5L]
+  thrd.hat <- c(0, coef(model)[2L] - coef(model)[1L],
+                coef(model)[3L] - coef(model)[1L])
+  x <- data$x
+  y <- as.integer(data$y)
+  residual.bootstrap <- function(w, x){
+    cc <- c(-Inf, thrd.hat, Inf)
+    res <- rtmvnorm(
+      n = 1,
+      mean = (alpha.hat + beta_1.hat * x + beta_2.hat * (x ^ 2)),
+      sigma = 1,
+      lower = cc[w],
+      upper = cc[w + 1]
+    ) - (alpha.hat + beta_1.hat * x + beta_2.hat * (x ^ 2))
+  }
+  res.boot <- rep(NA, n)
+  for(i in 1:n) {
+    res.boot[i] <- residual.bootstrap(y[i], x[i])
+  }
+  data.frame(x = x, res = res.boot)
+}
+
+
+# Function to generate data for Figure 3(a)
+figure3 <- function(model, data) {
+  alpha.hat <- -coef(model)[1L]
+  beta.hat <- -coef(model)[4L]
+  thrd.hat <- c(0, coef(model)[2L] - coef(model)[1L],
+                coef(model)[3L] - coef(model)[1L])
+  x <- data$x
+  y <- as.integer(data$y)
+  residual.bootstrap <- function(w, x){
+    cc <- c(-Inf, thrd.hat, Inf)
+    res <- rtmvnorm(
+      n = 1,
+      mean = alpha.hat + beta.hat * x,
+      sigma = 1,
+      lower = cc[w],
+      upper = cc[w + 1]
+    ) - (alpha.hat + beta.hat * x)
+
+  }
+  res.boot <- rep(NA, n)
+  for(i in 1:n) {
+    res.boot[i] <- residual.bootstrap(y[i], x[i])
+  }
+  data.frame(x = x, res = res.boot)
+}
+
+
+################################################################################
+# Model specified correctly
 ################################################################################
 
 # Fitted models
-probit.clm <- clm(formula = y ~ x + I(x ^ 2), data = d, link = "probit")
-probit.polr <- polr(formula = y ~ x + I(x ^ 2), data = d, method = "probit")
-probit.vglm <- vglm(formula = y ~ x + I(x ^ 2), data = d,
+house.clm <- clm(formula = y ~ x + I(x ^ 2), data = d, link = "probit")
+house.polr <- polr(formula = y ~ x + I(x ^ 2), data = d, method = "probit")
+house.vglm <- vglm(formula = y ~ x + I(x ^ 2), data = d,
                     family = cumulative(link = probit, parallel = TRUE))
 
-# Q-Q plots
-par(mfrow = c(2, 3))
-resplot(logit.clm, nsim = 10)
-resplot(logit.polr, nsim = 10)
-resplot(logit.vglm, nsim = 10)
-resplot(probit.clm, nsim = 10)
-resplot(probit.polr, nsim = 10)
-resplot(probit.vglm, nsim = 10)
+# Generate data from Figure 1
+fig1 <- figure1(house.vglm, data = d)
 
-# Residual-by-covariate plot
-par(mfrow = c(2, 3))
-resplot(logit.clm, what = "covariate", x = d$x, nsim = 10)
-resplot(logit.polr, what = "covariate", x = d$x, nsim = 10)
-resplot(logit.vglm, what = "covariate", x = d$x, nsim = 10)
-resplot(probit.clm, what = "covariate", x = d$x, nsim = 10)
-resplot(probit.polr, what = "covariate", x = d$x, nsim = 10)
-resplot(probit.vglm, what = "covariate", x = d$x, nsim = 10)
+# Plots
+pdf("slowtests\\figures\\figure1.pdf", width = 7, height = 12)
+par(mfrow = c(4, 2))
+resplot(house.clm, what = "covariate", x = d$x, main = "ordinal::clm")
+resplot(house.clm, what = "qq", main = "ordinal::clm")
+resplot(house.polr, what = "covariate", x = d$x, main = "MASS::polr")
+resplot(house.polr, what = "qq", main = "MASS::polr")
+resplot(house.vglm, what = "covariate", x = d$x, main = "VGAM::vglm")
+resplot(house.vglm, what = "qq", main = "VGAM::vglm")
+plot(fig1, ylab = "Residual", main = "Figure 1(a)")
+lines(lowess(fig1), lwd = 2, col = "red")
+qqnorm(fig1$res, main = "Figure 1(b)")
+qqline(fig1$res, col = "red")
+dev.off()
+
+
+################################################################################
+# Model specified incorrectly (quadratic term is missed)
+################################################################################
+
+# Fitted models
+house.clm.wrong <- clm(formula = y ~ x, data = d, link = "probit")
+house.polr.wrong <- polr(formula = y ~ x, data = d, method = "probit")
+house.vglm.wrong <- vglm(formula = y ~ x, data = d,
+                         family = cumulative(link = probit, parallel = TRUE))
+
+# Generate data from Figure 1
+fig3 <- figure3(house.vglm.wrong, data = d)
+
+# Plots
+pdf("slowtests\\figures\\figure3.pdf", width = 7, height = 7)
+par(mfrow = c(2, 2))
+resplot(house.clm.wrong, what = "covariate", x = d$x, main = "ordinal::clm")
+resplot(house.polr.wrong, what = "covariate", x = d$x, main = "MASS::polr")
+resplot(house.vglm.wrong, what = "covariate", x = d$x, main = "VGAM::vglm")
+plot(fig3, ylab = "Residual", main = "Figure 3(a)")
+lines(lowess(fig3), lwd = 2, col = "red")
+dev.off()
+
+# Qhat about jittering?
+res <- resids(house.polr, type = "jitter")
+plot(d$x, res)

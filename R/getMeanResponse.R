@@ -22,7 +22,7 @@ getMeanResponse.clm <- function(object) {
 
 #' @keywords internal
 getMeanResponse.polr <- function(object) {
-  dist.fun <- getDistributionFunction(object)
+  dist.fun <- getQuantileFunction(object)
   -dist.fun(object$fitted.values[, 1L, drop = TRUE])
 }
 
