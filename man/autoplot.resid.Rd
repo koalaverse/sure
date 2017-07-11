@@ -44,8 +44,8 @@ which is only appropriate for models using a probit link function.}
 \item{alpha}{A single values in the interval [0, 1] controlling the opacity
 alpha of the plotted points. Only used when \code{nsim} > 1.}
 
-\item{xlab}{Character string giving the text to use for the x-axis label.
-Default is \code{NULL}.}
+\item{xlab}{Character string giving the text to use for the x-axis label in
+residual-by-covariate plots. Default is \code{NULL}.}
 
 \item{ylab}{Character string giving the text to use for the y-axis label.
 Default is \code{NULL}.}

@@ -25,6 +25,7 @@ devtools::install_github("bgreenwell/ordr")
 
 ```r
 # Load required packages
+library(ggplot2)
 library(MASS)
 library(ordr)
 
@@ -32,11 +33,14 @@ library(ordr)
 house.polr <- polr(Sat ~ Infl + Type + Cont, weights = Freq, data = housing)
 
 # Diagnostic plots
-par(mfrow = c(2, 2))
-resplot(house.polr, what = "qq", nsim = 50)
-resplot(house.polr, what = "mean", nsim = 50)
-resplot(house.polr, what = "covariate", x = housing$Infl, nsim = 50)
-resplot(house.polr, what = "covariate", x = housing$Type, nsim = 50)
+grid.arrange(
+  autoplot(house.polr, what = "qq", nsim = 50, alpha = 0.5),
+  autoplot(house.polr, what = "mean", nsim = 50, alpha = 0.5),
+  autoplot(house.polr, what = "covariate", x = housing$Infl, nsim = 50),
+  autoplot(house.polr, what = "covariate", x = housing$Type, nsim = 50),
+  ncol = 2
+)
+#> `geom_smooth()` using method = 'gam'
 ```
 
 ![](tools/README-unnamed-chunk-3-1.png)<!-- -->

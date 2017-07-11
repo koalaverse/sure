@@ -15,6 +15,7 @@ Authors@R: c(
     )
 Imports:
     ggplot2,
+    gridExtra,
     stats,
 Suggests:
     MASS,

@@ -24,8 +24,8 @@
 #' @param alpha A single values in the interval [0, 1] controlling the opacity
 #' alpha of the plotted points. Only used when \code{nsim} > 1.
 #'
-#' @param xlab Character string giving the text to use for the x-axis label.
-#' Default is \code{NULL}.
+#' @param xlab Character string giving the text to use for the x-axis label in
+#' residual-by-covariate plots. Default is \code{NULL}.
 #'
 #' @param ylab Character string giving the text to use for the y-axis label.
 #' Default is \code{NULL}.
@@ -98,9 +98,10 @@ autoplot.resid <- function(object, what = c("qq", "mean", "covariate"),
     if (is.null(ylab)) {
       ylab <- "Sample quantile"
     }
-    if (is.null(xlab)) {
-      xlab <- "Theoretical quantile"
-    }
+    # if (is.null(xlab)) {
+    #   xlab <- "Theoretical quantile"
+    # }
+    xlab <- "Theoretical quantile"
     if (is.null(main)) {
       main <- "Quantile-quantile plot"
     }
@@ -119,9 +120,10 @@ autoplot.resid <- function(object, what = c("qq", "mean", "covariate"),
     if (is.null(ylab)) {
       ylab <- "Residual"
     }
-    if (is.null(xlab)) {
-      xlab <- "Fitted value"
-    }
+    # if (is.null(xlab)) {
+    #   xlab <- "Fitted value"
+    # }
+    xlab <- "Fitted value"
     if (is.null(main)) {
       main <- "Residual-by-fitted value plot"
     }
