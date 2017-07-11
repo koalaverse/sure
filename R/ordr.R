@@ -10,13 +10,13 @@
 #' Regression Models: A Surrogate Approach.
 #' \emph{Journal of the American Statistical Association} (accepted).
 #'
-#' @importFrom ggplot2  aes geom_boxplot geom_point geom_smooth ggplot ggtitle
-#' @importFrom ggplot2 guides
+#' @importFrom ggplot2  aes geom_abline geom_boxplot geom_point geom_smooth
+#' @importFrom ggplot2 ggplot ggtitle guides
 #' @importFrom graphics abline lines plot points
 #' @importFrom grDevices adjustcolor
 #' @importFrom stats .checkMFClasses lowess model.frame model.matrix
-#' @importFrom stats model.response nobs pnorm ppoints qcauchy qlogis qnorm
-#' @importFrom stats qqline qqplot qqnorm runif
+#' @importFrom stats model.response nobs pcauchy plogis pnorm ppoints
+#' @importFrom stats qcauchy qlogis qnorm qqline qqplot qqnorm quantile runif
 #'
 #' @docType package
 #' @name ordr

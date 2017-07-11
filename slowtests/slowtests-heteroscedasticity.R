@@ -36,6 +36,7 @@ simData <- function(n = 2000, alpha = 36, beta = 4,
 set.seed(108)
 d <- simData(n = 2000)
 table(d$y)
+#
 #  1    2    3    4    5
 # 48  217 1345  292   98
 
@@ -84,16 +85,16 @@ fit.vglm <- vglm(formula = y ~ x, data = d,
 ################################################################################
 
 # Compare to Figure 6(a)
-pdf("slowtests\\figures\\heteroscedasticity.pdf", width = 6, height = 6)
+pdf("slowtests\\figures\\heteroscedasticity.pdf", width = 7, height = 6)
 par(mfrow = c(2, 2))
-resplot(res.clm, what = "covariate", x = d$x, main = "ordinal::clm",
+resplot(fit.clm, what = "covariate", x = d$x, main = "ordinal::clm",
         ylab = "Surrogate residual", alpha = 0.1)
-resplot(res.polr, what = "covariate", x = d$x, main = "MASS::polr",
+resplot(fit.polr, what = "covariate", x = d$x, main = "MASS::polr",
         ylab = "Surrogate residual", alpha = 0.1)
-resplot(res.vglm, what = "covariate", x = d$x, main = "VGAM::vglm",
+resplot(fit.vglm, what = "covariate", x = d$x, main = "VGAM::vglm",
         ylab = "Surrogate residual", alpha = 0.1)
 plot(d$x, res.boot, main = "Figure 6(a)",
-     xlab = "x", ylab = "LS residual")
+     xlab = "x", ylab = "Suurogate residual")
 lines(smooth.spline(d$x, res.boot), lwd = 2, col = "red")
 abline(h = c(-2, 2), lty = 2, col = "red")
 dev.off()

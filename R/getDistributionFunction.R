@@ -7,31 +7,31 @@ getDistributionFunction <- function(object) {
 #' @keywords internal
 getDistributionFunction.clm <- function(object) {
   switch(object$link,
-         "logit" = qlogis,
-         "probit" = qnorm,
-         "loglog" = qgumbel,
-         "cloglog" = qGumbel,
-         "cauchit" = qcauchy)
+         "logit" = plogis,
+         "probit" = pnorm,
+         "loglog" = pgumbel,
+         "cloglog" = pGumbel,
+         "cauchit" = pcauchy)
 }
 
 
 #' @keywords internal
 getDistributionFunction.polr <- function(object) {
   switch(object$method,
-         "logistic" = qlogis,
-         "probit" = qnorm,
-         "loglog" = qgumbel,
-         "cloglog" = qGumbel,
-         "cauchit" = qcauchy)
+         "logistic" = plogis,
+         "probit" = pnorm,
+         "loglog" = pgumbel,
+         "cloglog" = pGumbel,
+         "cauchit" = pcauchy)
 }
 
 
 #' @keywords internal
 getDistributionFunction.vglm <- function(object) {
   switch(object@family@infos()$link,
-         "logit" = qlogis,
-         "probit" = qnorm,
-         "loglog" = qgumbel,
-         "cloglog" = qGumbel,
-         "cauchit" = qcauchy)
+         "logit" = plogis,
+         "probit" = pnorm,
+         "loglog" = pgumbel,
+         "cloglog" = pGumbel,
+         "cauchit" = pcauchy)
 }

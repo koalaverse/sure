@@ -19,7 +19,6 @@ library(VGAM)      # for fitting ordinal regression models
 simData <- function(n = 2000, alpha = 16, beta = c(-8, 1),
                     threshold = c(0, 4, 8)) {
   x <- runif(n, min = 1, max = 7)
-  # z <- alpha + beta * x + rnorm(n, mean = 0, sd = x ^ 2)
   z <- alpha + beta[1L] * x + beta[2L] * x ^ 2 + rnorm(n)  # rlnorm(n)
   y <- sapply(z, FUN = function(zz) {
     ordinal.value <- 1
@@ -34,8 +33,12 @@ simData <- function(n = 2000, alpha = 16, beta = c(-8, 1),
 }
 
 # Simulate data
-set.seed(108)
+set.seed(977)
 d <- simData(n = 2000)
+table(d$y)
+#
+#   1    2    3    4
+# 275 1047  544  134
 
 
 ################################################################################
@@ -43,10 +46,6 @@ d <- simData(n = 2000)
 ################################################################################
 
 # Fitted models
-logit.clm <- clm(formula = y ~ x + I(x ^ 2), data = d, link = "logit")
-logit.polr <- polr(formula = y ~ x + I(x ^ 2), data = d, method = "logistic")
-logit.vglm <- vglm(formula = y ~ x + I(x ^ 2), data = d,
-                   family = cumulative(link = logit, parallel = TRUE))
 probit.clm <- clm(formula = y ~ x + I(x ^ 2), data = d, link = "probit")
 probit.polr <- polr(formula = y ~ x + I(x ^ 2), data = d, method = "probit")
 probit.vglm <- vglm(formula = y ~ x + I(x ^ 2), data = d,

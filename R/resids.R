@@ -24,13 +24,22 @@
 #' result will contain the additional class \code{"resid"}, which is useful for
 #' plotting.
 #'
+#' @note The internal functions used for sampling from truncated distirbutions
+#' are based on modified versions of \code{\link[truncdist]{rtrunc}} and
+#' \code{\link[truncdist]{qtrunc}}.
+#'
 #' @references
 #' Liu, Dungang and Zhang, Heping. Residuals and Diagnostics for Ordinal
 #' Regression Models: A Surrogate Approach.
-#' \emph{Journal of the American Statistical Association} (accepted).
+#' \emph{Journal of the American Statistical Association} (accepted). URL
+#' http://www.tandfonline.com/doi/abs/10.1080/01621459.2017.1292915?journalCode=uasa20
+#'
+#' Nadarajah, Saralees and Kotz, Samuel. R Programs for Truncated Distributions.
+#' \emph{Journal of Statistical Software, Code Snippet}, 16(2), 1-8, 2006. URL
+#' https://www.jstatsoft.org/v016/c02.
 #'
 #' @export
-resids <- function(object, ...) {
+resids <- function(object, type, jitter.scale, nsim, ...) {
   UseMethod("resids")
 }
 
@@ -52,18 +61,26 @@ resids.default <- function(object, type = c("surrogate", "jitter"),
   n.obs <- length(y)
   bounds <- getBounds(object)
 
+  # What type of residuals?
+  type <- match.arg(type)
+  jitter.scale <- match.arg(jitter.scale)
+  if (jitter.scale == "probability") {  # throw error, for now!
+    stop("Jittering on the probability scale is not yet implemented.")
+  }
+
   # Construct residuals
   mr <- getMeanResponse(object)
-  res <- getSurrogateResiduals(object, y = y, n.obs = n.obs, mean.response = mr,
-                               bounds = bounds)
+  res <- getResiduals(object, type = type, jitter.scale = jitter.scale, y = y,
+                      n.obs = n.obs, mean.response = mr, bounds = bounds)
   if (nsim > 1) {  # bootstrap
     boot.res <- boot.index <- matrix(nrow = n.obs, ncol = nsim)
     for(i in seq_len(nsim)) {
       boot.index[, i] <- sample(n.obs, replace = TRUE)
       mr <- getMeanResponse(object)[boot.index[, i]]
       boot.res[, i] <-
-        getSurrogateResiduals(object, y = y[boot.index[, i]], n.obs = n.obs,
-                              mean.response = mr, bounds = bounds)
+        getResiduals(object, type = type, jitter.scale = jitter.scale,
+                     y = y[boot.index[, i]], n.obs = n.obs, mean.response = mr,
+                     bounds = bounds)
     }
     attr(res, "boot.reps") <- boot.res
     attr(res, "boot.id") <- boot.index

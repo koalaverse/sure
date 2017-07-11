@@ -5,7 +5,7 @@
 \alias{resids.default}
 \title{Residuals for Ordinal Regression Models}
 \usage{
-resids(object, ...)
+resids(object, type, jitter.scale, nsim, ...)
 
 \method{resids}{default}(object, type = c("surrogate", "jitter"),
   jitter.scale = c("response", "probability"), nsim = 1, ...)
@@ -13,8 +13,6 @@ resids(object, ...)
 \arguments{
 \item{object}{An object of class \code{\link[ordinal]{clm}},
 \code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.}
-
-\item{...}{Additional optional arguments. (Currently ignored.)}
 
 \item{type}{Character string specifying the type of residuals to construct.
 Should be one of \code{"surrogate"} or \code{"jitter"}. Default is
@@ -26,6 +24,8 @@ Only used when \code{type = "jitter"}. Default is \code{"response"}.
 (Currently ignored.)}
 
 \item{nsim}{Integer specifying the number of bootstrap replicates to use.}
+
+\item{...}{Additional optional arguments. (Currently ignored.)}
 }
 \value{
 A numeric vector (\code{nsim = 1}) or matrix (\code{nsim} > 1) of
@@ -37,8 +37,18 @@ plotting.
 \description{
 Surrogate and jittered residuals for ordinal regression models.
 }
+\note{
+The internal functions used for sampling from truncated distirbutions
+are based on modified versions of \code{\link[truncdist]{rtrunc}} and
+\code{\link[truncdist]{qtrunc}}.
+}
 \references{
 Liu, Dungang and Zhang, Heping. Residuals and Diagnostics for Ordinal
 Regression Models: A Surrogate Approach.
-\emph{Journal of the American Statistical Association} (accepted).
+\emph{Journal of the American Statistical Association} (accepted). URL
+http://www.tandfonline.com/doi/abs/10.1080/01621459.2017.1292915?journalCode=uasa20
+
+Nadarajah, Saralees and Kotz, Samuel. R Programs for Truncated Distributions.
+\emph{Journal of Statistical Software, Code Snippet}, 16(2), 1-8, 2006. URL
+https://www.jstatsoft.org/v016/c02.
 }

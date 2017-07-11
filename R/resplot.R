@@ -121,8 +121,8 @@ resplot.clm <- function(object, what = c("qq", "mean", "covariate"),
                         x = NULL, nsim = 1, alpha = 1, xlab = NULL,
                         ylab = NULL, main = NULL, ...) {
   res <- resids(object, nsim = nsim)
-  dist.fun <- getDistributionFunction(object)  # reference distribution
-  resplot.resid(res, what = what, x, distribution = dist.fun, fit = object,
+  quan.fun <- getQuantileFunction(object)  # reference distribution
+  resplot.resid(res, what = what, x, distribution = quan.fun, fit = object,
                 nsim = nsim, alpha = alpha, xlab = xlab, ylab = ylab,
                 main = main, ...)
 }
@@ -134,8 +134,8 @@ resplot.polr <- function(object, what = c("qq", "mean", "covariate"),
                          x = NULL, nsim = 1, alpha = 1, xlab = NULL,
                          ylab = NULL, main = NULL, ...) {
   res <- resids(object, nsim = nsim)
-  dist.fun <- getDistributionFunction(object)  # reference distribution
-  resplot.resid(res, what = what, x, distribution = dist.fun, fit = object,
+  quan.fun <- getQuantileFunction(object)  # reference distribution
+  resplot.resid(res, what = what, x, distribution = quan.fun, fit = object,
                 nsim = nsim, alpha = alpha, xlab = xlab, ylab = ylab,
                 main = main, ...)
 }
@@ -146,8 +146,8 @@ resplot.vglm <- function(object, what = c("qq", "mean", "covariate"),
                          x = NULL, nsim = 1, alpha = 1, xlab = NULL,
                          ylab = NULL, main = NULL, ...) {
   res <- resids(object, nsim = nsim)
-  dist.fun <- getDistributionFunction(object)  # reference distribution
-  resplot.resid(res, what = what, x, distribution = dist.fun, fit = object,
+  quan.fun <- getQuantileFunction(object)  # reference distribution
+  resplot.resid(res, what = what, x, distribution = quan.fun, fit = object,
                 nsim = nsim, alpha = alpha, xlab = xlab, ylab = ylab,
                 main = main, ...)
 }

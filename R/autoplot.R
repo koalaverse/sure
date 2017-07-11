@@ -187,11 +187,11 @@ autoplot.clm <- function(object, what = c("qq", "mean", "covariate"),
                          ylab = NULL, main = NULL, col = "black", smooth = TRUE,
                          smooth.col = "red", fill = NULL, ...) {
   res <- resids(object, nsim = nsim)
-  dist.fun <- getDistributionFunction(object)  # reference distribution
+  quan.fun <- getQuantileFunction(object)  # reference distribution
   if (is.null(xlab)) {
     xlab <- deparse(substitute(x))
   }
-  autoplot.resid(res, what = what, x = x, distribution = dist.fun, fit = object,
+  autoplot.resid(res, what = what, x = x, distribution = quan.fun, fit = object,
                  nsim = nsim, alpha = alpha, xlab = xlab, ylab = ylab,
                  main = main, col = col, smooth = smooth,
                  smooth.col = smooth.col, fill = fill, ...)
@@ -205,11 +205,11 @@ autoplot.polr <- function(object, what = c("qq", "mean", "covariate"),
                           ylab = NULL, main = NULL, col = "black",
                           smooth = TRUE, smooth.col = "red", fill = NULL, ...) {
   res <- resids(object, nsim = nsim)
-  dist.fun <- getDistributionFunction(object)  # reference distribution
+  quan.fun <- getQuantileFunction(object)  # reference distribution
   if (is.null(xlab)) {
     xlab <- deparse(substitute(x))
   }
-  autoplot.resid(res, what = what, x = x, distribution = dist.fun, fit = object,
+  autoplot.resid(res, what = what, x = x, distribution = quan.fun, fit = object,
                  nsim = nsim, alpha = alpha, xlab = xlab, ylab = ylab,
                  main = main, col = col, smooth = smooth,
                  smooth.col = smooth.col, fill = fill, ...)
@@ -223,11 +223,11 @@ autoplot.vglm <- function(object, what = c("qq", "mean", "covariate"),
                           ylab = NULL, main = NULL, col = "black",
                           smooth = TRUE, smooth.col = "red", fill = NULL, ...) {
   res <- resids(object, nsim = nsim)
-  dist.fun <- getDistributionFunction(object)  # reference distribution
+  quan.fun <- getQuantileFunction(object)  # reference distribution
   if (is.null(xlab)) {
     xlab <- deparse(substitute(x))
   }
-  autoplot.resid(res, what = what, x = x, distribution = dist.fun, fit = object,
+  autoplot.resid(res, what = what, x = x, distribution = quan.fun, fit = object,
                  nsim = nsim, alpha = alpha, xlab = xlab, ylab = ylab,
                  main = main, col = col, smooth = smooth,
                  smooth.col = smooth.col, fill = fill, ...)
