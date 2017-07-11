@@ -107,9 +107,15 @@ autoplot.resid <- function(object, what = c("qq", "mean", "covariate"),
     }
     distribution <- match.fun(distribution)
     x <- distribution(ppoints(length(res)))[order(order(res))]
+    qqline.y <- quantile(res, probs = c(0.25, 0.75), names = FALSE,
+                         na.rm = TRUE)
+    qqline.x <- distribution(c(0.25, 0.75))
+    slope <- diff(qqline.y) / diff(qqline.x)
+    int <- qqline.y[1L] - slope * qqline.x[1L]
     rdf <- data.frame(x = x, y = res)
     p <- ggplot(rdf, aes(x = x, y = y)) +
       geom_point(color = col) +
+      geom_abline(slope = slope, intercept = int, col = "red") +
       xlab(xlab) +
       ylab(ylab) +
       ggtitle(main)
