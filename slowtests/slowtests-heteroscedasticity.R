@@ -63,6 +63,7 @@ residual.bootstrap <- function(y, x) {
 }
 
 # Residuals used in Figure 6(a)
+n <- 2000
 res.boot <- rep(NA, n)
 for(i in 1:n) {
   res.boot[i] <- residual.bootstrap(d$y[i], d$x[i])
@@ -85,7 +86,7 @@ fit.vglm <- vglm(formula = y ~ x, data = d,
 ################################################################################
 
 # Compare to Figure 6(a)
-pdf("slowtests\\figures\\heteroscedasticity.pdf", width = 7, height = 6)
+# pdf("slowtests\\figures\\heteroscedasticity.pdf", width = 7, height = 6)
 par(mfrow = c(2, 2))
 resplot(fit.clm, what = "covariate", x = d$x, main = "ordinal::clm",
         ylab = "Surrogate residual", alpha = 0.1)
@@ -97,4 +98,4 @@ plot(d$x, res.boot, main = "Figure 6(a)",
      xlab = "x", ylab = "Suurogate residual")
 lines(smooth.spline(d$x, res.boot), lwd = 2, col = "red")
 abline(h = c(-2, 2), lty = 2, col = "red")
-dev.off()
+# dev.off()
