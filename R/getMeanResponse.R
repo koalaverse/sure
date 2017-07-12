@@ -22,8 +22,11 @@ getMeanResponse.clm <- function(object) {
 
 #' @keywords internal
 getMeanResponse.polr <- function(object) {
-  dist.fun <- getQuantileFunction(object)
-  -dist.fun(object$fitted.values[, 1L, drop = TRUE])
+  # qfun <- getQuantileFunction(object)
+  # fv <- object$fitted.values[, 1L, drop = TRUE]
+  # fv[fv == 0] <- 1e-05
+  # -qfun(fv)
+  object$lp - object$zeta[1L]
 }
 
 

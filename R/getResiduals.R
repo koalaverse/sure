@@ -28,6 +28,9 @@ getSurrogateResiduals <- function(object, y, n.obs, mean.response, bounds) {
   } else if (dist.name == "gumbel") {
     .rtrunc(n.obs, spec = "gumbel", a = bounds[y], b = bounds[y + 1],
             location = mean.response, scale = 1) - mean.response
+  } else if (dist.name == "Gumbel") {
+    .rtrunc(n.obs, spec = "Gumbel", a = bounds[y], b = bounds[y + 1],
+            location = mean.response, scale = 1) - mean.response
   } else {
     stop("Distribution not supported.")
   }
