@@ -9,20 +9,31 @@
 \usage{
 autoplot.resid(object, what = c("qq", "mean", "covariate"), x = NULL,
   fit = NULL, distribution = qnorm, alpha = 1, xlab = NULL,
-  ylab = NULL, main = NULL, col = "black", smooth = TRUE,
-  smooth.col = "red", fill = NULL, ...)
+  color = "#444444", qqpoint.color = "#444444", qqpoint.shape = 19,
+  qqpoint.size = 2, qqline.color = "#888888", qqline.linetype = "dashed",
+  qqline.size = 1, smooth = TRUE, smooth.color = "#0000FF",
+  smooth.linetype = 1, smooth.size = 1, fill = NULL, ...)
 
 autoplot.clm(object, what = c("qq", "mean", "covariate"), x = NULL,
-  nsim = 1, alpha = 1, xlab = NULL, ylab = NULL, main = NULL,
-  col = "black", smooth = TRUE, smooth.col = "red", fill = NULL, ...)
+  nsim = 1, alpha = 1, xlab = NULL, ylab = NULL, color = "#444444",
+  qqpoint.color = "#444444", qqpoint.shape = 19, qqpoint.size = 2,
+  qqline.color = "#888888", qqline.linetype = "dashed", qqline.size = 1,
+  smooth = TRUE, smooth.color = "#0000FF", smooth.linetype = 1,
+  smooth.size = 1, fill = NULL, ...)
 
 autoplot.polr(object, what = c("qq", "mean", "covariate"), x = NULL,
-  nsim = 1, alpha = 1, xlab = NULL, ylab = NULL, main = NULL,
-  col = "black", smooth = TRUE, smooth.col = "red", fill = NULL, ...)
+  nsim = 1, alpha = 1, xlab = NULL, ylab = NULL, color = "#444444",
+  qqpoint.color = "#444444", qqpoint.shape = 19, qqpoint.size = 2,
+  qqline.color = "#888888", qqline.linetype = "dashed", qqline.size = 1,
+  smooth = TRUE, smooth.color = "#0000FF", smooth.linetype = 1,
+  smooth.size = 1, fill = NULL, ...)
 
 autoplot.vglm(object, what = c("qq", "mean", "covariate"), x = NULL,
-  nsim = 1, alpha = 1, xlab = NULL, ylab = NULL, main = NULL,
-  col = "black", smooth = TRUE, smooth.col = "red", fill = NULL, ...)
+  nsim = 1, alpha = 1, xlab = NULL, ylab = NULL, color = "#444444",
+  qqpoint.color = "#444444", qqpoint.shape = 19, qqpoint.size = 2,
+  qqline.color = "#888888", qqline.linetype = "dashed", qqline.size = 1,
+  smooth = TRUE, smooth.color = "#0000FF", smooth.linetype = 1,
+  smooth.size = 1, fill = NULL, ...)
 }
 \arguments{
 \item{object}{An object of class \code{\link[ordinal]{clm}},
@@ -47,6 +58,18 @@ alpha of the plotted points. Only used when \code{nsim} > 1.}
 \item{xlab}{Character string giving the text to use for the x-axis label in
 residual-by-covariate plots. Default is \code{NULL}.}
 
+\item{smooth}{Logical indicating whether or not too add a nonparametric
+smooth on certain plots. Default is \code{TRUE}.}
+
+\item{fill}{Character string or integer specifying the color to use to fill
+the boxplots for residual-by-covariate plots when \code{x} is of class
+\code{"factor"}. Default is \code{NULL} which colors the boxplots according
+to the factor levels.}
+
+\item{...}{Additional optional arguments. (Currently ignored.)}
+
+\item{nsim}{Integer specifying the number of bootstrap replicates to use.}
+
 \item{ylab}{Character string giving the text to use for the y-axis label.
 Default is \code{NULL}.}
 
@@ -57,20 +80,8 @@ Default is \code{NULL}.}
 points in the quantile-quantile and residual-by-fitted value/covariate plots.
 Defaul is \code{"black"}.}
 
-\item{smooth}{Logical indicating whether or not too add a nonparametric
-smooth on certain plots. Default is \code{TRUE}.}
-
 \item{smooth.col}{Character string or integer specifying what color to use
-for the nonparametric smooth. Default is \code{"red"}.}
-
-\item{fill}{Character string or integer specifying the color to use to fill
-the boxplots for residual-by-covariate plots when \code{x} is of class
-\code{"factor"}. Default is \code{NULL} which colors the boxplots according
-to the factor levels.}
-
-\item{...}{Additional optional arguments. (Currently ignored.)}
-
-\item{nsim}{Integer specifying the number of bootstrap replicates to use.}
+for the nonparametric smooth. Default is \code{"blue"}.}
 }
 \value{
 A \code{"ggplot"} object.

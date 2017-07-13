@@ -33,3 +33,7 @@ ncat.polr <- function(object, ...) {
 ncat.vglm <- function(object, ...) {
   length(attributes(object)$extra$colnames.y)
 }
+
+
+#' #' @keywords internal
+#' getQQTitle <- function()
