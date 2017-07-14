@@ -9,15 +9,17 @@
 #' @param what Character string specifying what to plot. Default is \code{"qq"}
 #' which produces a quantile-quantile plots of the residuals.
 #'
-#' @param fit The fitted model. Only required when \code{object} is of class
-#' \code{"resid"} and \code{what = "mean"}.
-#'
 #' @param x A vector giving the covariate values to use for residual-by-
 #' covariate plots (i.e., when \code{what = "covariate"}).
 #'
+#' @param fit The fitted model from which the residuals were extracted. (Only
+#' required if \code{what = "fitted"} and \code{object} inherits from class
+#' \code{"resid"}.)
+#'
 #' @param distribution Function that computes the quantiles for the reference
 #' distribution to use in the quantile-quantile plot. Default is \code{qnorm}
-#' which is only appropriate for models using a probit link function.
+#' which is only appropriate for models using a probit link function. (Only
+#' required if \code{object} inherits from class \code{"resid"}.)
 #'
 #' @param nsim Integer specifying the number of bootstrap replicates to use.
 #'
@@ -27,21 +29,45 @@
 #' @param xlab Character string giving the text to use for the x-axis label in
 #' residual-by-covariate plots. Default is \code{NULL}.
 #'
-#' @param ylab Character string giving the text to use for the y-axis label.
-#' Default is \code{NULL}.
-#'
-#' @param main Character string giving the text to use for the plot title.
-#' Default is \code{NULL}.
-#'
-#' @param col Character string or integer specifying what color to use for the
-#' points in the quantile-quantile and residual-by-fitted value/covariate plots.
+#' @param color Character string or integer specifying what color to use for the
+#' points in the residual vs fitted value/covariate plot.
 #' Defaul is \code{"black"}.
 #'
-#' @param smooth Logical indicating whether or not too add a nonparametric
-#' smooth on certain plots. Default is \code{TRUE}.
+#' @param shape Integer or single character specifying a symbol to be used for
+#' plotting the points in the residual vs fitted value/covariate plot.
 #'
-#' @param smooth.col Character string or integer specifying what color to use
-#' for the nonparametric smooth. Default is \code{"blue"}.
+#' @param size Numeric value specifying the size to use for the points in the
+#' residual vs fitted value/covariate plot.
+#'
+#' @param qqpoint.color Character string or integer specifying what color to use
+#' for the points in the quantile-quantile plot.
+#'
+#' @param qqpoint.shape Integer or single character specifying a symbol to be
+#' used for plotting the points in the quantile-quantile plot.
+#'
+#' @param qqpoint.size Numeric value specifying the size to use for the points
+#' in the quantile-quantile plot.
+#'
+#' @param qqline.color Character string or integer specifying what color to use
+#' for the points in the quantile-quantile plot.
+#'
+#' @param qqline.linetype Integer or character string (e.g., \code{"dashed"})
+#' specifying the type of line to use in the quantile-quantile plot.
+#'
+#' @param qqline.size Numeric value specifying the thickness of the line in the
+#' quantile-quantile plot.
+#'
+#' @param smooth Logical indicating whether or not too add a nonparametric
+#' smooth to certain plots. Default is \code{TRUE}.
+#'
+#' @param smooth.color Character string or integer specifying what color to use
+#' for the nonparametric smooth.
+#'
+#' @param smooth.linetype Integer or character string (e.g., \code{"dashed"})
+#' specifying the type of line to use for the nonparametric smooth.
+#'
+#' @param smooth.size Numeric value specifying the thickness of the line for the
+#' nonparametric smooth.
 #'
 #' @param fill Character string or integer specifying the color to use to fill
 #' the boxplots for residual-by-covariate plots when \code{x} is of class
@@ -55,10 +81,32 @@
 #' @export
 #'
 #' @rdname autoplot.resid
-autoplot.resid <- function(object, what = c("qq", "mean", "covariate"),
+#'
+#' @examples
+#' \dontrun{
+#' # Load required packages
+#' library(ggplot2)
+#' library(MASS)
+#' library(ordr)
+#'
+#' # Fit a proportional odds model
+#' house.polr <- polr(Sat ~ Infl + Type + Cont, weights = Freq, data = housing)
+#'
+#' # Diagnostic plots
+#' grid.arrange(
+#'   autoplot(house.polr, what = "qq", nsim = 50, alpha = 0.5),
+#'   autoplot(house.polr, what = "fitted", nsim = 50, alpha = 0.5),
+#'   autoplot(house.polr, what = "covariate", x = housing$Infl, nsim = 50),
+#'   autoplot(house.polr, what = "covariate", x = housing$Type, nsim = 50),
+#'   ncol = 2
+#' )
+#' }
+autoplot.resid <- function(object, what = c("qq", "fitted", "covariate"),
                            x = NULL, fit = NULL, distribution = qnorm,
                            alpha = 1, xlab = NULL,
                            color = "#444444",
+                           shape = 19,
+                           size = 2,
                            qqpoint.color = "#444444",
                            qqpoint.shape = 19,
                            qqpoint.size = 2,
@@ -75,7 +123,7 @@ autoplot.resid <- function(object, what = c("qq", "mean", "covariate"),
   what <- match.arg(what)
 
   # Sanity checks
-  if (what == "mean") {
+  if (what == "fitted") {
     if (is.null(fit)) {
       stop("Cannot extract mean response. Please supply the original fitted",
            " model object via the `fit` argument.")
@@ -123,9 +171,9 @@ autoplot.resid <- function(object, what = c("qq", "mean", "covariate"),
   }
 
   # Residual vs fitted value
-  if (what == "mean") {
+  if (what == "fitted") {
     p <- ggplot(data.frame(x = x, y = res), aes_string(x = "x", y = "y")) +
-      geom_point(color = color, alpha = alpha) +
+      geom_point(color = color, shape = shape, size = size, alpha = alpha) +
       xlab("Fitted value") +
       ylab("Residual") +
       ggtitle("Residual vs fitted value")
@@ -146,7 +194,8 @@ autoplot.resid <- function(object, what = c("qq", "mean", "covariate"),
         p <- p + geom_boxplot()
       }
     } else {
-      p <- p + geom_point(color = color, alpha = alpha)
+      p <- p + geom_point(color = color, shape = shape, size = size,
+                          alpha = alpha)
       if (smooth) {
         p <- p + geom_smooth(color = smooth.color, linetype = smooth.linetype,
                              size = smooth.size, se = FALSE)
@@ -166,9 +215,11 @@ autoplot.resid <- function(object, what = c("qq", "mean", "covariate"),
 
 #' @rdname autoplot.resid
 #' @export
-autoplot.clm <- function(object, what = c("qq", "mean", "covariate"),
+autoplot.clm <- function(object, what = c("qq", "fitted", "covariate"),
                          x = NULL, nsim = 1, alpha = 1, xlab = NULL,
-                         ylab = NULL, color = "#444444",
+                         color = "#444444",
+                         shape = 19,
+                         size = 2,
                          qqpoint.color = "#444444",
                          qqpoint.shape = 19,
                          qqpoint.size = 2,
@@ -186,7 +237,10 @@ autoplot.clm <- function(object, what = c("qq", "mean", "covariate"),
     xlab <- deparse(substitute(x))
   }
   autoplot.resid(res, what = what, x = x, distribution = qfun, fit = object,
-                 nsim = nsim, alpha = alpha, xlab = xlab, color = color,
+                 nsim = nsim, alpha = alpha, xlab = xlab,
+                 color = color,
+                 shape = shape,
+                 size = size,
                  qqpoint.color = qqpoint.color,
                  qqpoint.shape = qqpoint.shape,
                  qqpoint.size = qqpoint.size,
@@ -203,9 +257,11 @@ autoplot.clm <- function(object, what = c("qq", "mean", "covariate"),
 
 #' @rdname autoplot.resid
 #' @export
-autoplot.polr <- function(object, what = c("qq", "mean", "covariate"),
+autoplot.polr <- function(object, what = c("qq", "fitted", "covariate"),
                           x = NULL, nsim = 1, alpha = 1, xlab = NULL,
-                          ylab = NULL, color = "#444444",
+                          color = "#444444",
+                          shape = 19,
+                          size = 2,
                           qqpoint.color = "#444444",
                           qqpoint.shape = 19,
                           qqpoint.size = 2,
@@ -223,7 +279,10 @@ autoplot.polr <- function(object, what = c("qq", "mean", "covariate"),
     xlab <- deparse(substitute(x))
   }
   autoplot.resid(res, what = what, x = x, distribution = qfun, fit = object,
-                 nsim = nsim, alpha = alpha, xlab = xlab, color = color,
+                 nsim = nsim, alpha = alpha, xlab = xlab,
+                 color = color,
+                 shape = shape,
+                 size = size,
                  qqpoint.color = qqpoint.color,
                  qqpoint.shape = qqpoint.shape,
                  qqpoint.size = qqpoint.size,
@@ -240,9 +299,11 @@ autoplot.polr <- function(object, what = c("qq", "mean", "covariate"),
 
 #' @rdname autoplot.resid
 #' @export
-autoplot.vglm <- function(object, what = c("qq", "mean", "covariate"),
+autoplot.vglm <- function(object, what = c("qq", "fitted", "covariate"),
                           x = NULL, nsim = 1, alpha = 1, xlab = NULL,
-                          ylab = NULL, color = "#444444",
+                          color = "#444444",
+                          shape = 19,
+                          size = 2,
                           qqpoint.color = "#444444",
                           qqpoint.shape = 19,
                           qqpoint.size = 2,
@@ -260,7 +321,10 @@ autoplot.vglm <- function(object, what = c("qq", "mean", "covariate"),
     xlab <- deparse(substitute(x))
   }
   autoplot.resid(res, what = what, x = x, distribution = qfun, fit = object,
-                 nsim = nsim, alpha = alpha, xlab = xlab, color = color,
+                 nsim = nsim, alpha = alpha, xlab = xlab,
+                 color = color,
+                 shape = shape,
+                 size = size,
                  qqpoint.color = qqpoint.color,
                  qqpoint.shape = qqpoint.shape,
                  qqpoint.size = qqpoint.size,

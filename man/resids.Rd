@@ -31,8 +31,8 @@ Only used when \code{type = "jitter"}. Default is \code{"response"}.
 A numeric vector (\code{nsim = 1}) or matrix (\code{nsim} > 1) of
 residuals. If \code{nsim} > 1, then the result will be a matrix with
 \code{nsim} columns, one for each bootstrap repliacte of the residuals. The
-result will contain the additional class \code{"resid"}, which is useful for
-plotting.
+result will contain the additional class \code{"resid"}, which is recognized
+by \code{\link{autoplot.resid}}.
 }
 \description{
 Surrogate and jittered residuals for ordinal regression models.

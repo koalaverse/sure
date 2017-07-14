@@ -7,9 +7,22 @@
 \title{ordr: An R package for constructing residuals and diagnostics for ordinal
 regression models.}
 \description{
-The \code{ordr} package provides surrogate and jittered residuals for fitted
-ordinal regression models of class \code{\link[ordinal]{clm}},
+The \code{ordr} package provides surrogate-based residuals for fitted ordinal
+regression models of class \code{\link[ordinal]{clm}},
 \code{\link[MASS]{polr}}, and \code{\link[VGAM]{vglm}}.
+}
+\details{
+The development version can be found on GitHub:
+https://github.com/AFIT-R/ordr. As of right now, \code{ordr} only exports two
+functions:
+\itemize{
+  \item{\code{resids}} - construct (surrogate-based) residuals for
+  \code{\link[ordinal]{clm}}, \code{\link[MASS]{polr}}, and
+  \code{\link[VGAM]{vglm}} objects;
+  \item{\code{autoplot}} - plot diagnostics for \code{\link[ordinal]{clm}},
+\code{\link[MASS]{polr}}, and \code{\link[VGAM]{vglm}} objects using
+\code{\link[ggplot2]{ggplot2}} graphics;
+}
 }
 \references{
 Liu, Dungang and Zhang, Heping. Residuals and Diagnostics for Ordinal

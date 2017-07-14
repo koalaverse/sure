@@ -7,33 +7,34 @@
 \alias{autoplot.vglm}
 \title{Residual Plots for Ordinal Regression Models}
 \usage{
-autoplot.resid(object, what = c("qq", "mean", "covariate"), x = NULL,
+autoplot.resid(object, what = c("qq", "fitted", "covariate"), x = NULL,
   fit = NULL, distribution = qnorm, alpha = 1, xlab = NULL,
-  color = "#444444", qqpoint.color = "#444444", qqpoint.shape = 19,
+  color = "#444444", shape = 19, size = 2, qqpoint.color = "#444444",
+  qqpoint.shape = 19, qqpoint.size = 2, qqline.color = "#888888",
+  qqline.linetype = "dashed", qqline.size = 1, smooth = TRUE,
+  smooth.color = "#0000FF", smooth.linetype = 1, smooth.size = 1,
+  fill = NULL, ...)
+
+autoplot.clm(object, what = c("qq", "fitted", "covariate"), x = NULL,
+  nsim = 1, alpha = 1, xlab = NULL, color = "#444444", shape = 19,
+  size = 2, qqpoint.color = "#444444", qqpoint.shape = 19,
   qqpoint.size = 2, qqline.color = "#888888", qqline.linetype = "dashed",
   qqline.size = 1, smooth = TRUE, smooth.color = "#0000FF",
   smooth.linetype = 1, smooth.size = 1, fill = NULL, ...)
 
-autoplot.clm(object, what = c("qq", "mean", "covariate"), x = NULL,
-  nsim = 1, alpha = 1, xlab = NULL, ylab = NULL, color = "#444444",
-  qqpoint.color = "#444444", qqpoint.shape = 19, qqpoint.size = 2,
-  qqline.color = "#888888", qqline.linetype = "dashed", qqline.size = 1,
-  smooth = TRUE, smooth.color = "#0000FF", smooth.linetype = 1,
-  smooth.size = 1, fill = NULL, ...)
+autoplot.polr(object, what = c("qq", "fitted", "covariate"), x = NULL,
+  nsim = 1, alpha = 1, xlab = NULL, color = "#444444", shape = 19,
+  size = 2, qqpoint.color = "#444444", qqpoint.shape = 19,
+  qqpoint.size = 2, qqline.color = "#888888", qqline.linetype = "dashed",
+  qqline.size = 1, smooth = TRUE, smooth.color = "#0000FF",
+  smooth.linetype = 1, smooth.size = 1, fill = NULL, ...)
 
-autoplot.polr(object, what = c("qq", "mean", "covariate"), x = NULL,
-  nsim = 1, alpha = 1, xlab = NULL, ylab = NULL, color = "#444444",
-  qqpoint.color = "#444444", qqpoint.shape = 19, qqpoint.size = 2,
-  qqline.color = "#888888", qqline.linetype = "dashed", qqline.size = 1,
-  smooth = TRUE, smooth.color = "#0000FF", smooth.linetype = 1,
-  smooth.size = 1, fill = NULL, ...)
-
-autoplot.vglm(object, what = c("qq", "mean", "covariate"), x = NULL,
-  nsim = 1, alpha = 1, xlab = NULL, ylab = NULL, color = "#444444",
-  qqpoint.color = "#444444", qqpoint.shape = 19, qqpoint.size = 2,
-  qqline.color = "#888888", qqline.linetype = "dashed", qqline.size = 1,
-  smooth = TRUE, smooth.color = "#0000FF", smooth.linetype = 1,
-  smooth.size = 1, fill = NULL, ...)
+autoplot.vglm(object, what = c("qq", "fitted", "covariate"), x = NULL,
+  nsim = 1, alpha = 1, xlab = NULL, color = "#444444", shape = 19,
+  size = 2, qqpoint.color = "#444444", qqpoint.shape = 19,
+  qqpoint.size = 2, qqline.color = "#888888", qqline.linetype = "dashed",
+  qqline.size = 1, smooth = TRUE, smooth.color = "#0000FF",
+  smooth.linetype = 1, smooth.size = 1, fill = NULL, ...)
 }
 \arguments{
 \item{object}{An object of class \code{\link[ordinal]{clm}},
@@ -45,12 +46,14 @@ which produces a quantile-quantile plots of the residuals.}
 \item{x}{A vector giving the covariate values to use for residual-by-
 covariate plots (i.e., when \code{what = "covariate"}).}
 
-\item{fit}{The fitted model. Only required when \code{object} is of class
-\code{"resid"} and \code{what = "mean"}.}
+\item{fit}{The fitted model from which the residuals were extracted. (Only
+required if \code{what = "fitted"} and \code{object} inherits from class
+\code{"resid"}.)}
 
 \item{distribution}{Function that computes the quantiles for the reference
 distribution to use in the quantile-quantile plot. Default is \code{qnorm}
-which is only appropriate for models using a probit link function.}
+which is only appropriate for models using a probit link function. (Only
+required if \code{object} inherits from class \code{"resid"}.)}
 
 \item{alpha}{A single values in the interval [0, 1] controlling the opacity
 alpha of the plotted points. Only used when \code{nsim} > 1.}
@@ -58,8 +61,45 @@ alpha of the plotted points. Only used when \code{nsim} > 1.}
 \item{xlab}{Character string giving the text to use for the x-axis label in
 residual-by-covariate plots. Default is \code{NULL}.}
 
+\item{color}{Character string or integer specifying what color to use for the
+points in the residual vs fitted value/covariate plot.
+Defaul is \code{"black"}.}
+
+\item{shape}{Integer or single character specifying a symbol to be used for
+plotting the points in the residual vs fitted value/covariate plot.}
+
+\item{size}{Numeric value specifying the size to use for the points in the
+residual vs fitted value/covariate plot.}
+
+\item{qqpoint.color}{Character string or integer specifying what color to use
+for the points in the quantile-quantile plot.}
+
+\item{qqpoint.shape}{Integer or single character specifying a symbol to be
+used for plotting the points in the quantile-quantile plot.}
+
+\item{qqpoint.size}{Numeric value specifying the size to use for the points
+in the quantile-quantile plot.}
+
+\item{qqline.color}{Character string or integer specifying what color to use
+for the points in the quantile-quantile plot.}
+
+\item{qqline.linetype}{Integer or character string (e.g., \code{"dashed"})
+specifying the type of line to use in the quantile-quantile plot.}
+
+\item{qqline.size}{Numeric value specifying the thickness of the line in the
+quantile-quantile plot.}
+
 \item{smooth}{Logical indicating whether or not too add a nonparametric
-smooth on certain plots. Default is \code{TRUE}.}
+smooth to certain plots. Default is \code{TRUE}.}
+
+\item{smooth.color}{Character string or integer specifying what color to use
+for the nonparametric smooth.}
+
+\item{smooth.linetype}{Integer or character string (e.g., \code{"dashed"})
+specifying the type of line to use for the nonparametric smooth.}
+
+\item{smooth.size}{Numeric value specifying the thickness of the line for the
+nonparametric smooth.}
 
 \item{fill}{Character string or integer specifying the color to use to fill
 the boxplots for residual-by-covariate plots when \code{x} is of class
@@ -69,19 +109,6 @@ to the factor levels.}
 \item{...}{Additional optional arguments. (Currently ignored.)}
 
 \item{nsim}{Integer specifying the number of bootstrap replicates to use.}
-
-\item{ylab}{Character string giving the text to use for the y-axis label.
-Default is \code{NULL}.}
-
-\item{main}{Character string giving the text to use for the plot title.
-Default is \code{NULL}.}
-
-\item{col}{Character string or integer specifying what color to use for the
-points in the quantile-quantile and residual-by-fitted value/covariate plots.
-Defaul is \code{"black"}.}
-
-\item{smooth.col}{Character string or integer specifying what color to use
-for the nonparametric smooth. Default is \code{"blue"}.}
 }
 \value{
 A \code{"ggplot"} object.
@@ -89,4 +116,24 @@ A \code{"ggplot"} object.
 \description{
 Residual-based diagnostic plots for ordnial regression models using
 \code{\link[ggplot2]{ggplot2}} graphics.
+}
+\examples{
+\dontrun{
+# Load required packages
+library(ggplot2)
+library(MASS)
+library(ordr)
+
+# Fit a proportional odds model
+house.polr <- polr(Sat ~ Infl + Type + Cont, weights = Freq, data = housing)
+
+# Diagnostic plots
+grid.arrange(
+  autoplot(house.polr, what = "qq", nsim = 50, alpha = 0.5),
+  autoplot(house.polr, what = "fitted", nsim = 50, alpha = 0.5),
+  autoplot(house.polr, what = "covariate", x = housing$Infl, nsim = 50),
+  autoplot(house.polr, what = "covariate", x = housing$Type, nsim = 50),
+  ncol = 2
+)
+}
 }

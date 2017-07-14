@@ -21,8 +21,8 @@
 #' @return A numeric vector (\code{nsim = 1}) or matrix (\code{nsim} > 1) of
 #' residuals. If \code{nsim} > 1, then the result will be a matrix with
 #' \code{nsim} columns, one for each bootstrap repliacte of the residuals. The
-#' result will contain the additional class \code{"resid"}, which is useful for
-#' plotting.
+#' result will contain the additional class \code{"resid"}, which is recognized
+#' by \code{\link{autoplot.resid}}.
 #'
 #' @note The internal functions used for sampling from truncated distirbutions
 #' are based on modified versions of \code{\link[truncdist]{rtrunc}} and
@@ -39,6 +39,34 @@
 #' https://www.jstatsoft.org/v016/c02.
 #'
 #' @export
+#'
+#' @examples
+#' \dontrun{
+#' # Load required packages
+#' library(ggplot2)
+#' library(MASS)
+#' library(ordr)
+#'
+#' # Fit a proportional odds model
+#' house.polr <- polr(Sat ~ Infl + Type + Cont, weights = Freq, data = housing,
+#'                    method = "logistic")
+#'
+#' # Residuals
+#' set.seed(101)  # for reproducibility
+#' res <- resids(house.polr)
+#' autoplot(res, what = "qq", distribution = qlogis)
+#'
+#' # Bootstrap residuals
+#' set.seed(101)  # for reproducibility
+#' res.boot <- resids(house.polr, nsim = 100)
+#' autoplot(res.boot, what = "qq", distribution = qlogis)
+#'
+#' # Can also plot the residuals directly from the model
+#' set.seed(101)  # for reproducibility
+#' p1 <- autoplot(house.polr, nsim = 100, what = "qq")  # no need to supply dist
+#' p2 <- autoplot(house.polr, nsim = 100, what = "fitted")
+#' grid.arrange(p1, p2, ncol = 2)
+#' }
 resids <- function(object, type, jitter.scale, nsim, ...) {
   UseMethod("resids")
 }
@@ -63,13 +91,13 @@ resids.default <- function(object, type = c("surrogate", "jitter"),
 
   # What type of residuals?
   type <- match.arg(type)
-  jitter.scale <- match.arg(jitter.scale)
-  if (jitter.scale == "probability") {  # throw error, for now!
-    stop("Jittering on the probability scale is not yet implemented.")
+  # jitter.scale <- match.arg(jitter.scale)
+  if (type == "jitter") {  # throw error, for now!
+    stop("Jittering technique is not yet implemented.")
   }
 
   # Construct residuals
-  mr <- getMeanResponse(object)
+  mr <- getMeanResponse(object)  # -f(x; beta)
   res <- getResiduals(object, type = type, jitter.scale = jitter.scale, y = y,
                       n.obs = n.obs, mean.response = mr, bounds = bounds)
   if (nsim > 1) {  # bootstrap
