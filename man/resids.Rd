@@ -42,6 +42,34 @@ The internal functions used for sampling from truncated distirbutions
 are based on modified versions of \code{\link[truncdist]{rtrunc}} and
 \code{\link[truncdist]{qtrunc}}.
 }
+\examples{
+\dontrun{
+# Load required packages
+library(ggplot2)
+library(MASS)
+library(ordr)
+
+# Fit a proportional odds model
+house.polr <- polr(Sat ~ Infl + Type + Cont, weights = Freq, data = housing,
+                   method = "logistic")
+
+# Residuals
+set.seed(101)  # for reproducibility
+res <- resids(house.polr)
+autoplot(res, what = "qq", distribution = qlogis)
+
+# Bootstrap residuals
+set.seed(101)  # for reproducibility
+res.boot <- resids(house.polr, nsim = 100)
+autoplot(res.boot, what = "qq", distribution = qlogis)
+
+# Can also plot the residuals directly from the model
+set.seed(101)  # for reproducibility
+p1 <- autoplot(house.polr, nsim = 100, what = "qq")  # no need to supply dist
+p2 <- autoplot(house.polr, nsim = 100, what = "fitted")
+grid.arrange(p1, p2, ncol = 2)
+}
+}
 \references{
 Liu, Dungang and Zhang, Heping. Residuals and Diagnostics for Ordinal
 Regression Models: A Surrogate Approach.

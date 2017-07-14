@@ -24,13 +24,13 @@ rgumbel <- function (n, location = 0, scale = 1) {
 #' @keywords internal
 pGumbel <- function(q, location = 0, scale = 1) {
   q <- (q - location) / scale
-  exp(-exp(q))
+  1 - exp(-exp(q))
 }
 
 
 #' @keywords internal
 qGumbel <- function(p, location = 0, scale = 1) {
-  scale * log(-log(p)) + location
+  scale * log(-log(1 - p)) + location
 }
 
 
