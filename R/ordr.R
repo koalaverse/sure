@@ -24,7 +24,7 @@
 #'
 #' @importFrom ggplot2  aes_string geom_abline geom_boxplot geom_point
 #' @importFrom ggplot2 geom_smooth ggplot ggtitle guides xlab ylab
-#' @importFrom stats .checkMFClasses lowess model.frame model.matrix
+#' @importFrom stats .checkMFClasses lowess median model.frame model.matrix
 #' @importFrom stats model.response nobs pcauchy plogis pnorm ppoints
 #' @importFrom stats qcauchy qlogis qnorm qqline qqplot qqnorm quantile runif
 #'
