@@ -3,15 +3,18 @@ Type: Package
 Title: Ordinal Regression Diagnostics
 Version: 0.1.0
 Authors@R: c(
-    person("Brad", "Boehmke",
-           email = "bradleyboehmke@gmail.com",
-           role = c("aut")),
+    person("Brandon", "Greenwell",
+           email = "greenwell.brandon@gmail.com",
+           role = c("aut", "cre")),
     person("Andrew", "McCarthy",
            email = "andrew.mccarthy@theperducogroup.com",
            role = c("aut")),
-    person("Brandon", "Greenwell",
-           email = "greenwell.brandon@gmail.com",
-           role = c("aut", "cre"))
+    person("Brad", "Boehmke",
+           email = "bradleyboehmke@gmail.com",
+           role = c("aut")),
+    person("Dungang", "Liu",
+           email = "dungang.liu@uc.edu",
+           role = c("ctb"))
     )
 Imports:
     ggplot2,

@@ -22,6 +22,7 @@ functions:
   \item{\code{autoplot}} - plot diagnostics for \code{\link[ordinal]{clm}},
 \code{\link[MASS]{polr}}, and \code{\link[VGAM]{vglm}} objects using
 \code{\link[ggplot2]{ggplot2}} graphics;
+  \item{\code{gof}} - simulate p-values from a goodness-of-fit test.
 }
 }
 \references{
