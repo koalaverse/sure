@@ -35,11 +35,13 @@ house.polr <- polr(Sat ~ Infl + Type + Cont, weights = Freq, data = housing)
 # Diagnostic plots
 grid.arrange(
   autoplot(house.polr, what = "qq", nsim = 50, alpha = 0.5),
-  autoplot(house.polr, what = "mean", nsim = 50, alpha = 0.5),
+  autoplot(house.polr, what = "fitted", nsim = 50, alpha = 0.5),
   autoplot(house.polr, what = "covariate", x = housing$Infl, nsim = 50),
   autoplot(house.polr, what = "covariate", x = housing$Type, nsim = 50),
   ncol = 2
 )
+#> Warning in data.frame(x = x, y = res): row names were found from a short
+#> variable and have been discarded
 #> `geom_smooth()` using method = 'gam'
 ```
 
