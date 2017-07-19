@@ -16,16 +16,18 @@ Authors@R: c(
            email = "dungang.liu@uc.edu",
            role = c("ctb"))
     )
+Depends:
+    R (>= 3.1)
 Imports:
     ggplot2 (>= 2.2.1),
     goftest,
     gridExtra,
-    stats,
+    stats
 Suggests:
     MASS,
     ordinal,
     testthat,
-    VGAM,
+    VGAM
 Description: Residuals and diagnostics for ordinal regression models.
 License: GPL (>= 2)
 Encoding: UTF-8
