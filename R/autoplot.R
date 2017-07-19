@@ -148,10 +148,13 @@ autoplot.resid <- function(object, what = c("qq", "fitted", "covariate"),
     res.mat <- attr(object, "boot.reps")
     nsim <- ncol(res.mat)
     res <- if (what == "qq") {
-      apply(apply(res.mat, MARGIN = 2, FUN = sort, decreasing = FALSE), 
+      apply(apply(res.mat, MARGIN = 2, FUN = sort, decreasing = FALSE),
             MARGIN = 1, FUN = median)
     } else {
       as.vector(res.mat)
+    }
+    if (what %in% c("fitted", "covariate")) {
+      x <- x[as.vector(attr(object, "boot.id"))]
     }
   }
 
@@ -189,7 +192,6 @@ autoplot.resid <- function(object, what = c("qq", "fitted", "covariate"),
 
   # Residual vs covariate
   if (what == "covariate") {
-    x <- x[as.vector(attr(object, "boot.id"))]
     p <- ggplot(data.frame(x = x, y = res), aes_string(x = "x", y = "y"))
     if (is.factor(x)) {
       if (is.null(fill)) {

@@ -19,8 +19,7 @@ library(VGAM)      # for fitting ordinal regression models
 simData <- function(n = 2000, alpha = 36, beta = 4,
                     threshold = c(0, 30, 70, 100)) {
   x <- runif(n, min = 2, max = 7)
-  z <- alpha + beta * x + rnorm(n, mean = 0, sd = x ^ 2)
-  y <-   sapply(z, FUN = function(zz) {
+  y <-   sapply(alpha + beta * x + rnorm(n, sd = x ^ 2), FUN = function(zz) {
     ordinal.value <- 1
     index <- 1
     while(index <= length(threshold) && zz > threshold[index]) {
