@@ -15,6 +15,24 @@ getDistributionName.clm <- function(object) {
 }
 
 
+
+#' @keywords internal
+getDistributionName.lrm <- function(object) {
+  "logis"
+}
+
+
+#' @keywords internal
+getDistributionName.orm <- function(object) {
+  switch(object$family,
+         "logistic" = "logis",
+         "probit" = "norm",
+         "loglog" = "gumbel",
+         "cloglog" = "Gumbel",
+         "cauchit" = "cauchy")
+}
+
+
 #' @keywords internal
 getDistributionName.polr <- function(object) {
   switch(object$method,

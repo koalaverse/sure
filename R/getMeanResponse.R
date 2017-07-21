@@ -15,18 +15,28 @@ getMeanResponse.clm <- function(object) {
   if(sum(object$aliased$beta) > 0) {
     X <- X[, !c(FALSE, object$aliased$beta), drop = FALSE]
   }
-  -(object$alpha[1L] - X[, -1L, drop = FALSE] %*% object$beta)[,, drop = TRUE]
+  drop(X[, -1L, drop = FALSE] %*% object$beta - object$alpha[1L])
   # -predict(object, type = "linear.predictor")$eta2
 }
 
 
 #' @keywords internal
+getMeanResponse.lrm <- function(object) {
+  object$linear.predictors - object$coefficients[1L]
+}
+
+
+#' @keywords internal
+getMeanResponse.orm <- function(object) {
+  medy <- quantile(getResponseValues(object), probs = 0.5, type = 1L)
+  kmid <- max(1, which(1L:length(object$yunique) == medy) - 1L)
+  object$linear.predictors - object$coefficients[kmid]
+}
+
+
+#' @keywords internal
 getMeanResponse.polr <- function(object) {
-  # qfun <- getQuantileFunction(object)
-  # fv <- object$fitted.values[, 1L, drop = TRUE]
-  # fv[fv == 0] <- 1e-05
-  # -qfun(fv)
-  object$lp - object$zeta[1L]
+  object$lp - object$zeta[1L]  # Xb - a1
 }
 
 

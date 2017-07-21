@@ -11,6 +11,18 @@ getResponseValues.clm <- function(object, ...) {
 
 
 #' @keywords internal
+getResponseValues.lrm <- function(object) {
+  as.integer(model.response(model.frame(object)))
+}
+
+
+#' @keywords internal
+getResponseValues.orm <- function(object) {
+  as.integer(model.response(model.frame(object)))
+}
+
+
+#' @keywords internal
 getResponseValues.polr <- function(object, ...) {
   # if (is.null(object$model)) {
   #   stop("Cannot extract response values from ", deparse(substitute(object)),

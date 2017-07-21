@@ -16,6 +16,23 @@ getDistributionFunction.clm <- function(object) {
 
 
 #' @keywords internal
+getDistributionFunction.lrm <- function(object) {
+  plogis
+}
+
+
+#' @keywords internal
+getDistributionFunction.orm <- function(object) {
+  switch(object$family,
+         "logistic" = plogis,
+         "probit" = pnorm,
+         "loglog" = pgumbel,
+         "cloglog" = pGumbel,
+         "cauchit" = pcauchy)
+}
+
+
+#' @keywords internal
 getDistributionFunction.polr <- function(object) {
   switch(object$method,
          "logistic" = plogis,

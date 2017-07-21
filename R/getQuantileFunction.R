@@ -16,6 +16,23 @@ getQuantileFunction.clm <- function(object) {
 
 
 #' @keywords internal
+getQuantileFunction.lrm <- function(object) {
+  qlogis
+}
+
+
+#' @keywords internal
+getQuantileFunction.orm <- function(object) {
+  switch(object$family,
+         "logistic" = qlogis,
+         "probit" = qnorm,
+         "loglog" = qgumbel,
+         "cloglog" = qGumbel,
+         "cauchit" = qcauchy)
+}
+
+
+#' @keywords internal
 getQuantileFunction.polr <- function(object) {
   switch(object$method,
          "logistic" = qlogis,

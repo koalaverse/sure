@@ -12,28 +12,36 @@ NULL
 
 
 #' @keywords internal
-ncat <- function(object, ...) {
+ncat <- function(object) {
   UseMethod("ncat")
 }
 
 
 #' @keywords internal
-ncat.clm <- function(object, ...) {
+ncat.clm <- function(object) {
   length(object$y.levels)
 }
 
 
 #' @keywords internal
-ncat.polr <- function(object, ...) {
+ncat.lrm <- function(object) {
+  object$non.slopes + 1
+}
+
+
+#' @keywords internal
+ncat.orm <- function(object) {
+  object$non.slopes + 1
+}
+
+
+#' @keywords internal
+ncat.polr <- function(object) {
   length(object$lev)
 }
 
 
 #' @keywords internal
-ncat.vglm <- function(object, ...) {
+ncat.vglm <- function(object) {
   length(attributes(object)$extra$colnames.y)
 }
-
-
-#' #' @keywords internal
-#' getQQTitle <- function()

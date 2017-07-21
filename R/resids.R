@@ -79,7 +79,7 @@ resids.default <- function(object, type = c("surrogate", "jitter"),
                            nsim = 1, ...) {
 
   # Sanity check
-  if (!inherits(object, c("clm", "polr", "vglm"))) {
+  if (!inherits(object, c("clm", "lrm", "orm"))) {
     stop(deparse(substitute(object)), " should be of class \"clm\", \"polr\", ",
          "or \"vglm\".")
   }
