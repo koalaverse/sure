@@ -71,26 +71,34 @@ For this example, we generated $n = 2000$ observations from the following ordere
 \end{equation*}
 where $\alpha_1 = -36$, $\alpha_2 = -6$, $\alpha_3 = 34$, $\alpha_4 = 64$, $\beta = -4$, $X \sim \mathcal{U}\left(2, 7\right)$, and $\sigma_X = X ^ 2$.
 
-The following block of code uses the \pkg{MASS} package function\code{polr} to fit a probit model to the \code{hd} data.
+The following block of code uses the \pkg{MASS} package function \code{polr} to fit a probit model to the \code{hd} data.
 \begin{example}
   library(ggplot2)
   library(MASS)
   library(ordr)
   fit.polr <- polr(y ~ x, data = hd, method = "probit")
+  set.seed(101)  # for reproducibility
+  sur.res <- resids(fit.polr)  # surrogate-based residuals
 
   # Figure 1 (left)
-  autoplot(fit.polr, what = "covariate", x = hd$x) +
-    xlab("x") +
-    ylab("Surrogate residual") +
-    ggtitle("")
+  ggplot(data.frame(x = hd$x, y = sur.res), aes(x, y)) +
+    geom_point(size = 2, alpha = 0.25) +
+    geom_smooth(color = "red", se = FALSE) +
+    ylab("Surrogate residual")
+\end{example}
+Alternatively, we can plot the residuals directly from the fitted model using the \code{autoplot} function:
+\begin{example}
+  autoplot(fit.polr, what = "covariate", x = hd$x)  # plot not shown
 \end{example}
 
 We can also easily obtain and plot the standard Li-Shepherd residuals against $x$ using the \pkg{PResiduals} package function \code{presid}:
 \begin{example}
   library(PResiduals)
-  ls.res <- presid(fit.polr)
-  ggplot(data.frame(x = hd$x, y = ls.res) +
-    geom_point(alpha = 0.5) +
+  ls.res <- presid(fit.polr)  # probability scale residuals
+
+  # Figure 1 (right)
+  ggplot(data.frame(x = hd$x, y = ls.res), aes(x, y)) +
+    geom_point(size = 2, alpha = 0.25) +
     geom_smooth(color = "red", se = FALSE) +
     ylab("Probability scale residual")
 \end{example}

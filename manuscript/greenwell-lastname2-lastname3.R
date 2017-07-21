@@ -38,19 +38,20 @@ table(hd$y)
 
 # Fit a probit model
 fit.polr <- polr(y ~ x, data = hd, method = "probit")
+set.seed(101)  # for reproducibility
+sur.res <- resids(fit.polr)  # surrogate-based residuals
 
 # Compute Li-Shepherd/probability scale residuals
 ls.res <- PResiduals::presid(fit.polr)
 
 # Residual vs covariate plots
-p1 <- autoplot(fit.polr, what = "covariate", x = hd$x, alpha = 0.5) +
-  xlab("x") +
-  ylab("Surrogate residual") +
-  ggtitle("")
-p2 <-   ggplot(data.frame(x = hd$x, y = ls.res), aes(x = x, y = y)) +
-  geom_point(size = 2, alpha = 0.5) +
+p1 <- ggplot(data.frame(x = hd$x, y = sur.res), aes(x, y)) +
+  geom_point(size = 2, alpha = 0.25) +
+  geom_smooth(color = "red", se = FALSE) +
+  ylab("Surrogate residual")
+p2 <-   ggplot(data.frame(x = hd$x, y = ls.res), aes(x, y)) +
+  geom_point(size = 2, alpha = 0.25) +
   geom_smooth(col = "red", se = FALSE) +
-  xlab("x") +
   ylab("Probability scale residual")
 
 # Figure ?

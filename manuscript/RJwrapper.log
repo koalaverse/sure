@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2017.6.27)  21 JUL 2017 14:48
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2017.6.27)  21 JUL 2017 14:58
 entering extended mode
 **./RJwrapper.tex
 (RJwrapper.tex
@@ -1536,7 +1536,7 @@ LaTeX Font Info:    Font shape `U/msb/m/n' will be
 File: heteroscedasticity.pdf Graphic file (type pdf)
 
 <use heteroscedasticity.pdf>
-Package pdftex.def Info: heteroscedasticity.pdf used on input line 100.
+Package pdftex.def Info: heteroscedasticity.pdf used on input line 108.
 (pdftex.def)             Requested size: 398.33858pt x 199.16986pt.
  [2 <./heteroscedasticity.pdf>] (RJwrapper.bbl
 (RJwrapper.brf)
@@ -1560,11 +1560,11 @@ Package rerunfilecheck Info: File `RJwrapper.brf' has not changed.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 24.
  ) 
 Here is how much of TeX's memory you used:
- 21954 strings out of 493323
- 399472 string characters out of 3128713
+ 21951 strings out of 493323
+ 399448 string characters out of 3128713
  491952 words of memory out of 3000000
  24951 multiletter control sequences out of 15000+200000
- 35279 words of font info for 107 fonts, out of 3000000 for 9000
+ 35120 words of font info for 105 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  62i,11n,94p,428b,615s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Users/greenweb/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/inconsol
@@ -1580,7 +1580,7 @@ nts/type1/public/mathpazo/fplmri.pfb><C:/Users/greenweb/AppData/Local/Programs/
 MiKTeX 2.9/fonts/type1/urw/palatino/uplb8a.pfb><C:/Users/greenweb/AppData/Local
 /Programs/MiKTeX 2.9/fonts/type1/urw/palatino/uplr8a.pfb><C:/Users/greenweb/App
 Data/Local/Programs/MiKTeX 2.9/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on RJwrapper.pdf (3 pages, 365999 bytes).
+Output written on RJwrapper.pdf (3 pages, 366118 bytes).
 PDF statistics:
  139 PDF objects out of 1000 (max. 8388607)
  21 named destinations out of 1000 (max. 500000)
