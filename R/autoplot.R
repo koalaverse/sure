@@ -157,6 +157,7 @@ autoplot.resid <- function(object, what = c("qq", "fitted", "covariate"),
       x <- x[as.vector(attr(object, "boot.id"))]
     }
   }
+  res <- as.numeric(res)  # resids class seems to be causing issues with ggplot2
 
   # Quantile-quantile
   if (what == "qq") {
@@ -179,7 +180,7 @@ autoplot.resid <- function(object, what = c("qq", "fitted", "covariate"),
 
   # Residual vs fitted value
   if (what == "fitted") {
-    p <- ggplot(data.frame(x = x, y = res), aes_string(x = "x", y = "y")) +
+    p <- ggplot(data.frame("x" = x, "y" = res), aes_string(x = "x", y = "y")) +
       geom_point(color = color, shape = shape, size = size, alpha = alpha) +
       xlab("Fitted value") +
       ylab("Residual") +
@@ -192,7 +193,7 @@ autoplot.resid <- function(object, what = c("qq", "fitted", "covariate"),
 
   # Residual vs covariate
   if (what == "covariate") {
-    p <- ggplot(data.frame(x = x, y = res), aes_string(x = "x", y = "y"))
+    p <- ggplot(data.frame("x" = x, "y" = res), aes_string(x = "x", y = "y"))
     if (is.factor(x)) {
       if (is.null(fill)) {
         p <- p + geom_boxplot(aes_string(fill = "x"), alpha = alpha) +

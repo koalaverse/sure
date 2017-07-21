@@ -79,9 +79,9 @@ resids.default <- function(object, type = c("surrogate", "jitter"),
                            nsim = 1, ...) {
 
   # Sanity check
-  if (!inherits(object, c("clm", "lrm", "orm"))) {
+  if (!inherits(object, c("clm", "lrm", "orm", "polr"))) {
     stop(deparse(substitute(object)), " should be of class \"clm\", \"polr\", ",
-         "or \"vglm\".")
+         "\"orm\", or \"vglm\".")
   }
 
   # Extract number of observations, response values, and truncation bounds
