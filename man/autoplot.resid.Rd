@@ -14,42 +14,42 @@ autoplot.resid(object, what = c("qq", "fitted", "covariate"), x = NULL,
   color = "#444444", shape = 19, size = 2, qqpoint.color = "#444444",
   qqpoint.shape = 19, qqpoint.size = 2, qqline.color = "#888888",
   qqline.linetype = "dashed", qqline.size = 1, smooth = TRUE,
-  smooth.color = "#0000FF", smooth.linetype = 1, smooth.size = 1,
+  smooth.color = "red", smooth.linetype = 1, smooth.size = 1,
   fill = NULL, ...)
 
 autoplot.clm(object, what = c("qq", "fitted", "covariate"), x = NULL,
   nsim = 1, alpha = 1, xlab = NULL, color = "#444444", shape = 19,
   size = 2, qqpoint.color = "#444444", qqpoint.shape = 19,
   qqpoint.size = 2, qqline.color = "#888888", qqline.linetype = "dashed",
-  qqline.size = 1, smooth = TRUE, smooth.color = "#0000FF",
+  qqline.size = 1, smooth = TRUE, smooth.color = "red",
   smooth.linetype = 1, smooth.size = 1, fill = NULL, ...)
 
 autoplot.lrm(object, what = c("qq", "fitted", "covariate"), x = NULL,
   nsim = 1, alpha = 1, xlab = NULL, color = "#444444", shape = 19,
   size = 2, qqpoint.color = "#444444", qqpoint.shape = 19,
   qqpoint.size = 2, qqline.color = "#888888", qqline.linetype = "dashed",
-  qqline.size = 1, smooth = TRUE, smooth.color = "#0000FF",
+  qqline.size = 1, smooth = TRUE, smooth.color = "red",
   smooth.linetype = 1, smooth.size = 1, fill = NULL, ...)
 
 autoplot.orm(object, what = c("qq", "fitted", "covariate"), x = NULL,
   nsim = 1, alpha = 1, xlab = NULL, color = "#444444", shape = 19,
   size = 2, qqpoint.color = "#444444", qqpoint.shape = 19,
   qqpoint.size = 2, qqline.color = "#888888", qqline.linetype = "dashed",
-  qqline.size = 1, smooth = TRUE, smooth.color = "#0000FF",
+  qqline.size = 1, smooth = TRUE, smooth.color = "red",
   smooth.linetype = 1, smooth.size = 1, fill = NULL, ...)
 
 autoplot.polr(object, what = c("qq", "fitted", "covariate"), x = NULL,
   nsim = 1, alpha = 1, xlab = NULL, color = "#444444", shape = 19,
   size = 2, qqpoint.color = "#444444", qqpoint.shape = 19,
   qqpoint.size = 2, qqline.color = "#888888", qqline.linetype = "dashed",
-  qqline.size = 1, smooth = TRUE, smooth.color = "#0000FF",
+  qqline.size = 1, smooth = TRUE, smooth.color = "red",
   smooth.linetype = 1, smooth.size = 1, fill = NULL, ...)
 
 autoplot.vglm(object, what = c("qq", "fitted", "covariate"), x = NULL,
   nsim = 1, alpha = 1, xlab = NULL, color = "#444444", shape = 19,
   size = 2, qqpoint.color = "#444444", qqpoint.shape = 19,
   qqpoint.size = 2, qqline.color = "#888888", qqline.linetype = "dashed",
-  qqline.size = 1, smooth = TRUE, smooth.color = "#0000FF",
+  qqline.size = 1, smooth = TRUE, smooth.color = "red",
   smooth.linetype = 1, smooth.size = 1, fill = NULL, ...)
 }
 \arguments{
