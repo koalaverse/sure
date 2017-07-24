@@ -1,8 +1,71 @@
-\begin{thebibliography}{0}
+\begin{thebibliography}{9}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Christensen(2015)]{pkg-ordinal}
+R.~H.~B. Christensen.
+\newblock ordinal---regression models for ordinal data, 2015.
+\newblock URL \url{http://www.cran.r-project.org/package=ordinal}.
+\newblock R package version 2015.6-28.
+
+\bibitem[Dupont et~al.(2016)Dupont, Horner, Li, Liu, and
+  Shepherd]{pkg-PResiduals}
+C.~Dupont, J.~Horner, C.~Li, Q.~Liu, and B.~Shepherd.
+\newblock \emph{PResiduals: Probability-Scale Residuals and Residual
+  Correlations}, 2016.
+\newblock URL \url{https://CRAN.R-project.org/package=PResiduals}.
+\newblock R package version 0.2-4.
+
+\bibitem[{Harrell Jr}(2017)]{pkg-rms}
+F.~E. {Harrell Jr}.
+\newblock \emph{rms: Regression Modeling Strategies}, 2017.
+\newblock URL \url{https://CRAN.R-project.org/package=rms}.
+\newblock R package version 5.1-1.
+
+\bibitem[Li and Shepherd(2012)]{residuals-li-2012}
+C.~Li and B.~E. Shepherd.
+\newblock A new residual for ordinal outcomes.
+\newblock \emph{Biometrika}, 99\penalty0 (2):\penalty0 473--480, 2012.
+\newblock URL \url{http://dx.doi.org/10.1093/biomet/asr073}.
+
+\bibitem[Liu and Zhang(2017)]{residuals-liu-2017}
+D.~Liu and H.~Zhang.
+\newblock Residuals and diagnostics for ordinal regression models: A surrogate
+  approach.
+\newblock \emph{Journal of the American Statistical Association}, ?\penalty0
+  (?):\penalty0 ?--?, 2017.
+\newblock URL \url{http://dx.doi.org/10.1080/01621459.2017.1292915}.
+
+\bibitem[Liu et~al.(2009)Liu, Mukherjee, Suesse, Sparrow, and
+  Park]{graphical-liu-2009}
+I.~Liu, B.~Mukherjee, T.~Suesse, D.~Sparrow, and S.~K. Park.
+\newblock Graphical diagnostics to check model misspecification for the
+  proportional odds regression model.
+\newblock \emph{Statistics in Medicine}, 28\penalty0 (3):\penalty0 412--429,
+  2009.
+\newblock URL \url{http://dx.doi.org/10.1080/01621459.2017.1292915}.
+
+\bibitem[Venables and Ripley(2002)]{pkg-MASS}
+W.~N. Venables and B.~D. Ripley.
+\newblock \emph{Modern Applied Statistics with S}.
+\newblock Springer, New York, fourth edition, 2002.
+\newblock URL \url{http://www.stats.ox.ac.uk/pub/MASS4}.
+\newblock ISBN 0-387-95457-0.
+
+\bibitem[Wickham(2009)]{pkg-ggplot2}
+H.~Wickham.
+\newblock \emph{ggplot2: Elegant Graphics for Data Analysis}.
+\newblock Springer-Verlag New York, 2009.
+\newblock ISBN 978-0-387-98140-6.
+\newblock URL \url{http://ggplot2.org}.
+
+\bibitem[Yee(2017)]{pkg-VGAM}
+T.~W. Yee.
+\newblock \emph{VGAM: Vector Generalized Linear and Additive Models}, 2017.
+\newblock URL \url{https://CRAN.R-project.org/package=VGAM}.
+\newblock R package version 1.0-3.
 
 \end{thebibliography}

@@ -174,8 +174,7 @@ autoplot.resid <- function(object, what = c("qq", "fitted", "covariate"),
       geom_abline(slope = slope, intercept = int, color = qqline.color,
                   linetype = qqline.linetype, size = qqline.size) +
       xlab("Theoretical quantile") +
-      ylab("Sample quantile") +
-      ggtitle("Quantile-quantile")
+      ylab("Sample quantile")
   }
 
   # Residual vs fitted value
@@ -183,8 +182,7 @@ autoplot.resid <- function(object, what = c("qq", "fitted", "covariate"),
     p <- ggplot(data.frame("x" = x, "y" = res), aes_string(x = "x", y = "y")) +
       geom_point(color = color, shape = shape, size = size, alpha = alpha) +
       xlab("Fitted value") +
-      ylab("Residual") +
-      ggtitle("Residual vs fitted value")
+      ylab("Surrogate residual")
       if (smooth) {
         p <- p + geom_smooth(color = smooth.color, linetype = smooth.linetype,
                              size = smooth.size, se = FALSE)
@@ -211,8 +209,7 @@ autoplot.resid <- function(object, what = c("qq", "fitted", "covariate"),
     }
     p <- p +
       xlab(xlab) +
-      ylab("Residual") +
-      ggtitle("Residual vs covariate")
+      ylab("Surrogate residual")
   }
 
   # Return plot
