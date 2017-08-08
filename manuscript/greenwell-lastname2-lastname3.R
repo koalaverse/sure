@@ -94,3 +94,24 @@ p2 <-   ggplot(data.frame(x = hd$x, y = ls.res), aes(x, y)) +
 pdf(file = "manuscript\\heteroscedasticity.pdf", width = 8, height = 4)
 grid.arrange(p1, p2, ncol = 2)
 dev.off()
+
+
+################################################################################
+# Quality of wine
+################################################################################
+
+library(ordinal)
+data(wine, package = "ordinal")
+wine.clm <- clm(rating ~ temp * contact, data = wine)  # default logit link
+
+# Figure ?
+pdf(file = "manuscript\\wine.pdf", width = 8, height = 8)
+set.seed(101)  # for reproducibility
+grid.arrange(
+  autoplot(wine.clm, nsim = 10, what = "qq"),
+  autoplot(wine.clm, nsim = 10, what = "fitted"),
+  autoplot(wine.clm, nsim = 10, what = "cov", x = wine$temp),
+  autoplot(wine.clm, nsim = 10, what = "cov", x = wine$contact),
+  ncol = 2
+)
+dev.off()

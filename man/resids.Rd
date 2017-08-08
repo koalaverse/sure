@@ -3,29 +3,30 @@
 \name{resids}
 \alias{resids}
 \alias{resids.default}
+\alias{resids.glm}
 \title{Residuals for Ordinal Regression Models}
 \usage{
-resids(object, type, jitter.scale, nsim, ...)
+resids(object, ...)
 
-\method{resids}{default}(object, type = c("surrogate", "jitter"),
-  jitter.scale = c("response", "probability"), nsim = 1, ...)
+\method{resids}{default}(object, nsim = 1L, ...)
+
+\method{resids}{glm}(object, jitter.scale = c("response", "probability"),
+  nsim = 1L, ...)
 }
 \arguments{
 \item{object}{An object of class \code{\link[ordinal]{clm}},
-\code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.}
+\code{\link[stats]{glm}}, \code{\link[MASS]{polr}}, or
+\code{\link[VGAM]{vglm}}.}
 
-\item{type}{Character string specifying the type of residuals to construct.
-Should be one of \code{"surrogate"} or \code{"jitter"}. Default is
-\code{"surrogate"}. (Currently ignored.)}
+\item{...}{Additional optional arguments. (Currently ignored.)}
+
+\item{nsim}{Integer specifying the number of bootstrap replicates to use.
+Default is \code{1L} meaning no bootstrap samples.}
 
 \item{jitter.scale}{Character string specifying the scale on which to perform
 the jittering. Should be one of \code{"response"} or \code{"probability"}.
-Only used when \code{type = "jitter"}. Default is \code{"response"}.
-(Currently ignored.)}
-
-\item{nsim}{Integer specifying the number of bootstrap replicates to use.}
-
-\item{...}{Additional optional arguments. (Currently ignored.)}
+Currently only used when object inherits from class \code{"glm"}. Default is
+\code{"response"}.}
 }
 \value{
 A numeric vector (\code{nsim = 1}) or matrix (\code{nsim} > 1) of
@@ -41,34 +42,6 @@ Surrogate and jittered residuals for ordinal regression models.
 The internal functions used for sampling from truncated distirbutions
 are based on modified versions of \code{\link[truncdist]{rtrunc}} and
 \code{\link[truncdist]{qtrunc}}.
-}
-\examples{
-\dontrun{
-# Load required packages
-library(ggplot2)
-library(MASS)
-library(ordr)
-
-# Fit a proportional odds model
-house.polr <- polr(Sat ~ Infl + Type + Cont, weights = Freq, data = housing,
-                   method = "logistic")
-
-# Residuals
-set.seed(101)  # for reproducibility
-res <- resids(house.polr)
-autoplot(res, what = "qq", distribution = qlogis)
-
-# Bootstrap residuals
-set.seed(101)  # for reproducibility
-res.boot <- resids(house.polr, nsim = 100)
-autoplot(res.boot, what = "qq", distribution = qlogis)
-
-# Can also plot the residuals directly from the model
-set.seed(101)  # for reproducibility
-p1 <- autoplot(house.polr, nsim = 100, what = "qq")  # no need to supply dist
-p2 <- autoplot(house.polr, nsim = 100, what = "fitted")
-grid.arrange(p1, p2, ncol = 2)
-}
 }
 \references{
 Liu, Dungang and Zhang, Heping. Residuals and Diagnostics for Ordinal

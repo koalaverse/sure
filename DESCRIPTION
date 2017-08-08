@@ -1,7 +1,9 @@
-Package: ordr
+Package: sure
 Type: Package
-Title: Ordinal Regression Diagnostics
-Version: 0.1.0
+Title: Surrogate Residuals for Ordinal and General Regression Models
+Description: Surrogate-based residuals and diagnostics for ordinal and general 
+    regression models.
+Version: 0.0.9000
 Authors@R: c(
     person("Brandon", "Greenwell",
            email = "greenwell.brandon@gmail.com",
@@ -28,7 +30,6 @@ Suggests:
     ordinal,
     testthat,
     VGAM
-Description: Residuals and diagnostics for ordinal regression models.
 License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true

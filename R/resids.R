@@ -3,18 +3,16 @@
 #' Surrogate and jittered residuals for ordinal regression models.
 #'
 #' @param object An object of class \code{\link[ordinal]{clm}},
-#' \code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.
-#'
-#' @param type Character string specifying the type of residuals to construct.
-#' Should be one of \code{"surrogate"} or \code{"jitter"}. Default is
-#' \code{"surrogate"}. (Currently ignored.)
+#' \code{\link[stats]{glm}}, \code{\link[MASS]{polr}}, or
+#' \code{\link[VGAM]{vglm}}.
 #'
 #' @param jitter.scale Character string specifying the scale on which to perform
 #' the jittering. Should be one of \code{"response"} or \code{"probability"}.
-#' Only used when \code{type = "jitter"}. Default is \code{"response"}.
-#' (Currently ignored.)
+#' Currently only used when object inherits from class \code{"glm"}. Default is
+#' \code{"response"}.
 #'
 #' @param nsim Integer specifying the number of bootstrap replicates to use.
+#' Default is \code{1L} meaning no bootstrap samples.
 #'
 #' @param ... Additional optional arguments. (Currently ignored.)
 #'
@@ -39,76 +37,88 @@
 #' https://www.jstatsoft.org/v016/c02.
 #'
 #' @export
-#'
-#' @examples
-#' \dontrun{
-#' # Load required packages
-#' library(ggplot2)
-#' library(MASS)
-#' library(ordr)
-#'
-#' # Fit a proportional odds model
-#' house.polr <- polr(Sat ~ Infl + Type + Cont, weights = Freq, data = housing,
-#'                    method = "logistic")
-#'
-#' # Residuals
-#' set.seed(101)  # for reproducibility
-#' res <- resids(house.polr)
-#' autoplot(res, what = "qq", distribution = qlogis)
-#'
-#' # Bootstrap residuals
-#' set.seed(101)  # for reproducibility
-#' res.boot <- resids(house.polr, nsim = 100)
-#' autoplot(res.boot, what = "qq", distribution = qlogis)
-#'
-#' # Can also plot the residuals directly from the model
-#' set.seed(101)  # for reproducibility
-#' p1 <- autoplot(house.polr, nsim = 100, what = "qq")  # no need to supply dist
-#' p2 <- autoplot(house.polr, nsim = 100, what = "fitted")
-#' grid.arrange(p1, p2, ncol = 2)
-#' }
-resids <- function(object, type, jitter.scale, nsim, ...) {
+resids <- function(object, ...) {
   UseMethod("resids")
 }
 
 
 #' @rdname resids
 #' @export
-resids.default <- function(object, type = c("surrogate", "jitter"),
-                           jitter.scale = c("response", "probability"),
-                           nsim = 1, ...) {
+resids.default <- function(object, nsim = 1L, ...) {
 
   # Sanity check
-  if (!inherits(object, c("clm", "lrm", "orm", "polr", "vglm"))) {
-    stop(deparse(substitute(object)), " should be of class \"clm\", \"lrm\", ",
-         "\"orm\", \"polr\", or \"vglm\".")
+  if (!inherits(object, c("clm", "glm", "lrm", "orm", "polr", "vglm"))) {
+    stop(deparse(substitute(object)), " should be of class \"clm\", \"glm\", ",
+         "\"lrm\", \"orm\", \"polr\", or \"vglm\".")
   }
+
+
 
   # Extract number of observations, response values, and truncation bounds
   y <- getResponseValues(object)
   n.obs <- length(y)
   bounds <- getBounds(object)
-
-  # What type of residuals?
-  type <- match.arg(type)
-  # jitter.scale <- match.arg(jitter.scale)
-  if (type == "jitter") {  # throw error, for now!
-    stop("Jittering technique is not yet implemented.")
-  }
+  mr <- getMeanResponse(object)  # -f(x; beta) for cummulative link models
 
   # Construct residuals
-  mr <- getMeanResponse(object)  # -f(x; beta)
-  res <- getResiduals(object, type = type, jitter.scale = jitter.scale, y = y,
-                      n.obs = n.obs, mean.response = mr, bounds = bounds)
-  if (nsim > 1) {  # bootstrap
+  res <- getSurrogateResiduals(object, y = y, n.obs = n.obs, mean.response = mr,
+                               bounds = bounds)
+
+  # Multiple samples
+  if (nsim > 1L) {  # bootstrap
     boot.res <- boot.index <- matrix(nrow = n.obs, ncol = nsim)
     for(i in seq_len(nsim)) {
       boot.index[, i] <- sample(n.obs, replace = TRUE)
       mr <- getMeanResponse(object)[boot.index[, i]]
       boot.res[, i] <-
-        getResiduals(object, type = type, jitter.scale = jitter.scale,
-                     y = y[boot.index[, i]], n.obs = n.obs, mean.response = mr,
-                     bounds = bounds)
+        getSurrogateResiduals(object, y = y[boot.index[, i]], n.obs = n.obs,
+                              mean.response = mr, bounds = bounds)
+    }
+    attr(res, "boot.reps") <- boot.res
+    attr(res, "boot.id") <- boot.index
+  }
+
+  # Return residuals
+  class(res) <- c("numeric", "resid")
+  res
+
+}
+
+
+#' @rdname resids
+#' @export
+resids.glm <- function(object, jitter.scale = c("response", "probability"),
+                       nsim = 1L, ...) {
+
+  # Check for binomial family
+  if (object$family$family != "binomial") {
+    stop("Jittering is only available for \"glm\" objects with the binomial ",
+         "family.")
+  }
+
+  # What type of residuals?
+  jitter.scale <- match.arg(jitter.scale)
+
+  # Extract response values and number of observations
+  # FIXME: What about missing values?
+  # FIXME: What about matrix response, etc.?
+  y <- getResponseValues(object)  # should be in {0, 1}
+  n.obs <- length(y)
+
+  # Construct residuals
+  res <- getJitteredResiduals(object, jitter.scale = jitter.scale, y = y)
+
+  # Assign attribute to help in plotting
+  attr(res, "jitter.scale") <- jitter.scale
+
+  # Multiple samples
+  if (nsim > 1L) {  # bootstrap
+    boot.res <- boot.index <- matrix(nrow = n.obs, ncol = nsim)
+    for(i in seq_len(nsim)) {
+      boot.index[, i] <- sample(n.obs, replace = TRUE)
+      boot.res[, i] <-
+        getJitteredResiduals(object, jitter.scale = jitter.scale,
+                             y = y[boot.index[, i]])
     }
     attr(res, "boot.reps") <- boot.res
     attr(res, "boot.id") <- boot.index

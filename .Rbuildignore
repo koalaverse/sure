@@ -4,5 +4,6 @@
 ^README\.html$
 ^manuscript$
 ^slowtests$
+^data-raw$
 ^appveyor\.yml$
 ^\.travis\.yml$

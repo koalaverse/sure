@@ -1,2 +1,2 @@
 library(testthat)
-test_check("ordr")
+test_check("sure")

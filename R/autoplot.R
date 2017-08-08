@@ -136,6 +136,7 @@ autoplot.resid <- function(object, what = c("qq", "fitted", "covariate"),
            " via the `x` argument")
     }
     if (is.null(xlab)) {
+      # xlab <- getColumnName(x)
       xlab <- deparse(substitute(x))
     }
   }
@@ -173,20 +174,18 @@ autoplot.resid <- function(object, what = c("qq", "fitted", "covariate"),
                  size = qqpoint.size) +
       geom_abline(slope = slope, intercept = int, color = qqline.color,
                   linetype = qqline.linetype, size = qqline.size) +
-      xlab("Theoretical quantile") +
-      ylab("Sample quantile")
+      labs(x = "Theoretical quantile", y = "Sample quantile")
   }
 
   # Residual vs fitted value
   if (what == "fitted") {
     p <- ggplot(data.frame("x" = x, "y" = res), aes_string(x = "x", y = "y")) +
       geom_point(color = color, shape = shape, size = size, alpha = alpha) +
-      xlab("Fitted value") +
-      ylab("Surrogate residual")
-      if (smooth) {
-        p <- p + geom_smooth(color = smooth.color, linetype = smooth.linetype,
-                             size = smooth.size, se = FALSE)
-      }
+        labs(x = "Fitted value", y = "Surrogate residual")
+    if (smooth) {
+      p <- p + geom_smooth(color = smooth.color, linetype = smooth.linetype,
+                           size = smooth.size, se = FALSE)
+    }
   }
 
   # Residual vs covariate
@@ -207,9 +206,7 @@ autoplot.resid <- function(object, what = c("qq", "fitted", "covariate"),
                              size = smooth.size, se = FALSE)
       }
     }
-    p <- p +
-      xlab(xlab) +
-      ylab("Surrogate residual")
+    p <- p + labs(x = xlab, y = "Surrogate residual")
   }
 
   # Return plot
@@ -262,22 +259,64 @@ autoplot.clm <- function(object, what = c("qq", "fitted", "covariate"),
 
 #' @rdname autoplot.resid
 #' @export
+autoplot.glm <- function(object, what = c("qq", "fitted", "covariate"),
+                         x = NULL, nsim = 1, alpha = 1, xlab = NULL,
+                         color = "#444444",
+                         shape = 19,
+                         size = 2,
+                         qqpoint.color = "#444444",
+                         qqpoint.shape = 19,
+                         qqpoint.size = 2,
+                         qqline.color = "#888888",
+                         qqline.linetype = "dashed",
+                         qqline.size = 1,
+                         smooth = TRUE,
+                         smooth.color = "red",
+                         smooth.linetype = 1,
+                         smooth.size = 1,
+                         fill = NULL, ...) {
+  res <- resids(object, nsim = nsim)
+  qfun <- getQuantileFunction(object)  # reference distribution
+  if (is.null(xlab)) {
+    xlab <- deparse(substitute(x))
+  }
+  autoplot.resid(res, what = what, x = x, distribution = qfun, fit = object,
+                 nsim = nsim, alpha = alpha, xlab = xlab,
+                 color = color,
+                 shape = shape,
+                 size = size,
+                 qqpoint.color = qqpoint.color,
+                 qqpoint.shape = qqpoint.shape,
+                 qqpoint.size = qqpoint.size,
+                 qqline.color = qqline.color,
+                 qqline.linetype = qqline.linetype,
+                 qqline.size = qqline.size,
+                 smooth = smooth,
+                 smooth.color = smooth.color,
+                 smooth.linetype = smooth.linetype,
+                 smooth.size = smooth.size,
+                 fill = fill, ...)
+}
+
+
+#' @rdname autoplot.resid
+#' @export
 autoplot.lrm <- function(object, what = c("qq", "fitted", "covariate"),
-                          x = NULL, nsim = 1, alpha = 1, xlab = NULL,
-                          color = "#444444",
-                          shape = 19,
-                          size = 2,
-                          qqpoint.color = "#444444",
-                          qqpoint.shape = 19,
-                          qqpoint.size = 2,
-                          qqline.color = "#888888",
-                          qqline.linetype = "dashed",
-                          qqline.size = 1,
-                          smooth = TRUE,
-                          smooth.color = "red",
-                          smooth.linetype = 1,
-                          smooth.size = 1,
-                          fill = NULL, ...) {
+                         x = NULL, nsim = 1, alpha = 1, xlab = NULL,
+                         color = "#444444",
+                         shape = 19,
+                         size = 2,
+                         qqpoint.color = "#444444",
+                         qqpoint.shape = 19,
+                         qqpoint.size = 2,
+                         qqline.color = "#888888",
+                         qqline.linetype = "dashed",
+                         qqline.size = 1,
+                         smooth = TRUE,
+                         smooth.color = "red",
+                         smooth.linetype = 1,
+                         smooth.size = 1,
+                         fill = NULL, ...) {
   res <- resids(object, nsim = nsim)
   qfun <- getQuantileFunction(object)  # reference distribution
   if (is.null(xlab)) {
@@ -305,21 +344,21 @@ autoplot.lrm <- function(object, what = c("qq", "fitted", "covariate"),
 #' @rdname autoplot.resid
 #' @export
 autoplot.orm <- function(object, what = c("qq", "fitted", "covariate"),
-                          x = NULL, nsim = 1, alpha = 1, xlab = NULL,
-                          color = "#444444",
-                          shape = 19,
-                          size = 2,
-                          qqpoint.color = "#444444",
-                          qqpoint.shape = 19,
-                          qqpoint.size = 2,
-                          qqline.color = "#888888",
-                          qqline.linetype = "dashed",
-                          qqline.size = 1,
-                          smooth = TRUE,
-                          smooth.color = "red",
-                          smooth.linetype = 1,
-                          smooth.size = 1,
-                          fill = NULL, ...) {
+                         x = NULL, nsim = 1, alpha = 1, xlab = NULL,
+                         color = "#444444",
+                         shape = 19,
+                         size = 2,
+                         qqpoint.color = "#444444",
+                         qqpoint.shape = 19,
+                         qqpoint.size = 2,
+                         qqline.color = "#888888",
+                         qqline.linetype = "dashed",
+                         qqline.size = 1,
+                         smooth = TRUE,
+                         smooth.color = "red",
+                         smooth.linetype = 1,
+                         smooth.size = 1,
+                         fill = NULL, ...) {
   res <- resids(object, nsim = nsim)
   qfun <- getQuantileFunction(object)  # reference distribution
   if (is.null(xlab)) {
