@@ -17,15 +17,18 @@ knitr::opts_chunk$set(
 
 # sure: Surrogate Residuals
 
-An R package for constructing surrogate-based [residuals and diagnostics for ordinal regression models](http://amstat.tandfonline.com/doi/abs/10.1080/01621459.2017.1292915).
+An R package for constructing **SU**rrogate-based **RE**siduals and diagnostics for ordinal and general regression models; based on the approach described in
 
-**Note:** This package also supports surrogate-based residuals for `"glm"` objects with a binomial family using the jittering method described in the above paper.
+Liu, Dungang and Zhang, Heping. Residuals and Diagnostics for Ordinal Regression Models: A Surrogate Approach.
+*Journal of the American Statistical Association* (accepted). URL
+http://www.tandfonline.com/doi/abs/10.1080/01621459.2017.1292915?journalCode=uasa20
+
 
 ## Installation
 
 The `sure` package is currently only available from GitHub, but can easilly be installed using [`devtools`](https://CRAN.R-project.org/package=devtools):
 ```{r, eval=FALSE}
-# install.packages("devtools")
+if (!requireNamespace("devtools")) install.packages("devtools")
 devtools::install_github("AFIT-R/sure")
 ```
 **Note:** This package is still in development, use at your own risk!
