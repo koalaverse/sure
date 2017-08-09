@@ -8,7 +8,7 @@
 \alias{autoplot.orm}
 \alias{autoplot.polr}
 \alias{autoplot.vglm}
-\title{Residual Plots for Ordinal Regression Models}
+\title{Residual Plots for Cumulative Link and General Regression Models}
 \usage{
 autoplot.resid(object, what = c("qq", "fitted", "covariate"), x = NULL,
   fit = NULL, distribution = qnorm, alpha = 1, xlab = NULL,
@@ -138,26 +138,6 @@ to the factor levels.}
 A \code{"ggplot"} object.
 }
 \description{
-Residual-based diagnostic plots for ordnial regression models using
-\code{\link[ggplot2]{ggplot2}} graphics.
-}
-\examples{
-\dontrun{
-# Load required packages
-library(ggplot2)
-library(MASS)
-library(ordr)
-
-# Fit a proportional odds model
-house.polr <- polr(Sat ~ Infl + Type + Cont, weights = Freq, data = housing)
-
-# Diagnostic plots
-grid.arrange(
-  autoplot(house.polr, what = "qq", nsim = 50, alpha = 0.5),
-  autoplot(house.polr, what = "fitted", nsim = 50, alpha = 0.5),
-  autoplot(house.polr, what = "covariate", x = housing$Infl, nsim = 50),
-  autoplot(house.polr, what = "covariate", x = housing$Type, nsim = 50),
-  ncol = 2
-)
-}
+Residual-based diagnostic plots for cumulative link and general regression
+models using \code{\link[ggplot2]{ggplot2}} graphics.
 }

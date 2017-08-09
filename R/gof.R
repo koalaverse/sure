@@ -25,21 +25,6 @@
 #' a "good" fit.
 #'
 #' @rdname gof
-#'
-#' @export
-#' @examples
-#' \dontrun{
-#' # Load required packages
-#' library(MASS)
-#' library(ordr)
-#'
-#' # Fit a proportional odds model
-#' house.polr <- polr(Sat ~ Infl + Type + Cont, weights = Freq, data = housing,
-#'                    method = "logistic")
-#'
-#' # Goodness-of-fit
-#' plot(gof(house.polr, nsim = 1000))
-#' }
 gof <- function(object, nsim = 10, test = c("ks", "ad", "cvm"), ...) {
   if (nsim <- as.integer(nsim) < 2) {
     stop("nsim must be a postive integer >= 2")

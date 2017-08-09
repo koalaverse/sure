@@ -2,12 +2,18 @@
 # Setup
 ################################################################################
 
-# Load required packages
-library(MASS)      # for fitting ordinal regression models
-library(ordinal)   # for fitting ordinal regression models
-library(ordr)      # for ordinal regression diagnostics
+# Load packages for fitting cumulative link models
+library(MASS)     # function polr()
+library(ordinal)  # function clm()
+library(rms)      # functions lrm() and orm()
+library(VGAM)     # function vglm()
+
+# Load packages required to run Dungang's original code
 library(tmvtnorm)  # for simulating from a truncated MV normal dist
-library(VGAM)      # for fitting ordinal regression models
+
+# Load our package
+library(sure)      # for surrogate-based residuals
+library(ggplot2)   # for plotting
 
 
 ################################################################################
@@ -20,7 +26,7 @@ simData <- function(n = 2000, alpha = 16, beta = c(-8, 1),
                     threshold = c(0, 4, 8)) {
   set.seed(977)
   x <- runif(n, min = 1, max = 7)
-  z <- alpha + beta[1L] * x + beta[2L] * x ^ 2 + ordr:::rgumbel(n)
+  z <- alpha + beta[1L] * x + beta[2L] * x ^ 2 + sure:::rgumbel(n)
   y <- sapply(z, FUN = function(zz) {
     ordinal.value <- 1
     index <- 1
@@ -51,17 +57,22 @@ clm.loglog <- clm(y ~ x + I(x ^ 2), data = d, link = "loglog")
 polr.probit <- polr(y ~ x + I(x ^ 2), data = d, method = "probit")
 polr.loglog <- polr(y ~ x + I(x ^ 2), data = d, method = "loglog")
 
-# Q-Q plots
-pdf("slowtests\\figures\\link-gumbel.pdf", width = 7, height = 7)
-grid.arrange(
-  autoplot(clm.probit, nsim = 50, what = "qq", main = "clm: probit link"),
-  autoplot(clm.loglog, nsim = 50, what = "qq", main = "clm: log-log link"),
-  autoplot(polr.probit, nsim = 50, what = "qq", main = "polr: probit link"),
-  autoplot(polr.loglog, nsim = 50, what = "qq", main = "polr: log-log link"),
-  ncol = 2
-)
-dev.off()
 
-# Save figure
-ggsave("slowtests\\figures\\link-gumbel.pdf", width = 7, height = 7,
-       device = "pdf")
+################################################################################
+# Quantile-quantile plots
+################################################################################
+
+# Q-Q plots
+p1 <- autoplot(clm.probit, nsim = 50, what = "qq") +
+  ggtitle("clm: probit link")
+p2 <- autoplot(clm.loglog, nsim = 50, what = "qq") +
+  ggtitle("clm: log-log link")
+p3 <- autoplot(polr.probit, nsim = 50, what = "qq") +
+  ggtitle("polr: probit link")
+p4 <- autoplot(polr.loglog, nsim = 50, what = "qq") +
+  ggtitle("polr: log-log link")
+
+# Save plot
+pdf("slowtests\\figures\\link-gumbel.pdf", width = 7, height = 7)
+grid.arrange(p1, p2, p3, p4, ncol = 2)
+dev.off()

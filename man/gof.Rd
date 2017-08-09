@@ -45,17 +45,3 @@ uniformly distributed on the interval [0, 1]. This can be visually
 investigated using the \code{plot} method. A 45 degree line is indicative of
 a "good" fit.
 }
-\examples{
-\dontrun{
-# Load required packages
-library(MASS)
-library(ordr)
-
-# Fit a proportional odds model
-house.polr <- polr(Sat ~ Infl + Type + Cont, weights = Freq, data = housing,
-                   method = "logistic")
-
-# Goodness-of-fit
-plot(gof(house.polr, nsim = 1000))
-}
-}

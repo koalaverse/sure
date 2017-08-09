@@ -2,12 +2,18 @@
 # Setup
 ################################################################################
 
-# Load required packages
-library(MASS)      # for fitting ordinal regression models
-library(ordinal)   # for fitting ordinal regression models
-library(ordr)      # for ordinal regression diagnostics
+# Load packages for fitting cumulative link models
+library(MASS)     # function polr()
+library(ordinal)  # function clm()
+library(rms)      # functions lrm() and orm()
+library(VGAM)     # function vglm()
+
+# Load packages required to run Dungang's original code
 library(tmvtnorm)  # for simulating from a truncated MV normal dist
-library(VGAM)      # for fitting ordinal regression models
+
+# Load our package
+library(sure)      # for surrogate-based residuals
+library(ggplot2)   # for plotting
 
 
 ################################################################################
@@ -85,16 +91,14 @@ fit.vglm <- vglm(formula = y ~ x, data = d,
 ################################################################################
 
 # Compare to Figure 6(a)
-# pdf("slowtests\\figures\\heteroscedasticity.pdf", width = 7, height = 6)
-par(mfrow = c(2, 2))
-resplot(fit.clm, what = "covariate", x = d$x, main = "ordinal::clm",
-        ylab = "Surrogate residual", alpha = 0.1)
-resplot(fit.polr, what = "covariate", x = d$x, main = "MASS::polr",
-        ylab = "Surrogate residual", alpha = 0.1)
-resplot(fit.vglm, what = "covariate", x = d$x, main = "VGAM::vglm",
-        ylab = "Surrogate residual", alpha = 0.1)
-plot(d$x, res.boot, main = "Figure 6(a)",
-     xlab = "x", ylab = "Suurogate residual")
-lines(smooth.spline(d$x, res.boot), lwd = 2, col = "red")
-abline(h = c(-2, 2), lty = 2, col = "red")
-# dev.off()
+pdf("slowtests\\figures\\heteroscedasticity.pdf", width = 7, height = 6)
+p1 <- autoplot(fit.clm, what = "covariate", x = d$x) + ggtitle("ordinal::clm")
+p2 <- autoplot(fit.polr, what = "covariate", x = d$x) + ggtitle("MASS::polr")
+p3 <- autoplot(fit.vglm, what = "covariate", x = d$x) + ggtitle("VGAM::vglm")
+p4 <- ggplot(data.frame(x = d$x, y = res.boot), aes(x, y)) +
+  geom_point(size = 2, color = "#444444") +
+  geom_smooth(color = "red", se = FALSE) +
+  ylab("Surrogate residual") +
+  ggtitle("Figure 6(a)")
+grid.arrange(p1, p2, p3, p4, ncol = 2)
+dev.off()

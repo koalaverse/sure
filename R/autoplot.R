@@ -1,7 +1,7 @@
-#' Residual Plots for Ordinal Regression Models
+#' Residual Plots for Cumulative Link and General Regression Models
 #'
-#' Residual-based diagnostic plots for ordnial regression models using
-#' \code{\link[ggplot2]{ggplot2}} graphics.
+#' Residual-based diagnostic plots for cumulative link and general regression
+#' models using \code{\link[ggplot2]{ggplot2}} graphics.
 #'
 #' @param object An object of class \code{\link[ordinal]{clm}},
 #' \code{\link[MASS]{polr}}, \code{\link[VGAM]{vglm}}, or \code{"resid"}.
@@ -81,26 +81,6 @@
 #' @export
 #'
 #' @rdname autoplot.resid
-#'
-#' @examples
-#' \dontrun{
-#' # Load required packages
-#' library(ggplot2)
-#' library(MASS)
-#' library(ordr)
-#'
-#' # Fit a proportional odds model
-#' house.polr <- polr(Sat ~ Infl + Type + Cont, weights = Freq, data = housing)
-#'
-#' # Diagnostic plots
-#' grid.arrange(
-#'   autoplot(house.polr, what = "qq", nsim = 50, alpha = 0.5),
-#'   autoplot(house.polr, what = "fitted", nsim = 50, alpha = 0.5),
-#'   autoplot(house.polr, what = "covariate", x = housing$Infl, nsim = 50),
-#'   autoplot(house.polr, what = "covariate", x = housing$Type, nsim = 50),
-#'   ncol = 2
-#' )
-#' }
 autoplot.resid <- function(object, what = c("qq", "fitted", "covariate"),
                            x = NULL, fit = NULL, distribution = qnorm,
                            alpha = 1, xlab = NULL,

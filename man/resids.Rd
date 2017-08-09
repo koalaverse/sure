@@ -4,7 +4,7 @@
 \alias{resids}
 \alias{resids.default}
 \alias{resids.glm}
-\title{Residuals for Ordinal Regression Models}
+\title{Residuals Cumulative Link and General Regression Models}
 \usage{
 resids(object, ...)
 
@@ -36,7 +36,7 @@ result will contain the additional class \code{"resid"}, which is recognized
 by \code{\link{autoplot.resid}}.
 }
 \description{
-Surrogate and jittered residuals for ordinal regression models.
+Surrogate-based residuals for cumulative link and general regression models.
 }
 \note{
 The internal functions used for sampling from truncated distirbutions

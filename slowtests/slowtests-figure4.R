@@ -2,12 +2,18 @@
 # Setup
 ################################################################################
 
-# Load required packages
-library(MASS)      # for fitting ordinal regression models
-library(ordinal)   # for fitting ordinal regression models
-library(ordr)      # for ordinal regression diagnostics
+# Load packages for fitting cumulative link models
+library(MASS)     # function polr()
+library(ordinal)  # function clm()
+library(rms)      # functions lrm() and orm()
+library(VGAM)     # function vglm()
+
+# Load packages required to run Dungang's original code
 library(tmvtnorm)  # for simulating from a truncated MV normal dist
-library(VGAM)      # for fitting ordinal regression models
+
+# Load our package
+library(sure)      # for surrogate-based residuals
+library(ggplot2)   # for plotting
 
 
 ################################################################################
@@ -46,7 +52,7 @@ table(d$y)
 ################################################################################
 
 # Function to generate data for Figure 4(a)-(b)
-figure4 <- function(model, data) {
+genFig4Data <- function(model, data) {
   set.seed(977)
   n <- nrow(data)
   alpha.hat <- -coef(model)[1L]
@@ -86,21 +92,21 @@ fit.vglm <- vglm(formula = y ~ x + I(x ^ 2), data = d,
                     family = cumulative(link = probit, parallel = TRUE))
 
 # Generate data from Figure 1
-fig4 <- figure4(fit.vglm, data = d)
+fig4 <- genFig4Data(fit.vglm, data = d)
 res <- fig4$res
 class(res) <- c("numeric", "resid")
 
-# Plots
-pdf("slowtests\\figures\\figure4.pdf", width = 7, height = 12)
-grid.arrange(
-  autoplot(fit.clm, what = "covariate", x = d$x, main = "ordinal::clm"),
-  autoplot(fit.clm, what = "qq", main = "ordinal::clm"),
-  autoplot(fit.polr, what = "covariate", x = d$x, main = "MASS::polr"),
-  autoplot(fit.polr, what = "qq", main = "MASS::polr"),
-  autoplot(fit.vglm, what = "covariate", x = d$x, main = "VGAM::vglm"),
-  autoplot(fit.vglm, what = "qq", main = "VGAM::vglm"),
-  autoplot(res, what = "covariate", x = d$x, main = "Figure 4(a)"),
-  autoplot(res, what = "qq", main = "Figure 4(b)"),
-  ncol = 2
-)
+# Residual-by-covariate and Q-Q plots
+p1 <- autoplot(fit.clm, what = "covariate", x = d$x) + ggtitle("ordinal::clm")
+p2 <- autoplot(fit.clm, what = "qq") + ggtitle("ordinal::clm")
+p3 <- autoplot(fit.polr, what = "covariate", x = d$x) + ggtitle("MASS::polr")
+p4 <- autoplot(fit.polr, what = "qq") + ggtitle("MASS::polr")
+p5 <- autoplot(fit.vglm, what = "covariate", x = d$x) + ggtitle("VGAM::vglm")
+p6 <- autoplot(fit.vglm, what = "qq") + ggtitle("VGAM::vglm")
+p7 <- autoplot(res, what = "covariate", x = d$x) + ggtitle("Figure 4(a)")
+p8 <- autoplot(res, what = "qq") + ggtitle("Figure 4(b)")
+
+# Save plots
+pdf("slowtests\\figures\\misspecified-link.pdf", width = 7, height = 12)
+grid.arrange(p1, p2, p3, p4, p5, p6, p7, p8, ncol = 2)
 dev.off()

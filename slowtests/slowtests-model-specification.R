@@ -2,12 +2,18 @@
 # Setup
 ################################################################################
 
-# Load required packages
-library(MASS)      # for fitting ordinal regression models
-library(ordinal)   # for fitting ordinal regression models
-library(ordr)      # for ordinal regression diagnostics
+# Load packages for fitting cumulative link models
+library(MASS)     # function polr()
+library(ordinal)  # function clm()
+library(rms)      # functions lrm() and orm()
+library(VGAM)     # function vglm()
+
+# Load packages required to run Dungang's original code
 library(tmvtnorm)  # for simulating from a truncated MV normal dist
-library(VGAM)      # for fitting ordinal regression models
+
+# Load our package
+library(sure)      # for surrogate-based residuals
+library(ggplot2)   # for plotting
 
 
 ################################################################################
@@ -46,7 +52,7 @@ table(d$y)
 ################################################################################
 
 # Function to generate data for Figure 1(a)-(b)
-figure1 <- function(model, data) {
+genFig1Data <- function(model, data) {
   alpha.hat <- -coef(model)[1L]
   beta_1.hat <- -coef(model)[4L]
   beta_2.hat <- -coef(model)[5L]
@@ -68,12 +74,12 @@ figure1 <- function(model, data) {
   for(i in 1:n) {
     res.boot[i] <- residual.bootstrap(y[i], x[i])
   }
-  data.frame(x = x, res = res.boot)
+  data.frame(x = x, y = res.boot)
 }
 
 
 # Function to generate data for Figure 3(a)
-figure3 <- function(model, data) {
+genFig3Data <- function(model, data) {
   alpha.hat <- -coef(model)[1L]
   beta.hat <- -coef(model)[4L]
   thrd.hat <- c(0, coef(model)[2L] - coef(model)[1L],
@@ -95,7 +101,7 @@ figure3 <- function(model, data) {
   for(i in 1:n) {
     res.boot[i] <- residual.bootstrap(y[i], x[i])
   }
-  data.frame(x = x, res = res.boot)
+  data.frame(x = x, y = res.boot)
 }
 
 
@@ -104,27 +110,33 @@ figure3 <- function(model, data) {
 ################################################################################
 
 # Fitted models
-house.clm <- clm(formula = y ~ x + I(x ^ 2), data = d, link = "probit")
-house.polr <- polr(formula = y ~ x + I(x ^ 2), data = d, method = "probit")
-house.vglm <- vglm(formula = y ~ x + I(x ^ 2), data = d,
-                    family = cumulative(link = probit, parallel = TRUE))
+fit.clm <- clm(formula = y ~ x + I(x ^ 2), data = d, link = "probit")
+fit.polr <- polr(formula = y ~ x + I(x ^ 2), data = d, method = "probit")
+fit.vglm <- vglm(formula = y ~ x + I(x ^ 2), data = d,
+                 family = cumulative(link = probit, parallel = TRUE))
 
 # Generate data from Figure 1
-fig1 <- figure1(house.vglm, data = d)
+fig1 <- genFig1Data(fit.vglm, data = d)
 
-# Plots
-pdf("slowtests\\figures\\figure1.pdf", width = 7, height = 12)
-par(mfrow = c(4, 2))
-resplot(house.clm, what = "covariate", x = d$x, main = "ordinal::clm")
-resplot(house.clm, what = "qq", main = "ordinal::clm")
-resplot(house.polr, what = "covariate", x = d$x, main = "MASS::polr")
-resplot(house.polr, what = "qq", main = "MASS::polr")
-resplot(house.vglm, what = "covariate", x = d$x, main = "VGAM::vglm")
-resplot(house.vglm, what = "qq", main = "VGAM::vglm")
-plot(fig1, ylab = "Residual", main = "Figure 1(a)")
-lines(lowess(fig1), lwd = 2, col = "red")
-qqnorm(fig1$res, main = "Figure 1(b)")
-qqline(fig1$res, col = "red")
+# Residuals-by-covariate and Q-Q plots
+p1 <- autoplot(fit.clm, what = "covariate", x = d$x) + ggtitle("ordinal::clm")
+p2 <- autoplot(fit.clm, what = "qq") + ggtitle("ordinal::clm")
+p3 <- autoplot(fit.polr, what = "covariate", x = d$x) + ggtitle("MASS::polr")
+p4 <- autoplot(fit.polr, what = "qq") + ggtitle("MASS::polr")
+p5 <- autoplot(fit.vglm, what = "covariate", x = d$x) + ggtitle("VGAM::vglm")
+p6 <- autoplot(fit.vglm, what = "qq") + ggtitle("VGAM::vglm")
+p7 <- ggplot(fig1, aes(x, y)) +
+  geom_point(color = "#444444", size = 2) +
+  geom_smooth(color = "red", se = FALSE) +
+  ylab("Surrogate residual") +
+  ggtitle("Figure 1(a)")
+p8 <- ggplot(fig1, aes(sample = y)) +
+  geom_qq(color = "#444444", size = 2) +
+  ggtitle("Figure 1(b)")
+
+# Save plot
+pdf("slowtests\\figures\\model-specified-correctly.pdf", width = 7, height = 12)
+grid.arrange(p1, p2, p3, p4, p5, p6, p7, p8, ncol = 2)
 dev.off()
 
 
@@ -133,24 +145,31 @@ dev.off()
 ################################################################################
 
 # Fitted models
-house.clm.wrong <- clm(formula = y ~ x, data = d, link = "probit")
-house.polr.wrong <- polr(formula = y ~ x, data = d, method = "probit")
-house.vglm.wrong <- vglm(formula = y ~ x, data = d,
-                         family = cumulative(link = probit, parallel = TRUE))
+fit.clm <- clm(formula = y ~ x, data = d, link = "probit")
+fit.polr <- polr(formula = y ~ x, data = d, method = "probit")
+fit.vglm <- vglm(formula = y ~ x, data = d,
+                 family = cumulative(link = probit, parallel = TRUE))
 
 # Generate data from Figure 1
-fig3 <- figure3(house.vglm.wrong, data = d)
+fig3 <- genFig3Data(fit.vglm, data = d)
 
-# Plots
-pdf("slowtests\\figures\\figure3.pdf", width = 7, height = 7)
-par(mfrow = c(2, 2))
-resplot(house.clm.wrong, what = "covariate", x = d$x, main = "ordinal::clm")
-resplot(house.polr.wrong, what = "covariate", x = d$x, main = "MASS::polr")
-resplot(house.vglm.wrong, what = "covariate", x = d$x, main = "VGAM::vglm")
-plot(fig3, ylab = "Residual", main = "Figure 3(a)")
-lines(lowess(fig3), lwd = 2, col = "red")
+# Residuals-by-covariate and Q-Q plots
+p1 <- autoplot(fit.clm, what = "covariate", x = d$x) + ggtitle("ordinal::clm")
+p2 <- autoplot(fit.clm, what = "qq") + ggtitle("ordinal::clm")
+p3 <- autoplot(fit.polr, what = "covariate", x = d$x) + ggtitle("MASS::polr")
+p4 <- autoplot(fit.polr, what = "qq") + ggtitle("MASS::polr")
+p5 <- autoplot(fit.vglm, what = "covariate", x = d$x) + ggtitle("VGAM::vglm")
+p6 <- autoplot(fit.vglm, what = "qq") + ggtitle("VGAM::vglm")
+p7 <- ggplot(fig3, aes(x, y)) +
+  geom_point(color = "#444444", size = 2) +
+  geom_smooth(color = "red", se = FALSE) +
+  ylab("Surrogate residual") +
+  ggtitle("Figure 3(a)")
+p8 <- ggplot(fig1, aes(sample = y)) +
+  geom_qq(color = "#444444", size = 2) +
+  ggtitle("Figure 3(b)")
+
+# Save plot
+pdf("slowtests\\figures\\model-specified-incorrectly.pdf", width = 7, height = 12)
+grid.arrange(p1, p2, p3, p4, p5, p6, p7, p8, ncol = 2)
 dev.off()
-
-# Qhat about jittering?
-res <- resids(house.polr, type = "jitter")
-plot(d$x, res)

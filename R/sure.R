@@ -37,5 +37,5 @@
 #'
 #' @docType package
 #'
-#' @name ordr
+#' @name sure
 NULL

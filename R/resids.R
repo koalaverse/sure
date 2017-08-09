@@ -1,6 +1,6 @@
-#' Residuals for Ordinal Regression Models
+#' Residuals Cumulative Link and General Regression Models
 #'
-#' Surrogate and jittered residuals for ordinal regression models.
+#' Surrogate-based residuals for cumulative link and general regression models.
 #'
 #' @param object An object of class \code{\link[ordinal]{clm}},
 #' \code{\link[stats]{glm}}, \code{\link[MASS]{polr}}, or
