@@ -118,10 +118,12 @@ getBounds.polr <- function(object, ...) {
 
 #' @keywords internal
 getBounds.vglm <- function(object, ...) {
-  unname(
-    c(-Inf, stats::coef(object)[seq_len(ncat(object) - 1)] -
-        stats::coef(object)[1L], Inf)
-  )
+  coefs <- if (object@misc$reverse) {
+    -unname(stats::coef(object))
+  } else {
+    unname(stats::coef(object))
+  }
+  c(-Inf, coefs[seq_len(ncat(object) - 1)] - coefs[1L], Inf)
 }
 
 
@@ -326,7 +328,11 @@ getMeanResponse.polr <- function(object) {
 
 #' @keywords internal
 getMeanResponse.vglm <- function(object) {
-  -object@predictors[, 1L, drop = TRUE]  # FIXME: Why the minus sign?
+  if (object@misc$reverse) {
+    object@predictors[, 1L, drop = TRUE]
+  } else {
+    -object@predictors[, 1L, drop = TRUE]
+  }
 }
 
 
