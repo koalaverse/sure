@@ -58,7 +58,7 @@ resids.default <- function(object, nsim = 1L, ...) {
   y <- getResponseValues(object)
   n.obs <- length(y)
   bounds <- getBounds(object)
-  mr <- getMeanResponse(object)  # -f(x; beta) for cummulative link models
+  mr <- getMeanResponse(object)  # -f(x; beta) for cumulative link models
 
   # Construct residuals
   res <- getSurrogateResiduals(object, y = y, n.obs = n.obs, mean.response = mr,

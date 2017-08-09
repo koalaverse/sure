@@ -69,7 +69,7 @@ rGumbel <- function (n, location = 0, scale = 1) {
 
 
 ################################################################################
-# Generic function to extract truncation bounds for cummulative link models;
+# Generic function to extract truncation bounds for cumulative link models;
 # these are used when sampling the surrogate values
 ################################################################################
 
@@ -131,7 +131,7 @@ getBounds.vglm <- function(object, ...) {
 
 ################################################################################
 # Generic function for extracting the assumed cumulative distribution function
-# from a cummulative link model
+# from a cumulative link model
 ################################################################################
 
 #' @keywords internal
@@ -203,7 +203,7 @@ getDistributionFunction.vglm <- function(object) {
 
 ################################################################################
 # Generic function for extracting the name of the assumed distribution from a
-# cummulative link model
+# cumulative link model
 ################################################################################
 
 #' @keywords internal
@@ -274,7 +274,7 @@ getDistributionName.vglm <- function(object) {
 
 
 ################################################################################
-# Generic function for extracting the fitted mean response from a cummulative
+# Generic function for extracting the fitted mean response from a cumulative
 # link model
 ################################################################################
 
@@ -338,7 +338,7 @@ getMeanResponse.vglm <- function(object) {
 
 ################################################################################
 # Generic function for extracting the assumed quantile function from a
-# cummulative link model
+# cumulative link model
 ################################################################################
 
 #' @keywords internal
@@ -409,7 +409,7 @@ getQuantileFunction.vglm <- function(object) {
 
 
 ################################################################################
-# Generic function to extract the response values from a cummulative link or
+# Generic function to extract the response values from a cumulative link or
 # general model; returns an integer, not a factor!
 ################################################################################
 
@@ -457,11 +457,11 @@ getResponseValues.vglm <- function(object, ...) {
 
 
 ################################################################################
-# Functions to simulate surrogate-based residuals for supported cummulative link
+# Functions to simulate surrogate-based residuals for supported cumulative link
 # and general models
 ################################################################################
 
-# For cummulative link models
+# For cumulative link models
 
 #' @keywords internal
 getSurrogateResiduals <- function(object, y, n.obs, mean.response, bounds) {
@@ -503,7 +503,7 @@ getJitteredResiduals <- function(object, jitter.scale, y) {
 
 ################################################################################
 # Generic function to determine the number of response categories for a given
-# cummulative link model
+# cumulative link model
 ################################################################################
 
 #' @keywords internal
