@@ -25,7 +25,7 @@ library(ggplot2)   # for plotting
 simData <- function(n = 2000, alpha = 36, beta = 4,
                     threshold = c(0, 30, 70, 100)) {
   x <- runif(n, min = 2, max = 7)
-  y <-   sapply(alpha + beta * x + rnorm(n, sd = x ^ 2), FUN = function(zz) {
+  y <-   sapply(alpha + beta * x + rlogis(n, scale = x ^ 2), FUN = function(zz) {
     ordinal.value <- 1
     index <- 1
     while(index <= length(threshold) && zz > threshold[index]) {
@@ -42,37 +42,8 @@ set.seed(108)
 d <- simData(n = 2000)
 table(d$y)
 #
-#  1    2    3    4    5
-# 48  217 1345  292   98
-
-
-################################################################################
-# Code from the paper
-################################################################################
-
-# Code needed for function to run
-model <- vglm(y ~ x, data = d,
-              family = cumulative(link = probit, parallel = TRUE))
-alpha.hat <- -coef(model)[1L]
-beta.hat <- -coef(model)[5L]
-thrd.hat <- c(0, coef(model)[2L] - coef(model)[1L],
-              coef(model)[3L] - coef(model)[1L],
-              coef(model)[4L]- coef(model)[1L])
-
-# Residual function used in the paper
-residual.bootstrap <- function(y, x) {
-  y <- as.integer(y)
-  cc <- c(-Inf, thrd.hat, Inf)
-  res <- rtmvnorm(1, mean = (alpha.hat + beta.hat * x), sigma = 1,
-                  lower = cc[y], upper = cc[y + 1]) - (alpha.hat + beta.hat * x)
-}
-
-# Residuals used in Figure 6(a)
-n <- 2000
-res.boot <- rep(NA, n)
-for(i in 1:n) {
-  res.boot[i] <- residual.bootstrap(d$y[i], d$x[i])
-}
+#   1    2    3    4    5
+# 156  266 1039  292  247
 
 
 ################################################################################
@@ -80,11 +51,12 @@ for(i in 1:n) {
 ################################################################################
 
 # Fitted models
-fit.clm <- clm(y ~ x, data = d, link = "probit")
-fit.polr <- polr(y ~ x, data = d, method = "probit")
+fit.clm <- clm(y ~ x, data = d, link = "logit")
+fit.polr <- polr(y ~ x, data = d, method = "logistic")
 fit.vglm <- vglm(y ~ x, data = d,
-                 family = cumulative(link = probit, parallel = TRUE))
-fit.orm <- orm(y ~ x, data = d, family = probit)
+                 family = cumulative(link = logit, parallel = TRUE))
+fit.lrm <- lrm(y ~ x, data = d)
+fit.orm <- orm(y ~ x, data = d, family = logistic)
 
 
 ################################################################################
@@ -96,10 +68,12 @@ pdf("slowtests\\figures\\heteroscedasticity.pdf", width = 7, height = 6)
 p1 <- autoplot(fit.clm, what = "covariate", x = d$x) + ggtitle("ordinal::clm")
 p2 <- autoplot(fit.polr, what = "covariate", x = d$x) + ggtitle("MASS::polr")
 p3 <- autoplot(fit.vglm, what = "covariate", x = d$x) + ggtitle("VGAM::vglm")
-p4 <- ggplot(data.frame(x = d$x, y = res.boot), aes(x, y)) +
+p4 <- autoplot(fit.lrm, what = "covariate", x = d$x) + ggtitle("rms::lrm")
+p5 <- autoplot(fit.orm, what = "covariate", x = d$x) + ggtitle("rms::orm")
+p6 <- ggplot(data.frame(x = d$x, y = res.boot), aes(x, y)) +
   geom_point(size = 2, color = "#444444") +
   geom_smooth(color = "red", se = FALSE) +
   ylab("Surrogate residual") +
   ggtitle("Figure 6(a)")
-grid.arrange(p1, p2, p3, p4, ncol = 2)
+grid.arrange(p1, p2, p3, p4, p5, p6, ncol = 2)
 dev.off()

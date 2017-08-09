@@ -87,6 +87,13 @@ resids.default <- function(object, nsim = 1L, ...) {
 
 #' @rdname resids
 #' @export
+resids.lrm <- function(object, nsim = 1L, ...) {
+  resids.default(object, nsim = nsim, ...)
+}
+
+
+#' @rdname resids
+#' @export
 resids.glm <- function(object, jitter.scale = c("response", "probability"),
                        nsim = 1L, ...) {
 

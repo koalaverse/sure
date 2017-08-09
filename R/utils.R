@@ -96,19 +96,15 @@ getBounds.glm <- function(object, ...) {
 
 #' @keywords internal
 getBounds.lrm <- function(object, ...) {
-  unname(
-    c(-Inf, stats::coef(object)[seq_len(ncat(object) - 1)] -
-        stats::coef(object)[1L], Inf)
-  )
+  coefs <- -unname(stats::coef(object))
+  c(-Inf, coefs[seq_len(ncat(object) - 1)] - coefs[1L], Inf)
 }
 
 
 #' @keywords internal
 getBounds.orm <- function(object, ...) {
-  unname(
-    c(-Inf, stats::coef(object)[seq_len(ncat(object) - 1)] -
-        stats::coef(object)[1L], Inf)
-  )
+  coefs <- -unname(stats::coef(object))
+  c(-Inf, coefs[seq_len(ncat(object) - 1)] - coefs[1L], Inf)
 }
 
 
@@ -309,17 +305,15 @@ getMeanResponse.glm <- function(object) {
 
 #' @keywords internal
 getMeanResponse.lrm <- function(object) {
-  # object$linear.predictors
-  object$linear.predictors - object$coefficients[1L]
+  # No negative sign since orm uses the reverse parameterization: Pr(Y >= j)
+  predict(object, type = "lp", kint = 1L)
 }
 
 
 #' @keywords internal
 getMeanResponse.orm <- function(object) {
-  # object$linear.predictors
-  medy <- quantile(getResponseValues(object), probs = 0.5, type = 1L)
-  kmid <- max(1, which(1L:length(object$yunique) == medy) - 1L)
-  object$linear.predictors - object$coefficients[kmid]
+  # No negative sign since orm uses the reverse parameterization: Pr(Y >= j)
+  predict(object, type = "lp", kint = 1L)
 }
 
 

@@ -3,12 +3,15 @@
 \name{resids}
 \alias{resids}
 \alias{resids.default}
+\alias{resids.lrm}
 \alias{resids.glm}
 \title{Residuals Cumulative Link and General Regression Models}
 \usage{
 resids(object, ...)
 
 \method{resids}{default}(object, nsim = 1L, ...)
+
+\method{resids}{lrm}(object, nsim = 1L, ...)
 
 \method{resids}{glm}(object, jitter.scale = c("response", "probability"),
   nsim = 1L, ...)
