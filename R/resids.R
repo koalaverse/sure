@@ -97,6 +97,10 @@ resids.lrm <- function(object, nsim = 1L, ...) {
 resids.glm <- function(object, jitter.scale = c("response", "probability"),
                        nsim = 1L, ...) {
 
+  # Print warning message
+  warning("Using sure with \"glm\" objects is still experimental. Use at ",
+          "your own risk.")
+
   # Check for binomial family
   if (object$family$family != "binomial") {
     stop("Jittering is only available for \"glm\" objects with the binomial ",

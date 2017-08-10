@@ -33,7 +33,9 @@
 #'
 #' @importFrom stats model.response nobs pbinom pcauchy plogis pnorm ppoints
 #'
-#' @importFrom stats qcauchy qlogis qnorm qqline qqplot qqnorm quantile runif
+#' @importFrom stats predict qcauchy qlogis qnorm qqline qqplot qqnorm quantile
+#'
+#' @importFrom stats qunif runif
 #'
 #' @docType package
 #'
