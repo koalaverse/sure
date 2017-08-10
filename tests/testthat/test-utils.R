@@ -11,15 +11,31 @@ test_that("utility functions work for \"clm\" objects", {
   data(df1)
 
   # Fit cumulative link model
-  fit <- ordinal::clm(y ~ x + I(x ^ 2), data = df1, link = "probit")
+  fit.logit <- ordinal::clm(y ~ x + I(x ^ 2), data = df1, link = "logit")
+  fit.probit <- ordinal::clm(y ~ x + I(x ^ 2), data = df1, link = "probit")
+  fit.loglog <- ordinal::clm(y ~ x + I(x ^ 2), data = df1, link = "loglog")
+  fit.cloglog <- ordinal::clm(y ~ x + I(x ^ 2), data = df1, link = "cloglog")
+  fit.cauchit <- ordinal::clm(y ~ x + I(x ^ 2), data = df1, link = "cauchit")
 
   # Expectations
-  expect_equal(length(getBounds(fit)), 5)
-  expect_equal(getDistributionFunction(fit), pnorm)
-  expect_equal(getDistributionName(fit), "norm")
-  expect_equal(getQuantileFunction(fit), qnorm)
-  expect_identical(getResponseValues(fit), as.integer(df1$y))
-  expect_equal(ncat(fit), 4)
+  expect_equal(length(getBounds(fit.logit)), 5)
+  expect_identical(getResponseValues(fit.logit), as.integer(df1$y))
+  expect_equal(ncat(fit.logit), 4)
+  expect_equal(getDistributionFunction(fit.logit), plogis)
+  expect_equal(getDistributionFunction(fit.probit), pnorm)
+  expect_equal(getDistributionFunction(fit.loglog), pgumbel)
+  expect_equal(getDistributionFunction(fit.cloglog), pGumbel)
+  expect_equal(getDistributionFunction(fit.cauchit), pcauchy)
+  expect_equal(getDistributionName(fit.logit), "logis")
+  expect_equal(getDistributionName(fit.probit), "norm")
+  expect_equal(getDistributionName(fit.loglog), "gumbel")
+  expect_equal(getDistributionName(fit.cloglog), "Gumbel")
+  expect_equal(getDistributionName(fit.cauchit), "cauchy")
+  expect_equal(getQuantileFunction(fit.logit), qlogis)
+  expect_equal(getQuantileFunction(fit.probit), qnorm)
+  expect_equal(getQuantileFunction(fit.loglog), qgumbel)
+  expect_equal(getQuantileFunction(fit.cloglog), qGumbel)
+  expect_equal(getQuantileFunction(fit.cauchit), qcauchy)
 
 })
 
@@ -72,7 +88,7 @@ test_that("utility functions work for \"lrm\" objects", {
 })
 
 
-test_that("utility functions work for \"lrm\" objects", {
+test_that("utility functions work for \"orm\" objects", {
 
   # Skips
   skip_on_cran()
