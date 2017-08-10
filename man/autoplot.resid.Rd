@@ -134,6 +134,11 @@ to the factor levels.}
 \item{...}{Additional optional arguments. (Currently ignored.)}
 
 \item{nsim}{Integer specifying the number of bootstrap replicates to use.}
+
+\item{jitter.scale}{Character string specifying the scale on which to perform
+the jittering. Should be one of \code{"response"} or \code{"probability"}.
+Currently only used when object inherits from class \code{"glm"}. Default is
+\code{"response"}.}
 }
 \value{
 A \code{"ggplot"} object.
