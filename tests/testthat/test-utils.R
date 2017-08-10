@@ -238,4 +238,29 @@ test_that("getMeanResponse works", {
   # Load data
   data(df1)
 
+  # Fit cumulative link models
+  fit.clm <- ordinal::clm(y ~ x, data = df1, link = "logit")
+  fit.polr <- MASS::polr(y ~ x, data = df1, method = "logistic")
+  fit.lrm <- rms::lrm(y ~ x, data = df1)
+  fit.orm <- rms::orm(y ~ x, data = df1, family = logistic)
+  fit.vglm <- VGAM::vglm(y ~ x, data = df1,
+                         family = VGAM::cumulative(link = "logit",
+                                                   parallel = TRUE))
+
+  # Mean response
+  mr <- cbind(
+    "clm" = getMeanResponse(fit.clm),
+    "polr" = getMeanResponse(fit.polr),
+    "lrm" = getMeanResponse(fit.lrm),
+    "orm" = getMeanResponse(fit.orm),
+    "vglm" = getMeanResponse(fit.vglm)
+  )
+
+  # Compute maximum pairwise difference per row
+  max.diff <- apply(mr, MARGIN = 1, FUN = function(x) max(as.numeric(dist(x))))
+
+  # Expectations
+  expect_true(max(max.diff) < 1e-05)
+
+
 })
