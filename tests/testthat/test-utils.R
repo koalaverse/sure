@@ -262,5 +262,4 @@ test_that("getMeanResponse works", {
   # Expectations
   expect_true(max(max.diff) < 1e-05)
 
-
 })
