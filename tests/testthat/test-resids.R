@@ -30,6 +30,44 @@ test_that("resids work for \"clm\" objects", {
 })
 
 
+test_that("resids work for \"glm\" objects", {
+
+  # Skips
+  skip_on_cran()
+
+  # Load data
+  data(df1)
+
+  # Fit cumulative link model
+  fit <- glm(y ~ x + I(x ^ 2), data = df1, family = binomial)
+
+  # Compute residuals
+  res1 <- resids(fit)
+  res2 <- resids(fit, nsim = 10)
+  res3 <- resids(fit, jitter.scale = "probability")
+  res4 <- resids(fit, nsim = 10, jitter.scale = "probability")
+
+  # Expectations
+  expect_equal(length(res1), nrow(df1))
+  expect_equal(length(res2), nrow(df1))
+  expect_equal(length(res3), nrow(df1))
+  expect_equal(length(res4), nrow(df1))
+  expect_null(attr(res1, "boot.reps"))
+  expect_null(attr(res1, "boot.id"))
+  expect_null(attr(res3, "boot.reps"))
+  expect_null(attr(res3, "boot.id"))
+  expect_is(attr(res2, "boot.reps"), "matrix")
+  expect_is(attr(res2, "boot.id"), "matrix")
+  expect_is(attr(res4, "boot.reps"), "matrix")
+  expect_is(attr(res4, "boot.id"), "matrix")
+  expect_equal(dim(attr(res2, "boot.reps")), c(nrow(df1), 10))
+  expect_equal(dim(attr(res2, "boot.id")), c(nrow(df1), 10))
+  expect_equal(dim(attr(res4, "boot.reps")), c(nrow(df1), 10))
+  expect_equal(dim(attr(res4, "boot.id")), c(nrow(df1), 10))
+
+})
+
+
 test_that("resids work for \"lrm\" objects", {
 
   # Skips
