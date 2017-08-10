@@ -178,19 +178,50 @@ test_that("utility functions work for \"vglm\" objects", {
   # Load data
   data(df1)
 
-  # Fit cumulative link model
+  # Fit cumulative link models
   suppressWarnings(
-    fit <- VGAM::vglm(y ~ x + I(x ^ 2), data = df1,
-                      family = VGAM::cumulative(link = probit, parallel = TRUE))
+    fit.logit <- VGAM::vglm(y ~ x + I(x ^ 2), data = df1,
+                            family = VGAM::cumulative(link = "logit",
+                                                      parallel = TRUE))
+  )
+  suppressWarnings(
+    fit.probit <- VGAM::vglm(y ~ x + I(x ^ 2), data = df1,
+                             family = VGAM::cumulative(link = "probit",
+                                                       parallel = TRUE))
+  )
+    # fit.loglog <- VGAM::vglm(y ~ x + I(x ^ 2), data = df1,
+    #                          family = VGAM::cumulative(link = "loglog",
+    #                                                    parallel = TRUE))
+  suppressWarnings(
+    fit.cloglog <- VGAM::vglm(y ~ x + I(x ^ 2), data = df1,
+                              family = VGAM::cumulative(link = "cloglog",
+                                                        parallel = TRUE))
+  )
+  suppressWarnings(
+    fit.cauchit <- VGAM::vglm(y ~ x + I(x ^ 2), data = df1,
+                              family = VGAM::cumulative(link = "cauchit",
+                                                        parallel = TRUE))
   )
 
   # Expectations
-  expect_equal(length(getBounds(fit)), 5)
-  expect_equal(getDistributionFunction(fit), pnorm)
-  expect_equal(getDistributionName(fit), "norm")
-  expect_equal(getQuantileFunction(fit), qnorm)
-  expect_identical(getResponseValues(fit), as.integer(df1$y))
-  expect_equal(ncat(fit), 4)
+  expect_equal(length(getBounds(fit.logit)), 5)
+  expect_identical(getResponseValues(fit.logit), as.integer(df1$y))
+  expect_equal(ncat(fit.logit), 4)
+  expect_equal(getDistributionFunction(fit.logit), plogis)
+  expect_equal(getDistributionFunction(fit.probit), pnorm)
+  # expect_equal(getDistributionFunction(fit.loglog), pgumbel)
+  expect_equal(getDistributionFunction(fit.cloglog), pGumbel)
+  expect_equal(getDistributionFunction(fit.cauchit), pcauchy)
+  expect_equal(getDistributionName(fit.logit), "logis")
+  expect_equal(getDistributionName(fit.probit), "norm")
+  # expect_equal(getDistributionName(fit.loglog), "gumbel")
+  expect_equal(getDistributionName(fit.cloglog), "Gumbel")
+  expect_equal(getDistributionName(fit.cauchit), "cauchy")
+  expect_equal(getQuantileFunction(fit.logit), qlogis)
+  expect_equal(getQuantileFunction(fit.probit), qnorm)
+  # expect_equal(getQuantileFunction(fit.loglog), qgumbel)
+  expect_equal(getQuantileFunction(fit.cloglog), qGumbel)
+  expect_equal(getQuantileFunction(fit.cauchit), qcauchy)
 
 })
 
