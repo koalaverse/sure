@@ -100,13 +100,32 @@ test_that("utility functions work for \"orm\" objects", {
   # Fit cumulative link model
   fit <- rms::orm(y ~ x, data = df1, family = probit)
 
+  # Fit cumulative link models
+  fit.logit <- rms::orm(y ~ x, data = df1, family = logistic)
+  fit.probit <- rms::orm(y ~ x, data = df1, family = probit)
+  fit.loglog <- rms::orm(y ~ x, data = df1, family = loglog)
+  fit.cloglog <- rms::orm(y ~ x, data = df1, family = cloglog)
+  fit.cauchit <- rms::orm(y ~ x, data = df1, family = cauchit)
+
   # Expectations
-  expect_equal(length(getBounds(fit)), 5)
-  expect_equal(getDistributionFunction(fit), pnorm)
-  expect_equal(getDistributionName(fit), "norm")
-  expect_equal(getQuantileFunction(fit), qnorm)
-  expect_identical(getResponseValues(fit), as.integer(df1$y))
-  expect_equal(ncat(fit), 4)
+  expect_equal(length(getBounds(fit.logit)), 5)
+  expect_identical(getResponseValues(fit.logit), as.integer(df1$y))
+  expect_equal(ncat(fit.logit), 4)
+  expect_equal(getDistributionFunction(fit.logit), plogis)
+  expect_equal(getDistributionFunction(fit.probit), pnorm)
+  expect_equal(getDistributionFunction(fit.loglog), pgumbel)
+  expect_equal(getDistributionFunction(fit.cloglog), pGumbel)
+  expect_equal(getDistributionFunction(fit.cauchit), pcauchy)
+  expect_equal(getDistributionName(fit.logit), "logis")
+  expect_equal(getDistributionName(fit.probit), "norm")
+  expect_equal(getDistributionName(fit.loglog), "gumbel")
+  expect_equal(getDistributionName(fit.cloglog), "Gumbel")
+  expect_equal(getDistributionName(fit.cauchit), "cauchy")
+  expect_equal(getQuantileFunction(fit.logit), qlogis)
+  expect_equal(getQuantileFunction(fit.probit), qnorm)
+  expect_equal(getQuantileFunction(fit.loglog), qgumbel)
+  expect_equal(getQuantileFunction(fit.cloglog), qGumbel)
+  expect_equal(getQuantileFunction(fit.cauchit), qcauchy)
 
 })
 
