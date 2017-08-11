@@ -188,5 +188,35 @@ test_that("resids work for \"vglm\" objects", {
 })
 
 
+test_that("resids work for \"clm\" objects with different link functions", {
 
+  # Skips
+  skip_on_cran()
+  skip_if_not_installed("ordinal")
+
+  # Load data
+  data(df1)
+
+  # Fit cumulative link models
+  fit1 <- ordinal::clm(y ~ x + I(x ^ 2), data = df1, link = "logit")
+  fit2 <- ordinal::clm(y ~ x + I(x ^ 2), data = df1, link = "probit")
+  fit3 <- ordinal::clm(y ~ x + I(x ^ 2), data = df1, link = "loglog")
+  fit4 <- ordinal::clm(y ~ x + I(x ^ 2), data = df1, link = "cloglog")
+  fit5 <- ordinal::clm(y ~ x + I(x ^ 2), data = df1, link = "cauchit")
+
+  # Compute residuals
+  res1 <- resids(fit1)
+  res2 <- resids(fit2)
+  res3 <- resids(fit3)
+  res4 <- resids(fit4)
+  res5 <- resids(fit5)
+
+  # Expectations
+  expect_equal(length(res1), nrow(df1))
+  expect_equal(length(res2), nrow(df1))
+  expect_equal(length(res3), nrow(df1))
+  expect_equal(length(res4), nrow(df1))
+  expect_equal(length(res5), nrow(df1))
+
+})
 
