@@ -147,8 +147,10 @@ autoplot.resid <- function(object, what = c("qq", "fitted", "covariate"),
 
   # Quantile-quantile
   if (what == "qq") {
-    if (attr(object, "jitter.scale") == "response") {
-      stop("Q-Q plots are not available for jittering on the response scale.")
+    if (!is.null(attr(object, "jitter.scale"))) {
+      if (attr(object, "jitter.scale") == "response") {
+        stop("Q-Q plots are not available for jittering on the response scale.")
+      }
     }
     distribution <- match.fun(distribution)
     x <- distribution(ppoints(length(res)))[order(order(res))]
