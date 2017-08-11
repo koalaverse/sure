@@ -33,41 +33,9 @@ gof <- function(object, nsim = 10, test = c("ks", "ad", "cvm"), ...) {
 }
 
 
-#' @keywords internal
-sim.pvals <- function(res, test, pfun) {
-  gof.test <- switch(test, "ks" = stats::ks.test, "ad" = goftest::ad.test,
-                     "cvm" = goftest::cvm.test)
-  pvals <- apply(attr(res, "boot.reps"), MARGIN = 2, FUN = function(x) {
-    gof.test(x, pfun)$p.value
-  })
-  class(pvals) <- c("gof", "numeric")
-  pvals
-}
-
-
 #' @rdname gof
 #' @export
-gof.clm <- function(object, nsim = 10, test = c("ks", "ad", "cvm"), ...) {
-  res <- resids(object, nsim = nsim)
-  test <- match.arg(test)
-  pfun <- getDistributionFunction(object)
-  sim.pvals(res, test = test, pfun = pfun)
-}
-
-
-#' @rdname gof
-#' @export
-gof.polr <- function(object, nsim = 10, test = c("ks", "ad", "cvm"), ...) {
-  res <- resids(object, nsim = nsim)
-  test <- match.arg(test)
-  pfun <- getDistributionFunction(object)
-  sim.pvals(res, test = test, pfun = pfun)
-}
-
-
-#' @rdname gof
-#' @export
-gof.vglm <- function(object, nsim = 10, test = c("ks", "ad", "cvm"), ...) {
+gof.default <- function(object, nsim = 10, test = c("ks", "ad", "cvm"), ...) {
   res <- resids(object, nsim = nsim)
   test <- match.arg(test)
   pfun <- getDistributionFunction(object)
@@ -80,4 +48,16 @@ gof.vglm <- function(object, nsim = 10, test = c("ks", "ad", "cvm"), ...) {
 plot.gof <- function(x, ...) {
   graphics::plot(stats::ecdf(x), xlab = "p-value", xlim = c(0, 1), ...)
   graphics::abline(0, 1, lty = 2)
+}
+
+
+#' @keywords internal
+sim.pvals <- function(res, test, pfun) {
+  gof.test <- switch(test, "ks" = stats::ks.test, "ad" = goftest::ad.test,
+                     "cvm" = goftest::cvm.test)
+  pvals <- apply(attr(res, "boot.reps"), MARGIN = 2, FUN = function(x) {
+    gof.test(x, pfun)$p.value
+  })
+  class(pvals) <- c("gof", "numeric")
+  pvals
 }
