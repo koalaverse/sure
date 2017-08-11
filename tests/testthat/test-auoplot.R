@@ -17,12 +17,14 @@ test_that("autoplot works for \"clm\" objects", {
   p1 <- ggplot2::autoplot(fit, what = "qq")
   p2 <- ggplot2::autoplot(fit, what = "covariate", x = df1$x)
   p3 <- ggplot2::autoplot(fit, what = "fitted")
+  p4 <- ggplot2::autoplot(fit, what = "fitted", nsim = 10)
 
 
   # Expectations
   expect_is(p1, "ggplot")
   expect_is(p2, "ggplot")
   expect_is(p3, "ggplot")
+  expect_is(p4, "ggplot")
 
 })
 
@@ -42,12 +44,14 @@ test_that("autoplot works for \"glm\" objects", {
   p1 <- ggplot2::autoplot(fit, jitter.scale = "probability", what = "qq")
   p2 <- ggplot2::autoplot(fit, what = "covariate", x = df1$x)
   p3 <- ggplot2::autoplot(fit, what = "fitted")
+  p4 <- ggplot2::autoplot(fit, what = "fitted", nsim = 10)
 
 
   # Expectations
   expect_is(p1, "ggplot")
   expect_is(p2, "ggplot")
   expect_is(p3, "ggplot")
+  expect_is(p4, "ggplot")
 
 })
 
@@ -68,12 +72,14 @@ test_that("autoplot works for \"lrm\" objects", {
   p1 <- ggplot2::autoplot(fit, what = "qq")
   p2 <- ggplot2::autoplot(fit, what = "covariate", x = df1$x)
   p3 <- ggplot2::autoplot(fit, what = "fitted")
+  p4 <- ggplot2::autoplot(fit, what = "fitted", nsim = 10)
 
 
   # Expectations
   expect_is(p1, "ggplot")
   expect_is(p2, "ggplot")
   expect_is(p3, "ggplot")
+  expect_is(p4, "ggplot")
 
 })
 
@@ -94,12 +100,14 @@ test_that("autoplot works for \"orm\" objects", {
   p1 <- ggplot2::autoplot(fit, what = "qq")
   p2 <- ggplot2::autoplot(fit, what = "covariate", x = df1$x)
   p3 <- ggplot2::autoplot(fit, what = "fitted")
+  p4 <- ggplot2::autoplot(fit, what = "fitted", nsim = 10)
 
 
   # Expectations
   expect_is(p1, "ggplot")
   expect_is(p2, "ggplot")
   expect_is(p3, "ggplot")
+  expect_is(p4, "ggplot")
 
 })
 
@@ -120,12 +128,14 @@ test_that("autoplot works for \"polr\" objects", {
   p1 <- ggplot2::autoplot(fit, what = "qq")
   p2 <- ggplot2::autoplot(fit, what = "covariate", x = df1$x)
   p3 <- ggplot2::autoplot(fit, what = "fitted")
+  p4 <- ggplot2::autoplot(fit, what = "fitted", nsim = 10)
 
 
   # Expectations
   expect_is(p1, "ggplot")
   expect_is(p2, "ggplot")
   expect_is(p3, "ggplot")
+  expect_is(p4, "ggplot")
 
 })
 
@@ -150,11 +160,13 @@ test_that("autoplot works for \"vglm\" objects", {
   p1 <- ggplot2::autoplot(fit, what = "qq")
   p2 <- ggplot2::autoplot(fit, what = "covariate", x = df1$x)
   p3 <- ggplot2::autoplot(fit, what = "fitted")
+  p4 <- ggplot2::autoplot(fit, what = "fitted", nsim = 10)
 
 
   # Expectations
   expect_is(p1, "ggplot")
   expect_is(p2, "ggplot")
   expect_is(p3, "ggplot")
+  expect_is(p4, "ggplot")
 
 })
