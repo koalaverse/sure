@@ -48,6 +48,7 @@ test_that("autoplot works for \"glm\" objects", {
 
 
   # Expectations
+  expect_error(ggplot2::autoplot(fit, what = "qq"))
   expect_is(p1, "ggplot")
   expect_is(p2, "ggplot")
   expect_is(p3, "ggplot")
