@@ -2,19 +2,13 @@
 % Please edit documentation in R/gof.R
 \name{gof}
 \alias{gof}
-\alias{gof.clm}
-\alias{gof.polr}
-\alias{gof.vglm}
+\alias{gof.default}
 \alias{plot.gof}
 \title{Kolmogorov-Smirnov Simulation}
 \usage{
 gof(object, nsim = 10, test = c("ks", "ad", "cvm"), ...)
 
-\method{gof}{clm}(object, nsim = 10, test = c("ks", "ad", "cvm"), ...)
-
-\method{gof}{polr}(object, nsim = 10, test = c("ks", "ad", "cvm"), ...)
-
-\method{gof}{vglm}(object, nsim = 10, test = c("ks", "ad", "cvm"), ...)
+\method{gof}{default}(object, nsim = 10, test = c("ks", "ad", "cvm"), ...)
 
 \method{plot}{gof}(x, ...)
 }

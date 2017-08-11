@@ -25,6 +25,7 @@
 #' a "good" fit.
 #'
 #' @rdname gof
+#' @export
 gof <- function(object, nsim = 10, test = c("ks", "ad", "cvm"), ...) {
   if (nsim <- as.integer(nsim) < 2) {
     stop("nsim must be a postive integer >= 2")
