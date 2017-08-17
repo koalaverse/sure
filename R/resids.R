@@ -98,8 +98,8 @@ resids.glm <- function(object, jitter.scale = c("probability", "response"),
                        nsim = 1L, ...) {
 
   # Print warning message
-  warning("Using sure with \"glm\" objects is still experimental. Use at ",
-          "your own risk.")
+  warning("Using sure with \"glm\" objects is still experimental. Use with ",
+          "caution.")
 
   # Check for binomial family
   if (object$family$family != "binomial") {
