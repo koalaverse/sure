@@ -3,13 +3,13 @@
 #' Surrogate-based residuals for cumulative link and general regression models.
 #'
 #' @param object An object of class \code{\link[ordinal]{clm}},
-#' \code{\link[stats]{glm}}, \code{\link[MASS]{polr}}, or
-#' \code{\link[VGAM]{vglm}}.
+#' \code{\link[stats]{glm}}, \code{\link[rms]{lrm}}, \code{\link[rms]{orm}},
+#' \code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.
 #'
 #' @param jitter.scale Character string specifying the scale on which to perform
-#' the jittering. Should be one of \code{"response"} or \code{"probability"}.
+#' the jittering. Should be one of \code{"probability"} or \code{"response"}.
 #' Currently only used when object inherits from class \code{"glm"}. Default is
-#' \code{"response"}.
+#' \code{"probability"}.
 #'
 #' @param nsim Integer specifying the number of bootstrap replicates to use.
 #' Default is \code{1L} meaning no bootstrap samples.
@@ -94,7 +94,7 @@ resids.lrm <- function(object, nsim = 1L, ...) {
 
 #' @rdname resids
 #' @export
-resids.glm <- function(object, jitter.scale = c("response", "probability"),
+resids.glm <- function(object, jitter.scale = c("probability", "response"),
                        nsim = 1L, ...) {
 
   # Print warning message

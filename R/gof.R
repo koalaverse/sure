@@ -3,6 +3,7 @@
 #' Simulate p-values from a goodness-of-fit test (experimental).
 #'
 #' @param object An object of class \code{\link[ordinal]{clm}},
+#' \code{\link[stats]{glm}}, \code{\link[rms]{lrm}}, \code{\link[rms]{orm}},
 #' \code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.
 #'
 #' @param nsim Integer specifying the number of bootstrap replicates to use.

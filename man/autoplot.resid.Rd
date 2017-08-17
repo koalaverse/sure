@@ -63,7 +63,8 @@ autoplot.vglm(object, what = c("qq", "fitted", "covariate"), x = NULL,
 }
 \arguments{
 \item{object}{An object of class \code{\link[ordinal]{clm}},
-\code{\link[MASS]{polr}}, \code{\link[VGAM]{vglm}}, or \code{"resid"}.}
+\code{\link[stats]{glm}}, \code{\link[rms]{lrm}}, \code{\link[rms]{orm}},
+\code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.}
 
 \item{what}{Character string specifying what to plot. Default is \code{"qq"}
 which produces a quantile-quantile plots of the residuals.}
@@ -77,7 +78,9 @@ required if \code{what = "fitted"} and \code{object} inherits from class
 
 \item{distribution}{Function that computes the quantiles for the reference
 distribution to use in the quantile-quantile plot. Default is \code{qnorm}
-which is only appropriate for models using a probit link function. (Only
+which is only appropriate for models using a probit link function. When
+\code{jitter.scale = "probability"}, the reference distribution is always
+U(-0.5, 0.5). (Only
 required if \code{object} inherits from class \code{"resid"}.)}
 
 \item{alpha}{A single values in the interval [0, 1] controlling the opacity

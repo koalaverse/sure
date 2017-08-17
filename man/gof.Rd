@@ -14,6 +14,7 @@ gof(object, nsim = 10, test = c("ks", "ad", "cvm"), ...)
 }
 \arguments{
 \item{object}{An object of class \code{\link[ordinal]{clm}},
+\code{\link[stats]{glm}}, \code{\link[rms]{lrm}}, \code{\link[rms]{orm}},
 \code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.}
 
 \item{nsim}{Integer specifying the number of bootstrap replicates to use.}

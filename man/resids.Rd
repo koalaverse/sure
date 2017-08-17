@@ -13,13 +13,13 @@ resids(object, ...)
 
 \method{resids}{lrm}(object, nsim = 1L, ...)
 
-\method{resids}{glm}(object, jitter.scale = c("response", "probability"),
+\method{resids}{glm}(object, jitter.scale = c("probability", "response"),
   nsim = 1L, ...)
 }
 \arguments{
 \item{object}{An object of class \code{\link[ordinal]{clm}},
-\code{\link[stats]{glm}}, \code{\link[MASS]{polr}}, or
-\code{\link[VGAM]{vglm}}.}
+\code{\link[stats]{glm}}, \code{\link[rms]{lrm}}, \code{\link[rms]{orm}},
+\code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.}
 
 \item{...}{Additional optional arguments. (Currently ignored.)}
 
@@ -27,9 +27,9 @@ resids(object, ...)
 Default is \code{1L} meaning no bootstrap samples.}
 
 \item{jitter.scale}{Character string specifying the scale on which to perform
-the jittering. Should be one of \code{"response"} or \code{"probability"}.
+the jittering. Should be one of \code{"probability"} or \code{"response"}.
 Currently only used when object inherits from class \code{"glm"}. Default is
-\code{"response"}.}
+\code{"probability"}.}
 }
 \value{
 A numeric vector (\code{nsim = 1}) or matrix (\code{nsim} > 1) of
