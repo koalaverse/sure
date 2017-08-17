@@ -3,7 +3,7 @@ Type: Package
 Title: Surrogate Residuals for Ordinal and General Regression Models
 Description: Surrogate-based residuals and diagnostics for ordinal and general 
     regression models.
-Version: 0.0.9000
+Version: 0.1.0
 Authors@R: c(
     person("Brandon", "Greenwell",
            email = "greenwell.brandon@gmail.com",
