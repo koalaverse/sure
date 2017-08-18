@@ -107,6 +107,6 @@ p7 <- autoplot(res, what = "covariate", x = d$x) + ggtitle("Figure 4(a)")
 p8 <- autoplot(res, what = "qq") + ggtitle("Figure 4(b)")
 
 # Save plots
-pdf("slowtests\\figures\\misspecified-link.pdf", width = 7, height = 12)
+# pdf("slowtests\\figures\\misspecified-link.pdf", width = 7, height = 12)
 grid.arrange(p1, p2, p3, p4, p5, p6, p7, p8, ncol = 2)
-dev.off()
+# dev.off()

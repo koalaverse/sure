@@ -135,9 +135,9 @@ p8 <- ggplot(fig1, aes(sample = y)) +
   ggtitle("Figure 1(b)")
 
 # Save plot
-pdf("slowtests\\figures\\model-specified-correctly.pdf", width = 7, height = 12)
+# pdf("slowtests\\figures\\model-specified-correctly.pdf", width = 7, height = 12)
 grid.arrange(p1, p2, p3, p4, p5, p6, p7, p8, ncol = 2)
-dev.off()
+# dev.off()
 
 
 ################################################################################
@@ -170,6 +170,6 @@ p8 <- ggplot(fig1, aes(sample = y)) +
   ggtitle("Figure 3(b)")
 
 # Save plot
-pdf("slowtests\\figures\\model-specified-incorrectly.pdf", width = 7, height = 12)
+# pdf("slowtests\\figures\\model-specified-incorrectly.pdf", width = 7, height = 12)
 grid.arrange(p1, p2, p3, p4, p5, p6, p7, p8, ncol = 2)
-dev.off()
+# dev.off()

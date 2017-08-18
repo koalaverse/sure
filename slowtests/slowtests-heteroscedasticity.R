@@ -92,7 +92,6 @@ fit.orm <- orm(y ~ x, data = d, family = probit)
 ################################################################################
 
 # Compare to Figure 6(a)
-pdf("slowtests\\figures\\heteroscedasticity.pdf", width = 7, height = 6)
 p1 <- autoplot(fit.clm, what = "covariate", x = d$x) + ggtitle("ordinal::clm")
 p2 <- autoplot(fit.polr, what = "covariate", x = d$x) + ggtitle("MASS::polr")
 p3 <- autoplot(fit.vglm, what = "covariate", x = d$x) + ggtitle("VGAM::vglm")
@@ -101,5 +100,6 @@ p4 <- ggplot(data.frame(x = d$x, y = res.boot), aes(x, y)) +
   geom_smooth(color = "red", se = FALSE) +
   ylab("Surrogate residual") +
   ggtitle("Figure 6(a)")
+# pdf("slowtests\\figures\\heteroscedasticity.pdf", width = 7, height = 6)
 grid.arrange(p1, p2, p3, p4, ncol = 2)
-dev.off()
+# dev.off()

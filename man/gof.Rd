@@ -19,17 +19,18 @@ gof(object, nsim = 10, test = c("ks", "ad", "cvm"), ...)
 
 \item{nsim}{Integer specifying the number of bootstrap replicates to use.}
 
-\item{test}{Cahracter string specifying which goodness-of-fit test to use.
-Options include: \code{"ks"} for the Kolmogorov-Smirnov test; \code{"ad"} for
-the Anderson-Darling test, and \code{"cvm"} for the Cramer-Von Mises test.
-Default is \code{"ks"}.}
+\item{test}{Character string specifying which goodness-of-fit test to use.
+Current options include: \code{"ks"} for the Kolmogorov-Smirnov test,
+\code{"ad"} for the Anderson-Darling test, and \code{"cvm"} for the
+Cramer-Von Mises test. Default is \code{"ks"}.}
 
 \item{...}{Additional optional arguments. (Currently ignored.)}
 
 \item{x}{An object of class \code{"gof"}.}
 }
 \value{
-An object of class \code{c("gof", "numeric")}.
+A numeric vector of class \code{"gof", "numeric"} containing the
+simulated p-values.
 }
 \description{
 Simulate p-values from a goodness-of-fit test (experimental).
@@ -39,4 +40,8 @@ Under the null hypothesis, the distribution of the p-values should appear
 uniformly distributed on the interval [0, 1]. This can be visually
 investigated using the \code{plot} method. A 45 degree line is indicative of
 a "good" fit.
+}
+\examples{
+# See ?resids for an example
+?resids
 }

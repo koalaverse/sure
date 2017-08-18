@@ -45,7 +45,6 @@ table(df2$y)
 
 # Function to simulate data with Gumbel errors on the linear predictor scale
 simGumbelData <- function(n = 2000) {
-  set.seed(977)
   threshold <- c(0, 4, 8)
   x <- runif(n, min = 1, max = 7)
   z <- 16 - 8 * x + 1 * x ^ 2 + ordr:::rgumbel(n)

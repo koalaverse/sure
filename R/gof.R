@@ -8,16 +8,17 @@
 #'
 #' @param nsim Integer specifying the number of bootstrap replicates to use.
 #'
-#' @param test Cahracter string specifying which goodness-of-fit test to use.
-#' Options include: \code{"ks"} for the Kolmogorov-Smirnov test; \code{"ad"} for
-#' the Anderson-Darling test, and \code{"cvm"} for the Cramer-Von Mises test.
-#' Default is \code{"ks"}.
+#' @param test Character string specifying which goodness-of-fit test to use.
+#' Current options include: \code{"ks"} for the Kolmogorov-Smirnov test,
+#' \code{"ad"} for the Anderson-Darling test, and \code{"cvm"} for the
+#' Cramer-Von Mises test. Default is \code{"ks"}.
 #'
 #' @param ... Additional optional arguments. (Currently ignored.)
 #'
 #' @param x An object of class \code{"gof"}.
 #'
-#' @return An object of class \code{c("gof", "numeric")}.
+#' @return A numeric vector of class \code{"gof", "numeric"} containing the
+#' simulated p-values.
 #'
 #' @details
 #' Under the null hypothesis, the distribution of the p-values should appear
@@ -26,7 +27,12 @@
 #' a "good" fit.
 #'
 #' @rdname gof
+#'
 #' @export
+#'
+#' @examples
+#' # See ?resids for an example
+#' ?resids
 gof <- function(object, nsim = 10, test = c("ks", "ad", "cvm"), ...) {
   if (nsim <- as.integer(nsim) < 2) {
     stop("nsim must be a postive integer >= 2")

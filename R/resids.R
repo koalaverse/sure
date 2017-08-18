@@ -6,21 +6,31 @@
 #' \code{\link[stats]{glm}}, \code{\link[rms]{lrm}}, \code{\link[rms]{orm}},
 #' \code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.
 #'
+#' @param method Character string specifying the type of surrogate to use; for
+#' details, see Liu and Zhang (2017). For cumulative link models, the latent
+#' variable method is used. For binary GLMs, the jittering appraoch is employed.
+#' (Currently ignored.)
+#'
 #' @param jitter.scale Character string specifying the scale on which to perform
 #' the jittering. Should be one of \code{"probability"} or \code{"response"}.
-#' Currently only used when object inherits from class \code{"glm"}. Default is
-#' \code{"probability"}.
+#' (Currently ignored for cumulative link models.)
 #'
 #' @param nsim Integer specifying the number of bootstrap replicates to use.
 #' Default is \code{1L} meaning no bootstrap samples.
 #'
 #' @param ... Additional optional arguments. (Currently ignored.)
 #'
-#' @return A numeric vector (\code{nsim = 1}) or matrix (\code{nsim} > 1) of
-#' residuals. If \code{nsim} > 1, then the result will be a matrix with
-#' \code{nsim} columns, one for each bootstrap repliacte of the residuals. The
-#' result will contain the additional class \code{"resid"}, which is recognized
-#' by \code{\link{autoplot.resid}}.
+#' @return A numeric vector of residuals. This will also contain the additional
+#' class \code{"resid"} which is recognized by other functions.
+#' Additionally, if \code{nsim} > 1, then the result will contain two atributes:
+#' \describe{
+#'   \item{\code{boot.reps}}{A matrix  with \code{nsim} columns, one for each
+#'   bootstrap repliacte of the residuals. Note, these are random and do not
+#'   correspond to the original ordering of the data;}
+#'   \item{\code{boot.id}}{A matrix  with \code{nsim} columns. Each column
+#'   contains the observation number each residual corresponds to in
+#'   \code{boot.reps}. (This is used for plotting purposes.)}
+#' }
 #'
 #' @note The internal functions used for sampling from truncated distirbutions
 #' are based on modified versions of \code{\link[truncdist]{rtrunc}} and
@@ -37,6 +47,86 @@
 #' https://www.jstatsoft.org/v016/c02.
 #'
 #' @export
+#'
+#' @examples
+#' \dontrun{
+#' # Load required packages
+#' library(ggplot2)  # for autoplot function
+#' library(MASS)  # for polr function
+#' library(ordinal)  # for clm function
+#'
+#' #
+#' # Detecting a misspecified mean structure
+#' #
+#'
+#' # Data simulated from a probit model with a quadratic trend
+#' data(df1)
+#' ?df1
+#'
+#' # Fit a probit model with/without a quadratic trend
+#' fit.bad <- polr(y ~ x, data = df1, method = "probit")
+#' fit.good <- polr(y ~ x + I(x ^ 2), data = df1, method = "probit")
+#'
+#' # Some residual plots
+#' p1 <- autoplot(fit.bad, what = "covariate", x = df1$x)
+#' p2 <- autoplot(fit.bad, what = "qq")
+#' p3 <- autoplot(fit.good, what = "covariate", x = df1$x)
+#' p4 <- autoplot(fit.good, what = "qq")
+#'
+#' # Display all four plots together (top row corresponds to bad model)
+#' grid.arrange(p1, p2, p3, p4, ncol = 2)
+#'
+#' #
+#' # Detecting heteroscedasticity
+#' #
+#'
+#' # Data simulated from a probit model with heteroscedasticity.
+#' data(df2)
+#' ?df2
+#'
+#' # Fit a probit model with/without a quadratic trend
+#' fit <- polr(y ~ x, data = df2, method = "probit")
+#'
+#' # Some residual plots
+#' p1 <- autoplot(fit, what = "covariate", x = df1$x)
+#' p2 <- autoplot(fit, what = "qq")
+#' p3 <- autoplot(fit, what = "fitted")
+#'
+#' # Display all three plots together
+#' grid.arrange(p1, p2, p3, ncol = 3)
+#'
+#' #
+#' # Detecting a misspecified link function
+#' #
+#'
+#' # Data simulated from a log-log model with a quadratic trend.
+#' data(df3)
+#' ?df3
+#'
+#' # Fit models with correctly specified link function
+#' clm.loglog <- clm(y ~ x + I(x ^ 2), data = df3, link = "loglog")
+#' polr.loglog <- polr(y ~ x + I(x ^ 2), data = df3, method = "loglog")
+#'
+#' # Fit models with misspecified link function
+#' clm.probit <- clm(y ~ x + I(x ^ 2), data = df3, link = "probit")
+#' polr.probit <- polr(y ~ x + I(x ^ 2), data = df3, method = "probit")
+#'
+#' # Q-Q plots of the residuals (with bootstrapping)
+#' p1 <- autoplot(clm.probit, nsim = 50, what = "qq") +
+#'   ggtitle("clm: probit link")
+#' p2 <- autoplot(clm.loglog, nsim = 50, what = "qq") +
+#'   ggtitle("clm: log-log link (correct link function)")
+#' p3 <- autoplot(polr.probit, nsim = 50, what = "qq") +
+#'   ggtitle("polr: probit link")
+#' p4 <- autoplot(polr.loglog, nsim = 50, what = "qq") +
+#'   ggtitle("polr: log-log link (correct link function)")
+#' grid.arrange(p1, p2, p3, p4, ncol = 2)
+#'
+#' # We can also try various goodness-of-fit tests
+#' par(mfrow = c(1, 2))
+#' plot(gof(clm.probit, nsim = 50))
+#' plot(gof(clm.loglog, nsim = 50))
+#' }
 resids <- function(object, ...) {
   UseMethod("resids")
 }
@@ -44,15 +134,15 @@ resids <- function(object, ...) {
 
 #' @rdname resids
 #' @export
-resids.default <- function(object, nsim = 1L, ...) {
+resids.default <- function(object, method = c("latent", "jitter"),
+                           jitter.scale = c("probability", "response"),
+                           nsim = 1L, ...) {
 
   # Sanity check
   if (!inherits(object, c("clm", "glm", "lrm", "orm", "polr", "vglm"))) {
     stop(deparse(substitute(object)), " should be of class \"clm\", \"glm\", ",
          "\"lrm\", \"orm\", \"polr\", or \"vglm\".")
   }
-
-
 
   # Extract number of observations, response values, and truncation bounds
   y <- getResponseValues(object)
@@ -87,7 +177,9 @@ resids.default <- function(object, nsim = 1L, ...) {
 
 #' @rdname resids
 #' @export
-resids.lrm <- function(object, nsim = 1L, ...) {
+resids.lrm <- function(object, method = c("latent", "jitter"),
+                       jitter.scale = c("probability", "response"), nsim = 1L,
+                       ...) {
   resids.default(object, nsim = nsim, ...)
 }
 

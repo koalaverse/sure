@@ -1,36 +1,44 @@
 Package: sure
 Type: Package
 Title: Surrogate Residuals for Ordinal and General Regression Models
-Description: Surrogate-based residuals and diagnostics for ordinal and general 
-    regression models.
-Version: 0.1.0
+Description: An implementation of the surrogate approach to residuals and 
+  diagnostics for ordinal and general regression models; for details, see Liu 
+  and Zhang (2017) <http://dx.doi.org/10.1080/01621459.2017.1292915>. These 
+  residuals can be used to construct standard residual plots for model 
+  diagnostics (e.g., residual-vs-fitted value plots, residual-vs-covariate 
+  plots, Q-Q plots, etc.). The package also provides an autoplot function
+  for producing standard diagnostic plots using ggplot2-based graphics.
+  The package currently supports ordinal regression models from packages
+  MASS, ordinal, rms, and VGAM. Support for binary regression models using the
+  standard glm function is also available.
+Version: 0.1.1
 Authors@R: c(
-    person("Brandon", "Greenwell",
-           email = "greenwell.brandon@gmail.com",
-           role = c("aut", "cre")),
-    person("Andrew", "McCarthy",
-           email = "andrew.mccarthy@theperducogroup.com",
-           role = c("aut")),
-    person("Brad", "Boehmke",
-           email = "bradleyboehmke@gmail.com",
-           role = c("aut")),
-    person("Dungang", "Liu",
-           email = "dungang.liu@uc.edu",
-           role = c("ctb"))
-    )
+  person("Brandon", "Greenwell",
+         email = "greenwell.brandon@gmail.com",
+         role = c("aut", "cre")),
+  person("Andrew", "McCarthy",
+         email = "andrew.mccarthy@theperducogroup.com",
+         role = c("aut")),
+  person("Brad", "Boehmke",
+         email = "bradleyboehmke@gmail.com",
+         role = c("aut")),
+  person("Dungang", "Liu",
+         email = "dungang.liu@uc.edu",
+         role = c("ctb"))
+  )
 Depends:
-    R (>= 3.1)
+  R (>= 3.1)
 Imports:
-    ggplot2 (>= 2.2.1),
-    goftest,
-    gridExtra,
-    stats
+  ggplot2 (>= 2.2.1),
+  goftest,
+  gridExtra,
+  stats
 Suggests:
-    MASS,
-    ordinal,
-    rms,
-    testthat,
-    VGAM
+  MASS,
+  ordinal,
+  rms,
+  testthat,
+  VGAM
 License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true

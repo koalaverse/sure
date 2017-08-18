@@ -9,21 +9,18 @@ for ordinal and general regression models.}
 \description{
 The \code{sure} package provides surrogate-based residuals for fitted ordinal
 and general (e.g., binary) regression models of class
-\code{\link[ordinal]{clm}}, \code{\link[stats]{glm}},
-\code{\link[MASS]{polr}}, and \code{\link[VGAM]{vglm}}.
+\code{\link[ordinal]{clm}}, \code{\link[stats]{glm}}, \code{\link[rms]{lrm}},
+\code{\link[rms]{orm}}, \code{\link[MASS]{polr}}, or
+\code{\link[VGAM]{vglm}}.
 }
 \details{
 The development version can be found on GitHub:
-https://github.com/AFIT-R/sure. As of right now, \code{sure} only exports two
-functions:
+\url{https://github.com/AFIT-R/sure}. As of right now, \code{sure} exports the
+following functions:
 \itemize{
-  \item{\code{resids}} - construct (surrogate-based) residuals for
-  \code{\link[ordinal]{clm}}, \code{\link[stats]{glm}},
-  \code{\link[MASS]{polr}}, and \code{\link[VGAM]{vglm}} objects;
-  \item{\code{autoplot}} - plot diagnostics for \code{\link[ordinal]{clm}},
-\code{\link[stats]{glm}}, \code{\link[MASS]{polr}}, and
-\code{\link[VGAM]{vglm}} objects using \code{\link[ggplot2]{ggplot2}}
-graphics;
+  \item{\code{resids}} - construct (surrogate-based) residuals;
+  \item{\code{autoplot}} - plot diagnostics using
+  \code{\link[ggplot2]{ggplot2}}-based graphics;
   \item{\code{gof}} - simulate p-values from a goodness-of-fit test.
 }
 }

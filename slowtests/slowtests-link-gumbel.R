@@ -73,6 +73,6 @@ p4 <- autoplot(polr.loglog, nsim = 50, what = "qq") +
   ggtitle("polr: log-log link")
 
 # Save plot
-pdf("slowtests\\figures\\link-gumbel.pdf", width = 7, height = 7)
+# pdf("slowtests\\figures\\link-gumbel.pdf", width = 7, height = 7)
 grid.arrange(p1, p2, p3, p4, ncol = 2)
-dev.off()
+# dev.off()
