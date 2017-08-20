@@ -27,12 +27,12 @@ simData <- function(n = 2000) {
 }
 
 # Simulate balanced data
-d <- simData(n = 10000)
-d <- d %>%
-  group_by(y) %>%
-  slice(1:1000) %>%
-  ungroup() %>%
-  as.data.frame()
+d <- simData(n = 2000)
+# d <- d %>%
+#   group_by(y) %>%
+#   slice(1:1000) %>%
+#   ungroup() %>%
+#   as.data.frame()
 table(d$y)
 
 

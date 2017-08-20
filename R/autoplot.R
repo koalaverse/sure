@@ -25,9 +25,9 @@
 #' required if \code{object} inherits from class \code{"resid"}.)
 #'
 #' @param jitter.scale Character string specifying the scale on which to perform
-#' the jittering. Should be one of \code{"response"} or \code{"probability"}.
+#' the jittering. Should be one of \code{"probability"} or \code{"response"}.
 #' Currently only used when object inherits from class \code{"glm"}. Default is
-#' \code{"response"}.
+#' \code{"probability"}.
 #'
 #' @param nsim Integer specifying the number of bootstrap replicates to use.
 #'
@@ -39,7 +39,7 @@
 #'
 #' @param color Character string or integer specifying what color to use for the
 #' points in the residual vs fitted value/covariate plot.
-#' Defaul is \code{"black"}.
+#' Default is \code{"black"}.
 #'
 #' @param shape Integer or single character specifying a symbol to be used for
 #' plotting the points in the residual vs fitted value/covariate plot.
@@ -86,9 +86,13 @@
 #'
 #' @return A \code{"ggplot"} object.
 #'
+#' @rdname autoplot.resid
+#'
 #' @export
 #'
-#' @rdname autoplot.resid
+#' @examples
+#' # See ?resids for an example
+#' ?resids
 autoplot.resid <- function(object, what = c("qq", "fitted", "covariate"),
                            x = NULL, fit = NULL, distribution = qnorm,
                            alpha = 1, xlab = NULL,
@@ -246,7 +250,7 @@ autoplot.clm <- function(object, what = c("qq", "fitted", "covariate"),
 #' @rdname autoplot.resid
 #' @export
 autoplot.glm <- function(object, what = c("qq", "fitted", "covariate"),
-                         x = NULL, jitter.scale = c("response", "probability"),
+                         x = NULL, jitter.scale = c("probability", "response"),
                          nsim = 1, alpha = 1, xlab = NULL,
                          color = "#444444",
                          shape = 19,

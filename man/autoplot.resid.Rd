@@ -26,7 +26,7 @@ autoplot.clm(object, what = c("qq", "fitted", "covariate"), x = NULL,
   smooth.linetype = 1, smooth.size = 1, fill = NULL, ...)
 
 autoplot.glm(object, what = c("qq", "fitted", "covariate"), x = NULL,
-  jitter.scale = c("response", "probability"), nsim = 1, alpha = 1,
+  jitter.scale = c("probability", "response"), nsim = 1, alpha = 1,
   xlab = NULL, color = "#444444", shape = 19, size = 2,
   qqpoint.color = "#444444", qqpoint.shape = 19, qqpoint.size = 2,
   qqline.color = "#888888", qqline.linetype = "dashed", qqline.size = 1,
@@ -91,7 +91,7 @@ residual-by-covariate plots. Default is \code{NULL}.}
 
 \item{color}{Character string or integer specifying what color to use for the
 points in the residual vs fitted value/covariate plot.
-Defaul is \code{"black"}.}
+Default is \code{"black"}.}
 
 \item{shape}{Integer or single character specifying a symbol to be used for
 plotting the points in the residual vs fitted value/covariate plot.}
@@ -139,9 +139,9 @@ to the factor levels.}
 \item{nsim}{Integer specifying the number of bootstrap replicates to use.}
 
 \item{jitter.scale}{Character string specifying the scale on which to perform
-the jittering. Should be one of \code{"response"} or \code{"probability"}.
+the jittering. Should be one of \code{"probability"} or \code{"response"}.
 Currently only used when object inherits from class \code{"glm"}. Default is
-\code{"response"}.}
+\code{"probability"}.}
 }
 \value{
 A \code{"ggplot"} object.
@@ -149,4 +149,8 @@ A \code{"ggplot"} object.
 \description{
 Residual-based diagnostic plots for cumulative link and general regression
 models using \code{\link[ggplot2]{ggplot2}} graphics.
+}
+\examples{
+# See ?resids for an example
+?resids
 }

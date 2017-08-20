@@ -13,9 +13,15 @@
 data(df2)
 }
 \description{
-Data simulated from a probit model with heteroscedasticity.
+Data simulated from a probit model with heteroscedasticity. The data are
+described in Example 4 of Liu and Zhang (2017).
 }
 \examples{
 head(df2)
+}
+\references{
+Liu, Dungang and Zhang, Heping. Residuals and Diagnostics for Ordinal
+Regression Models: A Surrogate Approach.
+\emph{Journal of the American Statistical Association} (accepted).
 }
 \keyword{datasets}

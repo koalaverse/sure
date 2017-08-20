@@ -3,15 +3,15 @@ Type: Package
 Title: Surrogate Residuals for Ordinal and General Regression Models
 Description: An implementation of the surrogate approach to residuals and 
   diagnostics for ordinal and general regression models; for details, see Liu 
-  and Zhang (2017) <http://dx.doi.org/10.1080/01621459.2017.1292915>. These 
-  residuals can be used to construct standard residual plots for model 
-  diagnostics (e.g., residual-vs-fitted value plots, residual-vs-covariate 
-  plots, Q-Q plots, etc.). The package also provides an autoplot function
-  for producing standard diagnostic plots using ggplot2-based graphics.
-  The package currently supports ordinal regression models from packages
-  MASS, ordinal, rms, and VGAM. Support for binary regression models using the
-  standard glm function is also available.
-Version: 0.1.1
+  and Zhang (2017) <doi:10.1080/01621459.2017.1292915>. These residuals can be 
+  used to construct standard residual plots for model diagnostics (e.g., 
+  residual-vs-fitted value plots, residual-vs-covariate plots, Q-Q plots, etc.). 
+  The package also provides an 'autoplot' function for producing standard 
+  diagnostic plots using 'ggplot2' graphics. The package currently supports 
+  cumulative link models from packages 'MASS', 'ordinal', 'rms', and 'VGAM'. 
+  Support for binary regression models using the standard 'glm' function is also 
+  available.
+Version: 0.1.2
 Authors@R: c(
   person("Brandon", "Greenwell",
          email = "greenwell.brandon@gmail.com",

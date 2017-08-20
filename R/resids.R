@@ -1,4 +1,4 @@
-#' Residuals Cumulative Link and General Regression Models
+#' Surrogate Residuals
 #'
 #' Surrogate-based residuals for cumulative link and general regression models.
 #'
@@ -8,7 +8,7 @@
 #'
 #' @param method Character string specifying the type of surrogate to use; for
 #' details, see Liu and Zhang (2017). For cumulative link models, the latent
-#' variable method is used. For binary GLMs, the jittering appraoch is employed.
+#' variable method is used. For binary GLMs, the jittering approach is employed.
 #' (Currently ignored.)
 #'
 #' @param jitter.scale Character string specifying the scale on which to perform
@@ -20,21 +20,23 @@
 #'
 #' @param ... Additional optional arguments. (Currently ignored.)
 #'
-#' @return A numeric vector of residuals. This will also contain the additional
-#' class \code{"resid"} which is recognized by other functions.
-#' Additionally, if \code{nsim} > 1, then the result will contain two atributes:
+#' @return A numeric vector of class \code{c("numeric", "resid")} containing the
+#' residuals. Additionally, if \code{nsim} > 1, then the result will contain the
+#' attributes:
 #' \describe{
 #'   \item{\code{boot.reps}}{A matrix  with \code{nsim} columns, one for each
-#'   bootstrap repliacte of the residuals. Note, these are random and do not
+#'   bootstrap replicate of the residuals. Note, these are random and do not
 #'   correspond to the original ordering of the data;}
 #'   \item{\code{boot.id}}{A matrix  with \code{nsim} columns. Each column
 #'   contains the observation number each residual corresponds to in
 #'   \code{boot.reps}. (This is used for plotting purposes.)}
 #' }
 #'
-#' @note The internal functions used for sampling from truncated distirbutions
-#' are based on modified versions of \code{\link[truncdist]{rtrunc}} and
-#' \code{\link[truncdist]{qtrunc}}.
+#' @note Surrogate residuals require sampling from a continuous distribution;
+#' consequently, the result will be different with every call to \code{resids}.
+#' The internal functions used for sampling from truncated distributions when
+#' \code{method = "latent"} are based on modified versions of
+#' \code{\link[truncdist]{rtrunc}} and \code{\link[truncdist]{qtrunc}}.
 #'
 #' @references
 #' Liu, Dungang and Zhang, Heping. Residuals and Diagnostics for Ordinal
@@ -49,10 +51,43 @@
 #' @export
 #'
 #' @examples
+#' #
+#' # Residuals for binary GLMs using the jittering method
+#' #
+#'
+#' # Simulate logistic regression data with quadratic trend
+#' set.seed(101)  # for reproducibility
+#' n <- 1000
+#' x <- runif(n, min = 1, max = 7)
+#' y <- rbinom(n, size = 1, prob = plogis(16 - 8 * x + 1 * x ^ 2))
+#' d <- data.frame("x" = x, "y" = as.factor(y))
+#'
+#' # Fit logistic regression models (with and without quadratic trend)
+#' fit1 <- glm(y ~ x + I(x ^ 2), data = d, family = binomial)  # correct model
+#' fit2 <- glm(y ~ x, data = d, family = binomial)  # missing quadratic trend
+#'
+#' # Construct residuals
+#' set.seed(102)  # for reproducibility
+#' res1 <- resids(fit1)
+#' res2 <- resids(fit2)
+#'
+#' # Residual-vs-covariate plots
+#' par(mfrow = c(1, 2))
+#' scatter.smooth(d$x, res1, lpars = list(lwd = 2, col = "red"),
+#'                xlab = expression(x), ylab = "Surrogate residual",
+#'                main = "Correct model")
+#' scatter.smooth(d$x, res2, lpars = list(lwd = 2, col = "red"),
+#'                xlab = expression(x), ylab = "Surrogate residual",
+#'                main = "Incorrect model")
+#'
 #' \dontrun{
+#' #
+#' # Residuals for cumulative link models using the latent method
+#' #
+#'
 #' # Load required packages
 #' library(ggplot2)  # for autoplot function
-#' library(MASS)  # for polr function
+#' library(MASS)     # for polr function
 #' library(ordinal)  # for clm function
 #'
 #' #

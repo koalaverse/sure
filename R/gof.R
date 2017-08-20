@@ -1,6 +1,6 @@
-#' Kolmogorov-Smirnov Simulation
+#' Goodness-of-Fit Simulation
 #'
-#' Simulate p-values from a goodness-of-fit test (experimental).
+#' Simulate p-values from a goodness-of-fit test.
 #'
 #' @param object An object of class \code{\link[ordinal]{clm}},
 #' \code{\link[stats]{glm}}, \code{\link[rms]{lrm}}, \code{\link[rms]{orm}},

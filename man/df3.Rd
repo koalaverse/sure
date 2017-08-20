@@ -13,9 +13,15 @@
 data(df3)
 }
 \description{
-Data simulated from a log-log model with a quadratic trend.
+Data simulated from a log-log model with a quadratic trend. The data are
+described in Example 3 of Liu and Zhang (2017).
 }
 \examples{
 head(df3)
+}
+\references{
+Liu, Dungang and Zhang, Heping. Residuals and Diagnostics for Ordinal
+Regression Models: A Surrogate Approach.
+\emph{Journal of the American Statistical Association} (accepted).
 }
 \keyword{datasets}

@@ -4,7 +4,7 @@
 \alias{gof}
 \alias{gof.default}
 \alias{plot.gof}
-\title{Kolmogorov-Smirnov Simulation}
+\title{Goodness-of-Fit Simulation}
 \usage{
 gof(object, nsim = 10, test = c("ks", "ad", "cvm"), ...)
 
@@ -33,7 +33,7 @@ A numeric vector of class \code{"gof", "numeric"} containing the
 simulated p-values.
 }
 \description{
-Simulate p-values from a goodness-of-fit test (experimental).
+Simulate p-values from a goodness-of-fit test.
 }
 \details{
 Under the null hypothesis, the distribution of the p-values should appear
