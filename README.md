@@ -5,7 +5,7 @@
 
 
 
-# sure: Surrogate Residuals
+# sure: Surrogate Residuals <img src="tools/sure-logo.png" align="right" height="120"/>
 
 An R package for constructing **SU**rrogate-based **RE**siduals and diagnostics for ordinal and general regression models; based on the approach described in [Dungang and Zhang (2017)](http://www.tandfonline.com/doi/abs/10.1080/01621459.2017.1292915?journalCode=uasa20).
 
