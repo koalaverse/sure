@@ -86,3 +86,33 @@ NULL
 #' @examples
 #' head(df3)
 NULL
+
+
+#' Simulated Proportionality Data
+#'
+#' Data simulated from from two separate probit models. The data are described
+#' in Example 5 of Liu and Zhang (2017).
+#'
+#' @docType data
+#'
+#' @keywords datasets
+#'
+#' @format A data frame with 4000 rows and 2 variables.
+#' \itemize{
+#'   \item \code{x} The predictor variable.
+#'   \item \code{y} The response variable; an ordered factor.
+#' }
+#'
+#' @references
+#' Liu, Dungang and Zhang, Heping. Residuals and Diagnostics for Ordinal
+#' Regression Models: A Surrogate Approach.
+#' \emph{Journal of the American Statistical Association} (accepted).
+#'
+#' @name df4
+#'
+#' @usage
+#' data(df4)
+#'
+#' @examples
+#' head(df4)
+NULL

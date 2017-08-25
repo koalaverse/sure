@@ -8,7 +8,7 @@ test_that("surrogate work for \"polr\" objects", {
   skip_if_not_installed("ordinal")
 
   # Load data
-  data(df1)
+  data(df1, package = "sure")
 
   # Fit cumulative link model
   fit <- MASS::polr(y ~ x, data = df1, method = "probit")
