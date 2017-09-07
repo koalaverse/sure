@@ -272,6 +272,51 @@ getDistributionName.vglm <- function(object) {
 
 
 ################################################################################
+# Generic function for extracting the fitted probabilities from a cumulative
+# link model
+################################################################################
+
+#' @keywords internal
+getFittedProbs <- function(object) {
+  UseMethod("getFittedProbs")
+}
+
+
+#' @keywords internal
+getFittedProbs.clm <- function(object) {
+  newdata <- stats::model.frame(object)
+  vars <- as.character(attr(object$terms, "variables"))
+  resp <- vars[1 + attr(object$terms, "response")]  # response name
+  newdata <- newdata[!names(newdata) %in% resp]
+  predict(object, newdata = newdata, type = "prob")$fit
+}
+
+
+#' @keywords internal
+getFittedProbs.lrm <- function(object) {
+  predict(object, type = "fitted.ind")
+}
+
+
+#' @keywords internal
+getFittedProbs.orm <- function(object) {
+  predict(object, type = "fitted.ind")
+}
+
+
+#' @keywords internal
+getFittedProbs.polr <- function(object) {
+  object$fitted.values
+}
+
+
+#' @keywords internal
+getFittedProbs.vglm <- function(object) {
+  object@fitted.values
+}
+
+
+################################################################################
 # Generic function for extracting the fitted mean response from a cumulative
 # link model
 ################################################################################
