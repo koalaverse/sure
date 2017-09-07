@@ -179,6 +179,21 @@ resids.default <- function(object, method = c("latent", "jitter"),
          "\"lrm\", \"orm\", \"polr\", or \"vglm\".")
   }
 
+  # method <- match.arg(method)
+  # jitter.scale <- match.arg(jitter.scale)
+  #
+  # y <- getResponseValues(object)
+  # if (method == "latent") {
+  #
+  # } else {  # jittering
+  #
+  #   # Construct residuals
+  #   res <- getJitteredResiduals(object, jitter.scale = jitter.scale, y = y)
+  #
+  #   # Multiple samples
+  #
+  # }
+
   # Extract number of observations, response values, and truncation bounds
   y <- getResponseValues(object)
   n.obs <- length(y)

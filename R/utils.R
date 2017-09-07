@@ -536,8 +536,14 @@ getSurrogateResiduals <- function(object, y, n.obs, mean.response, bounds) {
 
 #' @keywords internal
 getJitteredResiduals <- function(object, jitter.scale, y) {
+  # \sum_{i = 1}^J\left(j + 0.5\right)p\left(Y = j | X\right)
   if (jitter.scale == "response") {
-    runif(length(y), min = y, max = y + 1) - (object$fitted + 0.5)
+    prob <- getFittedProbs(object)
+    j <- seq_len(ncol(prob))
+    jmat <- matrix(rep(j, times = nrow(prob)), ncol = ncol(prob), byrow = TRUE)
+    rhs <- rowSums((jmat + 0.5) * prob)
+    runif(length(y), min = y, max = y + 1) - rhs
+    # runif(length(y), min = y, max = y + 1) - (object$fitted + 0.5)
   } else {
     .min <- pbinom(y - 1, size = 1, prob = object$fitted)  # F(y-1)
     .max <- pbinom(y, size = 1, prob = object$fitted)  # F(y)
