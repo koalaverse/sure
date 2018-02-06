@@ -553,30 +553,30 @@ getSurrogateResiduals.glm <- function(object, y, n.obs, mean.response) {
             a = ifelse(y == 0, yes = -Inf, no = 0),
             b = ifelse(y == 1, yes = Inf, no = 0),
             mean = mean.response,
-            sd = 1)
+            sd = 1) - mean.response
     .rtrunc(n.obs, spec = "logis",
             a = ifelse(y == 0, yes = -Inf, no = 0),
             b = ifelse(y == 1, yes = Inf, no = 0),
             location = mean.response,
-            scale = 1)
+            scale = 1) - mean.response
   } else if (dist.name == "cauchy") {
     .rtrunc(n.obs, spec = "cauchy",
             a = ifelse(y == 0, yes = -Inf, no = 0),
             b = ifelse(y == 1, yes = Inf, no = 0),
             location = mean.response,
-            scale = 1)
+            scale = 1) - mean.response
   } else if (dist.name == "gumbel") {
     .rtrunc(n.obs, spec = "gumbel",
             a = ifelse(y == 0, yes = -Inf, no = 0),
             b = ifelse(y == 1, yes = Inf, no = 0),
             location = mean.response,
-            scale = 1)
+            scale = 1) - mean.response
   } else if (dist.name == "Gumbel") {
     .rtrunc(n.obs, spec = "Gumbel",
             a = ifelse(y == 0, yes = -Inf, no = 0),
             b = ifelse(y == 1, yes = Inf, no = 0),
             location = mean.response,
-            scale = 1)
+            scale = 1) - mean.response
   } else {
     stop("Distribution not supported.")
   }
