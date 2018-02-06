@@ -506,10 +506,18 @@ getResponseValues.vglm <- function(object, ...) {
 # and general models
 ################################################################################
 
-# For cumulative link models
 
 #' @keywords internal
 getSurrogateResiduals <- function(object, y, n.obs, mean.response, bounds) {
+  UseMethod("getSurrogateResiduals")
+}
+
+
+# For cumulative link models
+
+#' @keywords internal
+getSurrogateResiduals.default <- function(object, y, n.obs, mean.response,
+                                          bounds) {
   dist.name <- getDistributionName(object)
   if (dist.name == "norm") {
     .rtrunc(n.obs, spec = "norm", a = bounds[y], b = bounds[y + 1],
@@ -526,6 +534,49 @@ getSurrogateResiduals <- function(object, y, n.obs, mean.response, bounds) {
   } else if (dist.name == "Gumbel") {
     .rtrunc(n.obs, spec = "Gumbel", a = bounds[y], b = bounds[y + 1],
             location = mean.response, scale = 1) - mean.response
+  } else {
+    stop("Distribution not supported.")
+  }
+}
+
+
+# For binomial GLMs
+
+#' @keywords internal
+getSurrogateResiduals.glm <- function(object, y, n.obs, mean.response) {
+  if (object$family$family != "binomial") {
+    stop("Only binomial GLMs are supported", call. = FALSE)
+  }
+  dist.name <- getDistributionName(object)
+  if (dist.name == "norm") {
+    .rtrunc(n.obs, spec = "norm",
+            a = ifelse(y == 0, yes = -Inf, no = 0),
+            b = ifelse(y == 1, yes = Inf, no = 0),
+            mean = mean.response,
+            sd = 1)
+    .rtrunc(n.obs, spec = "logis",
+            a = ifelse(y == 0, yes = -Inf, no = 0),
+            b = ifelse(y == 1, yes = Inf, no = 0),
+            location = mean.response,
+            scale = 1)
+  } else if (dist.name == "cauchy") {
+    .rtrunc(n.obs, spec = "cauchy",
+            a = ifelse(y == 0, yes = -Inf, no = 0),
+            b = ifelse(y == 1, yes = Inf, no = 0),
+            location = mean.response,
+            scale = 1)
+  } else if (dist.name == "gumbel") {
+    .rtrunc(n.obs, spec = "gumbel",
+            a = ifelse(y == 0, yes = -Inf, no = 0),
+            b = ifelse(y == 1, yes = Inf, no = 0),
+            location = mean.response,
+            scale = 1)
+  } else if (dist.name == "Gumbel") {
+    .rtrunc(n.obs, spec = "Gumbel",
+            a = ifelse(y == 0, yes = -Inf, no = 0),
+            b = ifelse(y == 1, yes = Inf, no = 0),
+            location = mean.response,
+            scale = 1)
   } else {
     stop("Distribution not supported.")
   }
