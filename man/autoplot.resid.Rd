@@ -2,12 +2,7 @@
 % Please edit documentation in R/autoplot.R
 \name{autoplot.resid}
 \alias{autoplot.resid}
-\alias{autoplot.clm}
-\alias{autoplot.glm}
-\alias{autoplot.lrm}
-\alias{autoplot.orm}
-\alias{autoplot.polr}
-\alias{autoplot.vglm}
+\alias{autoplot.default}
 \title{Residual Plots for Cumulative Link and General Regression Models}
 \usage{
 autoplot.resid(object, what = c("qq", "fitted", "covariate"), x = NULL,
@@ -18,48 +13,12 @@ autoplot.resid(object, what = c("qq", "fitted", "covariate"), x = NULL,
   smooth.color = "red", smooth.linetype = 1, smooth.size = 1,
   fill = NULL, ...)
 
-autoplot.clm(object, what = c("qq", "fitted", "covariate"), x = NULL,
-  nsim = 1, alpha = 1, xlab = NULL, color = "#444444", shape = 19,
-  size = 2, qqpoint.color = "#444444", qqpoint.shape = 19,
-  qqpoint.size = 2, qqline.color = "#888888", qqline.linetype = "dashed",
-  qqline.size = 1, smooth = TRUE, smooth.color = "red",
-  smooth.linetype = 1, smooth.size = 1, fill = NULL, ...)
-
-autoplot.glm(object, what = c("qq", "fitted", "covariate"), x = NULL,
-  jitter.scale = c("probability", "response"), nsim = 1, alpha = 1,
-  xlab = NULL, color = "#444444", shape = 19, size = 2,
+autoplot.default(object, what = c("qq", "fitted", "covariate"), x = NULL,
+  alpha = 1, xlab = NULL, color = "#444444", shape = 19, size = 2,
   qqpoint.color = "#444444", qqpoint.shape = 19, qqpoint.size = 2,
   qqline.color = "#888888", qqline.linetype = "dashed", qqline.size = 1,
   smooth = TRUE, smooth.color = "red", smooth.linetype = 1,
   smooth.size = 1, fill = NULL, ...)
-
-autoplot.lrm(object, what = c("qq", "fitted", "covariate"), x = NULL,
-  nsim = 1, alpha = 1, xlab = NULL, color = "#444444", shape = 19,
-  size = 2, qqpoint.color = "#444444", qqpoint.shape = 19,
-  qqpoint.size = 2, qqline.color = "#888888", qqline.linetype = "dashed",
-  qqline.size = 1, smooth = TRUE, smooth.color = "red",
-  smooth.linetype = 1, smooth.size = 1, fill = NULL, ...)
-
-autoplot.orm(object, what = c("qq", "fitted", "covariate"), x = NULL,
-  nsim = 1, alpha = 1, xlab = NULL, color = "#444444", shape = 19,
-  size = 2, qqpoint.color = "#444444", qqpoint.shape = 19,
-  qqpoint.size = 2, qqline.color = "#888888", qqline.linetype = "dashed",
-  qqline.size = 1, smooth = TRUE, smooth.color = "red",
-  smooth.linetype = 1, smooth.size = 1, fill = NULL, ...)
-
-autoplot.polr(object, what = c("qq", "fitted", "covariate"), x = NULL,
-  nsim = 1, alpha = 1, xlab = NULL, color = "#444444", shape = 19,
-  size = 2, qqpoint.color = "#444444", qqpoint.shape = 19,
-  qqpoint.size = 2, qqline.color = "#888888", qqline.linetype = "dashed",
-  qqline.size = 1, smooth = TRUE, smooth.color = "red",
-  smooth.linetype = 1, smooth.size = 1, fill = NULL, ...)
-
-autoplot.vglm(object, what = c("qq", "fitted", "covariate"), x = NULL,
-  nsim = 1, alpha = 1, xlab = NULL, color = "#444444", shape = 19,
-  size = 2, qqpoint.color = "#444444", qqpoint.shape = 19,
-  qqpoint.size = 2, qqline.color = "#888888", qqline.linetype = "dashed",
-  qqline.size = 1, smooth = TRUE, smooth.color = "red",
-  smooth.linetype = 1, smooth.size = 1, fill = NULL, ...)
 }
 \arguments{
 \item{object}{An object of class \code{\link[ordinal]{clm}},
@@ -134,14 +93,8 @@ the boxplots for residual-by-covariate plots when \code{x} is of class
 \code{"factor"}. Default is \code{NULL} which colors the boxplots according
 to the factor levels.}
 
-\item{...}{Additional optional arguments. (Currently ignored.)}
-
-\item{nsim}{Integer specifying the number of bootstrap replicates to use.}
-
-\item{jitter.scale}{Character string specifying the scale on which to perform
-the jittering. Should be one of \code{"probability"} or \code{"response"}.
-Currently only used when object inherits from class \code{"glm"}. Default is
-\code{"probability"}.}
+\item{...}{Additional optional arguments to be passed on to
+\code{\link{resids}}.}
 }
 \value{
 A \code{"ggplot"} object.

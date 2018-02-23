@@ -2,176 +2,84 @@
 % Please edit documentation in R/resids.R
 \name{resids}
 \alias{resids}
-\alias{resids.default}
-\alias{resids.lrm}
-\alias{resids.glm}
-\title{Surrogate Residuals}
+\title{Surrogate Response}
 \usage{
-resids(object, ...)
-
-\method{resids}{default}(object, method = c("latent", "jitter"),
-  jitter.scale = c("probability", "response"), nsim = 1L, ...)
-
-\method{resids}{lrm}(object, method = c("latent", "jitter"),
-  jitter.scale = c("probability", "response"), nsim = 1L, ...)
-
-\method{resids}{glm}(object, jitter.scale = c("probability", "response"),
-  nsim = 1L, ...)
+resids(object, nsim = 1L, method = c("latent", "jitter"),
+  jitter.scale = c("response", "probability"), ...)
 }
 \arguments{
-\item{object}{An object of class \code{\link[ordinal]{clm}},
-\code{\link[stats]{glm}}, \code{\link[rms]{lrm}}, \code{\link[rms]{orm}},
-\code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.}
-
-\item{...}{Additional optional arguments. (Currently ignored.)}
-
-\item{method}{Character string specifying the type of surrogate to use; for
-details, see Liu and Zhang (2017). For cumulative link models, the latent
-variable method is used. For binary GLMs, the jittering approach is employed.
-(Currently ignored.)}
-
-\item{jitter.scale}{Character string specifying the scale on which to perform
-the jittering. Should be one of \code{"probability"} or \code{"response"}.
-(Currently ignored for cumulative link models.)}
+\item{object}{An object of class \code{\link[ordinal]{clm}}, \code{\link[stats]{glm}}
+\code{\link[rms]{lrm}}, \code{\link[rms]{orm}}, \code{\link[MASS]{polr}}, or
+\code{\link[VGAM]{vglm}}.}
 
 \item{nsim}{Integer specifying the number of bootstrap replicates to use.
 Default is \code{1L} meaning no bootstrap samples.}
+
+\item{method}{Character string specifying which method to use to generate the
+surrogate response values. Current options are \code{"latent"} and
+\code{"jitter"}. Default is \code{"latent"}.}
+
+\item{jitter.scale}{Character string specifyint the scale on which to perform
+the jittering whenever \code{method = "jitter"}. Current options are
+\code{"response"} and \code{"probability"}. Default is \code{"response"}.}
+
+\item{...}{Additional optional arguments. (Currently ignored.)}
 }
 \value{
-A numeric vector of class \code{c("numeric", "resid")} containing the
-residuals. Additionally, if \code{nsim} > 1, then the result will contain the
-attributes:
+A numeric vector of class \code{c("numeric", "surrogate")} containing
+the simulated surrogate response values. Additionally, if \code{nsim} > 1,
+then the result will contain the attributes:
 \describe{
   \item{\code{boot.reps}}{A matrix  with \code{nsim} columns, one for each
-  bootstrap replicate of the residuals. Note, these are random and do not
-  correspond to the original ordering of the data;}
+  bootstrap replicate of the surrogate values. Note, these are random and do
+  not correspond to the original ordering of the data;}
   \item{\code{boot.id}}{A matrix  with \code{nsim} columns. Each column
-  contains the observation number each residual corresponds to in
+  contains the observation number each surrogate value corresponds to in
   \code{boot.reps}. (This is used for plotting purposes.)}
 }
 }
 \description{
-Surrogate-based residuals for cumulative link and general regression models.
+Simulate surrogate response values for cumulative link regression models
+using the latent method described in Liu and Zhang (2017).
 }
 \note{
-Surrogate residuals require sampling from a continuous distribution;
-consequently, the result will be different with every call to \code{resids}.
-The internal functions used for sampling from truncated distributions when
-\code{method = "latent"} are based on modified versions of
+Surrogate response values require sampling from a continuous distribution;
+consequently, the result will be different with every call to
+\code{surrogate}. The internal functions used for sampling from truncated
+distributions are based on modified versions of
 \code{\link[truncdist]{rtrunc}} and \code{\link[truncdist]{qtrunc}}.
+
+For \code{"glm"} objects, only the \code{"binomial"} family is supported.
 }
 \examples{
-#
-# Residuals for binary GLMs using the jittering method
-#
+# Generate data from a quadratic probit model
+set.seed(101)
+n <- 2000
+x <- runif(n, min = -3, max = 6)
+z <- 10 + 3 * x - 1 * x^2 + rnorm(n)
+y <- ifelse(z <= 0, yes = 0, no = 1)
 
-# Simulate logistic regression data with quadratic trend
-set.seed(101)  # for reproducibility
-n <- 1000
-x <- runif(n, min = 1, max = 7)
-y <- rbinom(n, size = 1, prob = plogis(16 - 8 * x + 1 * x ^ 2))
-d <- data.frame("x" = x, "y" = as.factor(y))
+# Scatterplot matrix
+pairs(~ x + y + z)
 
-# Fit logistic regression models (with and without quadratic trend)
-fit1 <- glm(y ~ x + I(x ^ 2), data = d, family = binomial)  # correct model
-fit2 <- glm(y ~ x, data = d, family = binomial)  # missing quadratic trend
-
-# Construct residuals
-set.seed(102)  # for reproducibility
-res1 <- resids(fit1)
-res2 <- resids(fit2)
-
-# Residual-vs-covariate plots
+# Setup for side-by-side plots
 par(mfrow = c(1, 2))
-scatter.smooth(d$x, res1, lpars = list(lwd = 2, col = "red"),
-               xlab = expression(x), ylab = "Surrogate residual",
-               main = "Correct model")
-scatter.smooth(d$x, res2, lpars = list(lwd = 2, col = "red"),
-               xlab = expression(x), ylab = "Surrogate residual",
-               main = "Incorrect model")
 
-\dontrun{
-#
-# Residuals for cumulative link models using the latent method
-#
+# Misspecified mean structure
+fm1 <- glm(y ~ x, family = binomial(link = "probit"))
+scatter.smooth(x, y = resids(fm1),
+               main = "Misspecified model",
+               ylab = "Surrogate residual",
+               lpars = list(lwd = 3, col = "red2"))
+abline(h = 0, lty = 2, col = "blue2")
 
-# Load required packages
-library(ggplot2)  # for autoplot function
-library(MASS)     # for polr function
-library(ordinal)  # for clm function
-
-#
-# Detecting a misspecified mean structure
-#
-
-# Data simulated from a probit model with a quadratic trend
-data(df1)
-?df1
-
-# Fit a probit model with/without a quadratic trend
-fit.bad <- polr(y ~ x, data = df1, method = "probit")
-fit.good <- polr(y ~ x + I(x ^ 2), data = df1, method = "probit")
-
-# Some residual plots
-p1 <- autoplot(fit.bad, what = "covariate", x = df1$x)
-p2 <- autoplot(fit.bad, what = "qq")
-p3 <- autoplot(fit.good, what = "covariate", x = df1$x)
-p4 <- autoplot(fit.good, what = "qq")
-
-# Display all four plots together (top row corresponds to bad model)
-grid.arrange(p1, p2, p3, p4, ncol = 2)
-
-#
-# Detecting heteroscedasticity
-#
-
-# Data simulated from a probit model with heteroscedasticity.
-data(df2)
-?df2
-
-# Fit a probit model with/without a quadratic trend
-fit <- polr(y ~ x, data = df2, method = "probit")
-
-# Some residual plots
-p1 <- autoplot(fit, what = "covariate", x = df1$x)
-p2 <- autoplot(fit, what = "qq")
-p3 <- autoplot(fit, what = "fitted")
-
-# Display all three plots together
-grid.arrange(p1, p2, p3, ncol = 3)
-
-#
-# Detecting a misspecified link function
-#
-
-# Data simulated from a log-log model with a quadratic trend.
-data(df3)
-?df3
-
-# Fit models with correctly specified link function
-clm.loglog <- clm(y ~ x + I(x ^ 2), data = df3, link = "loglog")
-polr.loglog <- polr(y ~ x + I(x ^ 2), data = df3, method = "loglog")
-
-# Fit models with misspecified link function
-clm.probit <- clm(y ~ x + I(x ^ 2), data = df3, link = "probit")
-polr.probit <- polr(y ~ x + I(x ^ 2), data = df3, method = "probit")
-
-# Q-Q plots of the residuals (with bootstrapping)
-p1 <- autoplot(clm.probit, nsim = 50, what = "qq") +
-  ggtitle("clm: probit link")
-p2 <- autoplot(clm.loglog, nsim = 50, what = "qq") +
-  ggtitle("clm: log-log link (correct link function)")
-p3 <- autoplot(polr.probit, nsim = 50, what = "qq") +
-  ggtitle("polr: probit link")
-p4 <- autoplot(polr.loglog, nsim = 50, what = "qq") +
-  ggtitle("polr: log-log link (correct link function)")
-grid.arrange(p1, p2, p3, p4, ncol = 2)
-
-# We can also try various goodness-of-fit tests
-par(mfrow = c(1, 2))
-plot(gof(clm.probit, nsim = 50))
-plot(gof(clm.loglog, nsim = 50))
-}
+# Correctly specified mean structure
+fm2 <- glm(y ~ x + I(x ^ 2), family = binomial(link = "probit"))
+scatter.smooth(x, y = resids(fm2),
+               main = "Correctly specified model",
+               ylab = "Surrogate residual",
+               lpars = list(lwd = 3, col = "red2"))
+abline(h = 0, lty = 2, col = "blue2")
 }
 \references{
 Liu, Dungang and Zhang, Heping. Residuals and Diagnostics for Ordinal

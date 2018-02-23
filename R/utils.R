@@ -22,6 +22,18 @@
 }
 
 
+#' @keywords internal
+sim_trunc <- function(n, distribution, a, b, location = 0, scale = 1) {
+  if (distribution == "norm") {
+    .rtrunc(n, spec = distribution, a = a, b = b,
+            mean = location, sd = scale)
+  } else {
+    .rtrunc(n, spec = distribution, a = a, b = b,
+            location = location, scale = scale)
+  }
+}
+
+
 ################################################################################
 # Gumbel distribution functions
 ################################################################################
@@ -90,7 +102,8 @@ getBounds.clm <- function(object, ...) {
 
 #' @keywords internal
 getBounds.glm <- function(object, ...) {
-  NULL
+  y <- getResponseValues(object)
+  c(ifelse(y == 0, yes = -Inf, no = 0), ifelse(y == 1, yes = Inf, no = 0))
 }
 
 
@@ -293,6 +306,13 @@ getFittedProbs.clm <- function(object) {
 
 
 #' @keywords internal
+getFittedProbs.glm <- function(object) {
+  prob <- object$fitted.values
+  cbind(prob, 1 - prob)
+}
+
+
+#' @keywords internal
 getFittedProbs.lrm <- function(object) {
   predict(object, type = "fitted.ind")
 }
@@ -408,7 +428,7 @@ getQuantileFunction.glm <- function(object) {
   switch(object$family$link,
          "logit" = qlogis,
          "probit" = qnorm,
-         # "loglog" = qgumbel,  # glm does not support this link function
+         "log" = qgumbel,
          "cloglog" = qGumbel,
          "cauchit" = qcauchy)
 }
@@ -473,7 +493,7 @@ getResponseValues.clm <- function(object, ...) {
 #' @keywords internal
 getResponseValues.glm <- function(object) {
   # FIXME: What about binomial models with matrix response, etc.?
-  as.integer(model.response(model.frame(object))) - 1  # convert to 0, 1
+  as.integer(as.factor(model.response(model.frame(object))))
 }
 
 
@@ -502,110 +522,7 @@ getResponseValues.vglm <- function(object, ...) {
 
 
 ################################################################################
-# Functions to simulate surrogate-based residuals for supported cumulative link
-# and general models
-################################################################################
-
-
-#' @keywords internal
-getSurrogateResiduals <- function(object, y, n.obs, mean.response, bounds) {
-  UseMethod("getSurrogateResiduals")
-}
-
-
-# For cumulative link models
-
-#' @keywords internal
-getSurrogateResiduals.default <- function(object, y, n.obs, mean.response,
-                                          bounds) {
-  dist.name <- getDistributionName(object)
-  if (dist.name == "norm") {
-    .rtrunc(n.obs, spec = "norm", a = bounds[y], b = bounds[y + 1],
-            mean = mean.response, sd = 1) - mean.response
-  } else if (dist.name == "logis") {
-    .rtrunc(n.obs, spec = "logis", a = bounds[y], b = bounds[y + 1],
-            location = mean.response, scale = 1) - mean.response
-  } else if (dist.name == "cauchy") {
-    .rtrunc(n.obs, spec = "cauchy", a = bounds[y], b = bounds[y + 1],
-            location = mean.response, scale = 1) - mean.response
-  } else if (dist.name == "gumbel") {
-    .rtrunc(n.obs, spec = "gumbel", a = bounds[y], b = bounds[y + 1],
-            location = mean.response, scale = 1) - mean.response
-  } else if (dist.name == "Gumbel") {
-    .rtrunc(n.obs, spec = "Gumbel", a = bounds[y], b = bounds[y + 1],
-            location = mean.response, scale = 1) - mean.response
-  } else {
-    stop("Distribution not supported.")
-  }
-}
-
-
-# For binomial GLMs
-
-#' @keywords internal
-getSurrogateResiduals.glm <- function(object, y, n.obs, mean.response) {
-  if (object$family$family != "binomial") {
-    stop("Only binomial GLMs are supported", call. = FALSE)
-  }
-  dist.name <- getDistributionName(object)
-  if (dist.name == "norm") {
-    .rtrunc(n.obs, spec = "norm",
-            a = ifelse(y == 0, yes = -Inf, no = 0),
-            b = ifelse(y == 1, yes = Inf, no = 0),
-            mean = mean.response,
-            sd = 1) - mean.response
-    .rtrunc(n.obs, spec = "logis",
-            a = ifelse(y == 0, yes = -Inf, no = 0),
-            b = ifelse(y == 1, yes = Inf, no = 0),
-            location = mean.response,
-            scale = 1) - mean.response
-  } else if (dist.name == "cauchy") {
-    .rtrunc(n.obs, spec = "cauchy",
-            a = ifelse(y == 0, yes = -Inf, no = 0),
-            b = ifelse(y == 1, yes = Inf, no = 0),
-            location = mean.response,
-            scale = 1) - mean.response
-  } else if (dist.name == "gumbel") {
-    .rtrunc(n.obs, spec = "gumbel",
-            a = ifelse(y == 0, yes = -Inf, no = 0),
-            b = ifelse(y == 1, yes = Inf, no = 0),
-            location = mean.response,
-            scale = 1) - mean.response
-  } else if (dist.name == "Gumbel") {
-    .rtrunc(n.obs, spec = "Gumbel",
-            a = ifelse(y == 0, yes = -Inf, no = 0),
-            b = ifelse(y == 1, yes = Inf, no = 0),
-            location = mean.response,
-            scale = 1) - mean.response
-  } else {
-    stop("Distribution not supported.")
-  }
-}
-
-
-# For general models
-
-#' @keywords internal
-getJitteredResiduals <- function(object, jitter.scale, y) {
-  # \sum_{i = 1}^J\left(j + 0.5\right)p\left(Y = j | X\right)
-  if (jitter.scale == "response") {
-    prob <- getFittedProbs(object)
-    j <- seq_len(ncol(prob))
-    jmat <- matrix(rep(j, times = nrow(prob)), ncol = ncol(prob), byrow = TRUE)
-    rhs <- rowSums((jmat + 0.5) * prob)
-    runif(length(y), min = y, max = y + 1) - rhs
-    # runif(length(y), min = y, max = y + 1) - (object$fitted + 0.5)
-  } else {
-    .min <- pbinom(y - 1, size = 1, prob = object$fitted)  # F(y-1)
-    .max <- pbinom(y, size = 1, prob = object$fitted)  # F(y)
-    runif(length(y), min = .min, max = .max) - 0.5  # S|Y=y - E(S|X)
-  }
-}
-
-
-################################################################################
-# Generic function to determine the number of response categories for a given
-# cumulative link model
+# Number of response categories
 ################################################################################
 
 #' @keywords internal
@@ -617,6 +534,12 @@ ncat <- function(object) {
 #' @keywords internal
 ncat.clm <- function(object) {
   length(object$y.levels)
+}
+
+
+#' @keywords internal
+ncat.glm <- function(object) {
+  length(unique(getResponseValues(object)))
 }
 
 
@@ -641,4 +564,137 @@ ncat.polr <- function(object) {
 #' @keywords internal
 ncat.vglm <- function(object) {
   length(attributes(object)$extra$colnames.y)
+}
+
+
+################################################################################
+# Surrogate and residual workhorse functions
+################################################################################
+
+#' @keywords internal
+generate_surrogate <- function(object, method = c("latent", "jitter"),
+                               jitter.scale = c("response", "probability"),
+                               boot_id = NULL) {
+
+  # Match arguments
+  method <- match.arg(method)
+
+  # Generate surrogate response values
+  s <- if (method == "latent") {  # latent variable approach
+
+    # Get distribution name (for sampling)
+    distribution <- getDistributionName(object)  # distribution name
+
+    # Simulate surrogate response values from the appropriate truncated
+    # distribution
+    if (distribution %in% c("norm", "logis", "cauchy", "gumbel", "Gumbel")) {
+      y <- getResponseValues(object)
+      if (is.null(boot_id)) {
+        boot_id <- seq_along(y)
+      }
+      mean_response <- getMeanResponse(object)  # mean response values
+      if (!inherits(object, what = "lrm") && inherits(object, what = "glm")) {
+        sim_trunc(n = length(y), distribution = distribution,
+                  # {0, 1} -> {1, 2}
+                  a = ifelse(y[boot_id] == 1, yes = -Inf, no = 0),
+                  b = ifelse(y[boot_id] == 2, yes =  Inf, no = 0),
+                  location = mean_response[boot_id], scale = 1)  # surrogate values
+      } else {
+        trunc_bounds <- getBounds(object)  # truncation bounds
+        sim_trunc(n = length(y), distribution = distribution,
+                  a = trunc_bounds[y[boot_id]],
+                  b = trunc_bounds[y[boot_id] + 1L],
+                  location = mean_response[boot_id], scale = 1)  # surrogate values
+      }
+    } else {
+      stop("Distribution not supported.", call. = FALSE)
+    }
+  } else {  # jittering approach
+    jitter.scale <- match.arg(jitter.scale)
+    y <- getResponseValues(object)
+    if (is.null(boot_id)) {
+      boot_id <- seq_along(y)
+    }
+    y <- y[boot_id]
+    prob <- getFittedProbs(object)[boot_id, ]
+    if (jitter.scale == "response") {  # jittering on the response scale
+      j <- seq_len(ncol(prob))
+      jmat <- matrix(rep(j, times = nrow(prob)), ncol = ncol(prob), byrow = TRUE)
+      runif(length(y), min = y, max = y + 1)
+    } else {  # jittering on the probability scale
+      .min <- pbinom(y - 1, size = 1, prob = prob[, 1L, drop = TRUE])  # F(y-1)
+      .max <- pbinom(y, size = 1, prob = prob[, 1L, drop = TRUE])  # F(y)
+      runif(length(y), min = .min, max = .max)  # S|Y=y - E(S|X)
+    }
+  }
+
+  # Return results
+  s
+
+}
+
+
+
+#' @keywords internal
+generate_residuals <- function(object, method = c("latent", "jitter"),
+                               jitter.scale = c("response", "probability"),
+                               boot_id = NULL) {
+
+  # Match arguments
+  method <- match.arg(method)
+
+  # Generate surrogate response values
+  r <- if (method == "latent") {  # latent variable approach
+
+    # Get distribution name (for sampling)
+    distribution <- getDistributionName(object)  # distribution name
+
+    # Simulate surrogate response values from the appropriate truncated
+    # distribution
+    if (distribution %in% c("norm", "logis", "cauchy", "gumbel", "Gumbel")) {
+      y <- getResponseValues(object)
+      if (is.null(boot_id)) {
+        boot_id <- seq_along(y)
+      }
+      mean_response <- getMeanResponse(object)  # mean response values
+      s <-       if (!inherits(object, what = "lrm") &&
+                     inherits(object, what = "glm")) {
+        sim_trunc(n = length(y), distribution = distribution,
+                  # {0, 1} -> {1, 2}
+                  a = ifelse(y[boot_id] == 1, yes = -Inf, no = 0),
+                  b = ifelse(y[boot_id] == 2, yes =  Inf, no = 0),
+                  location = mean_response[boot_id], scale = 1)  # surrogate values
+      } else {
+        trunc_bounds <- getBounds(object)  # truncation bounds
+        sim_trunc(n = length(y), distribution = distribution,
+                  a = trunc_bounds[y[boot_id]],
+                  b = trunc_bounds[y[boot_id] + 1L],
+                  location = mean_response[boot_id], scale = 1)  # surrogate values
+      }
+    } else {
+      stop("Distribution not supported.", call. = FALSE)
+    }
+    s - mean_response[boot_id]  # surrogate residuals
+  } else {  # jittering approach
+    jitter.scale <- match.arg(jitter.scale)
+    y <- getResponseValues(object)
+    if (is.null(boot_id)) {
+      boot_id <- seq_along(y)
+    }
+    y <- y[boot_id]
+    prob <- getFittedProbs(object)[boot_id, ]
+    if (jitter.scale == "response") {  # jittering on the response scale
+      j <- seq_len(ncol(prob))
+      jmat <- matrix(rep(j, times = nrow(prob)), ncol = ncol(prob), byrow = TRUE)
+      runif(length(y), min = y, max = y + 1) - rowSums((jmat + 0.5) * prob)
+    } else {  # jittering on the probability scale
+      .min <- pbinom(y - 1, size = 1, prob = prob[, 1L, drop = TRUE])  # F(y-1)
+      .max <- pbinom(y, size = 1, prob = prob[, 1L, drop = TRUE])  # F(y)
+      runif(length(y), min = .min, max = .max) - 0.5  # S|Y=y - E(S|X)
+    }
+  }
+
+  # Return results
+  r
+
 }

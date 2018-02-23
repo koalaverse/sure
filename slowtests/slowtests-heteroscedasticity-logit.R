@@ -69,11 +69,11 @@ p2 <- autoplot(fit.polr, what = "covariate", x = d$x) + ggtitle("MASS::polr")
 p3 <- autoplot(fit.vglm, what = "covariate", x = d$x) + ggtitle("VGAM::vglm")
 p4 <- autoplot(fit.lrm, what = "covariate", x = d$x) + ggtitle("rms::lrm")
 p5 <- autoplot(fit.orm, what = "covariate", x = d$x) + ggtitle("rms::orm")
-p6 <- ggplot(data.frame(x = d$x, y = res.boot), aes(x, y)) +
-  geom_point(size = 2, color = "#444444") +
-  geom_smooth(color = "red", se = FALSE) +
-  ylab("Surrogate residual") +
-  ggtitle("Figure 6(a)")
+# p6 <- ggplot(data.frame(x = d$x, y = res.boot), aes(x, y)) +
+#   geom_point(size = 2, color = "#444444") +
+#   geom_smooth(color = "red", se = FALSE) +
+#   ylab("Surrogate residual") +
+#   ggtitle("Figure 6(a)")
 # pdf("slowtests\\figures\\heteroscedasticity.pdf", width = 7, height = 6)
-grid.arrange(p1, p2, p3, p4, p5, p6, ncol = 2)
+grid.arrange(p1, p2, p3, p4, p5, ncol = 2)
 # dev.off()

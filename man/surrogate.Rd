@@ -4,15 +4,24 @@
 \alias{surrogate}
 \title{Surrogate Response}
 \usage{
-surrogate(object, nsim = 1L, ...)
+surrogate(object, nsim = 1L, method = c("latent", "jitter"),
+  jitter.scale = c("response", "probability"), ...)
 }
 \arguments{
-\item{object}{An object of class \code{\link[ordinal]{clm}},
+\item{object}{An object of class \code{\link[ordinal]{clm}}, \code{\link[stats]{glm}}
 \code{\link[rms]{lrm}}, \code{\link[rms]{orm}}, \code{\link[MASS]{polr}}, or
 \code{\link[VGAM]{vglm}}.}
 
 \item{nsim}{Integer specifying the number of bootstrap replicates to use.
 Default is \code{1L} meaning no bootstrap samples.}
+
+\item{method}{Character string specifying which method to use to generate the
+surrogate response values. Current options are \code{"latent"} and
+\code{"jitter"}. Default is \code{"latent"}.}
+
+\item{jitter.scale}{Character string specifyint the scale on which to perform
+the jittering whenever \code{method = "jitter"}. Current options are
+\code{"response"} and \code{"probability"}. Default is \code{"response"}.}
 
 \item{...}{Additional optional arguments. (Currently ignored.)}
 }
@@ -39,6 +48,40 @@ consequently, the result will be different with every call to
 \code{surrogate}. The internal functions used for sampling from truncated
 distributions are based on modified versions of
 \code{\link[truncdist]{rtrunc}} and \code{\link[truncdist]{qtrunc}}.
+
+For \code{"glm"} objects, only the \code{"binomial"} family is supported.
+}
+\examples{
+# Generate data from a quadratic probit model
+set.seed(101)
+n <- 2000
+x <- runif(n, min = -3, max = 6)
+z <- 10 + 3 * x - 1 * x^2 + rnorm(n)
+y <- ifelse(z <= 0, yes = 0, no = 1)
+
+# Scatterplot matrix
+pairs(~ x + y + z)
+
+# Setup for side-by-side plots
+par(mfrow = c(1, 2))
+
+# Misspecified mean structure
+fm1 <- glm(y ~ x, family = binomial(link = "probit"))
+s1 <- surrogate(fm1)
+scatter.smooth(x, s1 - fm1$linear.predictors,
+               main = "Misspecified model",
+               ylab = "Surrogate residual",
+               lpars = list(lwd = 3, col = "red2"))
+abline(h = 0, lty = 2, col = "blue2")
+
+# Correctly specified mean structure
+fm2 <- glm(y ~ x + I(x ^ 2), family = binomial(link = "probit"))
+s2 <- surrogate(fm2)
+scatter.smooth(x, s2 - fm2$linear.predictors,
+               main = "Correctly specified model",
+               ylab = "SUrrogate residual",
+               lpars = list(lwd = 3, col = "red2"))
+abline(h = 0, lty = 2, col = "blue2")
 }
 \references{
 Liu, Dungang and Zhang, Heping. Residuals and Diagnostics for Ordinal

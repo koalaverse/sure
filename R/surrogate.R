@@ -3,12 +3,20 @@
 #' Simulate surrogate response values for cumulative link regression models
 #' using the latent method described in Liu and Zhang (2017).
 #'
-#' @param object An object of class \code{\link[ordinal]{clm}},
+#' @param object An object of class \code{\link[ordinal]{clm}}, \code{\link[stats]{glm}}
 #' \code{\link[rms]{lrm}}, \code{\link[rms]{orm}}, \code{\link[MASS]{polr}}, or
 #' \code{\link[VGAM]{vglm}}.
 #'
 #' @param nsim Integer specifying the number of bootstrap replicates to use.
 #' Default is \code{1L} meaning no bootstrap samples.
+#'
+#' @param method Character string specifying which method to use to generate the
+#' surrogate response values. Current options are \code{"latent"} and
+#' \code{"jitter"}. Default is \code{"latent"}.
+#'
+#' @param jitter.scale Character string specifyint the scale on which to perform
+#' the jittering whenever \code{method = "jitter"}. Current options are
+#' \code{"response"} and \code{"probability"}. Default is \code{"response"}.
 #'
 #' @param ... Additional optional arguments. (Currently ignored.)
 #'
@@ -31,6 +39,8 @@
 #' distributions are based on modified versions of
 #' \code{\link[truncdist]{rtrunc}} and \code{\link[truncdist]{qtrunc}}.
 #'
+#' For \code{"glm"} objects, only the \code{"binomial"} family is supported.
+#'
 #' @references
 #' Liu, Dungang and Zhang, Heping. Residuals and Diagnostics for Ordinal
 #' Regression Models: A Surrogate Approach.
@@ -42,58 +52,63 @@
 #' https://www.jstatsoft.org/v016/c02.
 #'
 #' @export
-surrogate <- function(object, nsim = 1L, ...) {
+#'
+#' @examples
+#' # Generate data from a quadratic probit model
+#' set.seed(101)
+#' n <- 2000
+#' x <- runif(n, min = -3, max = 6)
+#' z <- 10 + 3 * x - 1 * x^2 + rnorm(n)
+#' y <- ifelse(z <= 0, yes = 0, no = 1)
+#'
+#' # Scatterplot matrix
+#' pairs(~ x + y + z)
+#'
+#' # Setup for side-by-side plots
+#' par(mfrow = c(1, 2))
+#'
+#' # Misspecified mean structure
+#' fm1 <- glm(y ~ x, family = binomial(link = "probit"))
+#' s1 <- surrogate(fm1)
+#' scatter.smooth(x, s1 - fm1$linear.predictors,
+#'                main = "Misspecified model",
+#'                ylab = "Surrogate residual",
+#'                lpars = list(lwd = 3, col = "red2"))
+#' abline(h = 0, lty = 2, col = "blue2")
+#'
+#' # Correctly specified mean structure
+#' fm2 <- glm(y ~ x + I(x ^ 2), family = binomial(link = "probit"))
+#' s2 <- surrogate(fm2)
+#' scatter.smooth(x, s2 - fm2$linear.predictors,
+#'                main = "Correctly specified model",
+#'                ylab = "SUrrogate residual",
+#'                lpars = list(lwd = 3, col = "red2"))
+#' abline(h = 0, lty = 2, col = "blue2")
+surrogate <- function(object, nsim = 1L, method = c("latent", "jitter"),
+                      jitter.scale = c("response", "probability"), ...) {
 
-  # Extract number of observations, response values, and truncation bounds
-  y <- getResponseValues(object)
-  n.obs <- length(y)
-  bounds <- getBounds(object)
-  mr <- getMeanResponse(object)  # -f(x; beta) for cumulative link models
+  # Match arguments
+  method <- match.arg(method)
+  jitter.scale = match.arg(jitter.scale)
 
-  # Simulate surrogate values
-  s <- getSurrogate(object, y = y, n.obs = n.obs, mean.response = mr,
-                    bounds = bounds)
+  # Generate surrogate response values
+  s <- generate_surrogate(object, method = method, jitter.scale = jitter.scale)
 
   # Multiple samples
   if (nsim > 1L) {  # bootstrap
-    boot.s <- boot.index <- matrix(nrow = n.obs, ncol = nsim)
+    boot.s <- boot_id <- matrix(nrow = nobs(object), ncol = nsim)
     for(i in seq_len(nsim)) {
-      boot.index[, i] <- sample(n.obs, replace = TRUE)
-      mr <- getMeanResponse(object)[boot.index[, i]]
+      boot_id[, i] <- sample(nobs(object), replace = TRUE)
       boot.s[, i] <-
-        getSurrogate(object, y = y[boot.index[, i]], n.obs = n.obs,
-                     mean.response = mr, bounds = bounds)
+        generate_surrogate(object, method = method, jitter.scale = jitter.scale,
+                           boot_id = boot_id[, i, drop = TRUE])
     }
     attr(s, "boot.reps") <- boot.s
-    attr(s, "boot.id") <- boot.index
+    attr(s, "boot.id") <- boot_id
   }
 
   # Return residuals
   class(s) <- c("numeric", "surrogate")
   s
 
-}
-
-
-#' @keywords internal
-getSurrogate <- function(object, y, n.obs, mean.response, bounds) {
-  dist.name <- getDistributionName(object)
-  if (dist.name == "norm") {
-    .rtrunc(n.obs, spec = "norm", a = bounds[y], b = bounds[y + 1],
-            mean = mean.response, sd = 1)
-  } else if (dist.name == "logis") {
-    .rtrunc(n.obs, spec = "logis", a = bounds[y], b = bounds[y + 1],
-            location = mean.response, scale = 1)
-  } else if (dist.name == "cauchy") {
-    .rtrunc(n.obs, spec = "cauchy", a = bounds[y], b = bounds[y + 1],
-            location = mean.response, scale = 1)
-  } else if (dist.name == "gumbel") {
-    .rtrunc(n.obs, spec = "gumbel", a = bounds[y], b = bounds[y + 1],
-            location = mean.response, scale = 1)
-  } else if (dist.name == "Gumbel") {
-    .rtrunc(n.obs, spec = "Gumbel", a = bounds[y], b = bounds[y + 1],
-            location = mean.response, scale = 1)
-  } else {
-    stop("Distribution not supported.")
-  }
 }
