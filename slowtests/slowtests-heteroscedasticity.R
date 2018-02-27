@@ -1,6 +1,4 @@
-################################################################################
-# Setup
-################################################################################
+# Setup ------------------------------------------------------------------------
 
 # Load packages for fitting cumulative link models
 library(MASS)     # function polr()
@@ -16,9 +14,7 @@ library(sure)      # for surrogate-based residuals
 library(ggplot2)   # for plotting
 
 
-################################################################################
-# Simulate data
-################################################################################
+# Simulate data ----------------------------------------------------------------
 
 # Function to simulate latent variable Z from a quadratic function of X plus
 # noise; the ordinal outcome W is obtained by discretizing Z.
@@ -46,9 +42,7 @@ table(d$y)
 # 48  217 1345  292   98
 
 
-################################################################################
-# Code from the paper
-################################################################################
+# Code from the paper ----------------------------------------------------------
 
 # Code needed for function to run
 model <- vglm(y ~ x, data = d,
@@ -75,9 +69,7 @@ for(i in 1:n) {
 }
 
 
-################################################################################
-# Fit ordinal regression models with probit link
-################################################################################
+# Ordinal regression models ----------------------------------------------------
 
 # Fitted models
 fit.clm <- clm(y ~ x, data = d, link = "probit")
@@ -87,9 +79,7 @@ fit.vglm <- vglm(y ~ x, data = d,
 fit.orm <- orm(y ~ x, data = d, family = probit)
 
 
-################################################################################
-# Create plots
-################################################################################
+# Residual plots ---------------------------------------------------------------
 
 # Compare to Figure 6(a)
 p1 <- autoplot(fit.clm, what = "covariate", x = d$x) + ggtitle("ordinal::clm")

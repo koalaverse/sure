@@ -11,7 +11,7 @@ Description: An implementation of the surrogate approach to residuals and
   cumulative link models from packages 'MASS', 'ordinal', 'rms', and 'VGAM'. 
   Support for binary regression models using the standard 'glm' function is also 
   available.
-Version: 0.2.0
+Version: 0.2.1
 Authors@R: c(
   person("Brandon", "Greenwell",
          email = "greenwell.brandon@gmail.com",

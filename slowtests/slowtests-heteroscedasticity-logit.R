@@ -59,21 +59,29 @@ fit.lrm <- lrm(y ~ x, data = d)
 fit.orm <- orm(y ~ x, data = d, family = logistic)
 
 
-################################################################################
-# Create plots
-################################################################################
+
+# Residual plots ---------------------------------------------------------------
 
 # Compare to Figure 6(a)
-p1 <- autoplot(fit.clm, what = "covariate", x = d$x) + ggtitle("ordinal::clm")
-p2 <- autoplot(fit.polr, what = "covariate", x = d$x) + ggtitle("MASS::polr")
-p3 <- autoplot(fit.vglm, what = "covariate", x = d$x) + ggtitle("VGAM::vglm")
-p4 <- autoplot(fit.lrm, what = "covariate", x = d$x) + ggtitle("rms::lrm")
-p5 <- autoplot(fit.orm, what = "covariate", x = d$x) + ggtitle("rms::orm")
-# p6 <- ggplot(data.frame(x = d$x, y = res.boot), aes(x, y)) +
-#   geom_point(size = 2, color = "#444444") +
-#   geom_smooth(color = "red", se = FALSE) +
-#   ylab("Surrogate residual") +
-#   ggtitle("Figure 6(a)")
-# pdf("slowtests\\figures\\heteroscedasticity.pdf", width = 7, height = 6)
+p1 <- autoplot(fit.clm, what = "covariate", x = d$x, alpha = 0.5) +
+  ggtitle("ordinal::clm")
+p2 <- autoplot(fit.polr, what = "covariate", x = d$x, alpha = 0.5) +
+  ggtitle("MASS::polr")
+p3 <- autoplot(fit.vglm, what = "covariate", x = d$x, alpha = 0.5) +
+  ggtitle("VGAM::vglm")
+p4 <- autoplot(fit.lrm, what = "covariate", x = d$x, alpha = 0.5) +
+  ggtitle("rms::lrm")
+p5 <- autoplot(fit.orm, what = "covariate", x = d$x, alpha = 0.5) +
+  ggtitle("rms::orm")
 grid.arrange(p1, p2, p3, p4, p5, ncol = 2)
-# dev.off()
+
+
+
+autoplot(fit.clm, x = d$x, alpha = 0.5)
+autoplot(fit.clm, x = d$x, alpha = 0.5, nsim = 10)
+autoplot(fit.clm, x = d$x, alpha = 0.5, method = "jitter")
+autoplot(fit.clm, x = d$x, alpha = 0.5, method = "jitter", nsim = 10)
+autoplot(fit.clm, x = d$x, alpha = 0.5, method = "jitter",
+         jitter.scale = "probability")
+autoplot(fit.clm, x = d$x, alpha = 0.5, method = "jitter", nsim = 10,
+         jitter.scale = "probability")

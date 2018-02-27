@@ -4,8 +4,9 @@
 #' models using \code{\link[ggplot2]{ggplot2}} graphics.
 #'
 #' @param object An object of class \code{\link[ordinal]{clm}},
-#' \code{\link[stats]{glm}}, \code{\link[rms]{lrm}}, \code{\link[rms]{orm}},
-#' \code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.
+#' \code{\link[stats]{glm}} (jittering only), \code{\link[rms]{lrm}}, \code{\link[rms]{orm}},
+#' \code{\link[MASS]{polr}}, \code{\link[VGAM]{vgam}} (jittering only), or
+#' \code{\link[VGAM]{vglm}}.
 #'
 #' @param what Character string specifying what to plot. Default is \code{"qq"}
 #' which produces a quantile-quantile plots of the residuals.
@@ -23,6 +24,9 @@
 #' \code{jitter.scale = "probability"}, the reference distribution is always
 #' U(-0.5, 0.5). (Only
 #' required if \code{object} inherits from class \code{"resid"}.)
+#'
+#' @param ncol Integer specifying the number of columns to use for the plot
+#' layout (if requesting multiple plots). Default is \code{NULL}.
 #'
 #' @param alpha A single values in the interval [0, 1] controlling the opacity
 #' alpha of the plotted points. Only used when \code{nsim} > 1.
@@ -75,8 +79,8 @@
 #' \code{"factor"}. Default is \code{NULL} which colors the boxplots according
 #' to the factor levels.
 #'
-#' @param ... Additional optional arguments to be passed on to
-#' \code{\link{resids}}.
+#' @param ... Additional optional arguments to be passed onto
+#' \code{\link[sure]{resids}}.
 #'
 #' @return A \code{"ggplot"} object.
 #'
@@ -93,6 +97,7 @@ autoplot.resid <- function(
   x = NULL,
   fit = NULL,
   distribution = qnorm,
+  ncol = NULL,
   alpha = 1,
   xlab = NULL,
   color = "#444444",
@@ -112,18 +117,27 @@ autoplot.resid <- function(
   ...
 ) {
 
-  # What type of plot to produce
-  what <- match.arg(what)
 
-  # Sanity checks
-  if (what == "fitted") {
+  # What type of plot to produce
+  what <- match.arg(what, several.ok = TRUE)
+
+  # Figure out number of plots and layout
+  np <- length(what)
+  if (is.null(ncol)) {
+    ncol <- length(what)
+  }
+
+  # Check that fitted mean response values are available
+  if ("fitted" %in% what) {
     if (is.null(fit)) {
       stop("Cannot extract mean response. Please supply the original fitted",
            " model object via the `fit` argument.")
     }
-    x <- getMeanResponse(fit)
+    mr <- getMeanResponse(fit)
   }
-  if (what == "covariate") {
+
+  # Check that covariate values are supplied
+  if ("covariate"  %in% what) {
     if (is.null(x)) {
       stop("No covariate to plot. Please supply a vector of covariate values",
            " via the `x` argument")
@@ -134,60 +148,69 @@ autoplot.resid <- function(
     }
   }
 
-  # Number of bootstrap replicates
+  # Deal with bootstrap replicates
   if (is.null(attr(object, "boot.reps"))) {
     nsim <- 1
     res <- object
+    if ("qq" %in% what) {
+      res.med <- object
+    }
   } else {
     res.mat <- attr(object, "boot.reps")
+    res <- as.numeric(as.vector(res.mat))
     nsim <- ncol(res.mat)
-    res <- if (what == "qq") {
-      apply(apply(res.mat, MARGIN = 2, FUN = sort, decreasing = FALSE),
-            MARGIN = 1, FUN = median)
-    } else {
-      as.vector(res.mat)
+    if ("qq" %in% what) {
+      res.med <- apply(apply(res.mat, MARGIN = 2, FUN = sort,
+                             decreasing = FALSE), MARGIN = 1, FUN = median)
     }
-    if (what %in% c("fitted", "covariate")) {
+    if ("fitted" %in% what) {
+      mr <- mr[as.vector(attr(object, "boot.id"))]
+    }
+    if ("covariate" %in% what) {
       x <- x[as.vector(attr(object, "boot.id"))]
     }
   }
-  res <- as.numeric(res)  # resids class seems to be causing issues with ggplot2
 
   # Quantile-quantile
-  if (what == "qq") {
+  p1 <- if ("qq" %in% what) {
     if (!is.null(attr(object, "jitter.scale"))) {
       if (attr(object, "jitter.scale") == "response") {
         stop("Q-Q plots are not available for jittering on the response scale.")
       }
     }
     distribution <- match.fun(distribution)
-    x <- distribution(ppoints(length(res)))[order(order(res))]
-    qqline.y <- quantile(res, probs = c(0.25, 0.75),
+    xvals <- distribution(ppoints(length(res.med)))[order(order(res.med))]
+    qqline.y <- quantile(res.med, probs = c(0.25, 0.75),
                          names = FALSE, na.rm = TRUE)
     qqline.x <- distribution(c(0.25, 0.75))
     slope <- diff(qqline.y) / diff(qqline.x)
     int <- qqline.y[1L] - slope * qqline.x[1L]
-    p <- ggplot(data.frame(x = x, y = res), aes_string(x = "x", y = "y")) +
+    ggplot(data.frame(x = xvals, y = res.med), aes_string(x = "x", y = "y")) +
       geom_point(color = qqpoint.color, shape = qqpoint.shape,
                  size = qqpoint.size) +
       geom_abline(slope = slope, intercept = int, color = qqline.color,
                   linetype = qqline.linetype, size = qqline.size) +
       labs(x = "Theoretical quantile", y = "Sample quantile")
+  } else {
+    NULL
   }
 
   # Residual vs fitted value
-  if (what == "fitted") {
-    p <- ggplot(data.frame("x" = x, "y" = res), aes_string(x = "x", y = "y")) +
+  p2 <- if ("fitted" %in% what) {
+    p <- ggplot(data.frame("x" = mr, "y" = res), aes_string(x = "x", y = "y")) +
       geom_point(color = color, shape = shape, size = size, alpha = alpha) +
-        labs(x = "Fitted value", y = "Surrogate residual")
+      labs(x = "Fitted value", y = "Surrogate residual")
     if (smooth) {
       p <- p + geom_smooth(color = smooth.color, linetype = smooth.linetype,
                            size = smooth.size, se = FALSE)
     }
+    p
+  } else {
+    NULL
   }
 
   # Residual vs covariate
-  if (what == "covariate") {
+  p3 <- if ("covariate" %in% what) {
     p <- ggplot(data.frame("x" = x, "y" = res), aes_string(x = "x", y = "y"))
     if (is.factor(x)) {
       if (is.null(fill)) {
@@ -204,11 +227,25 @@ autoplot.resid <- function(
                              size = smooth.size, se = FALSE)
       }
     }
-    p <- p + labs(x = xlab, y = "Surrogate residual")
+    p + labs(x = xlab, y = "Surrogate residual")
+  } else {
+    NULL
   }
 
-  # Return plot
-  p
+  # Return plot(s)
+  if (length(what) == 1) {  # return a single plot
+    if (what == "qq") {
+      p1
+    } else if (what == "fitted") {
+      p2
+    } else {
+      p3
+    }
+  } else {  # return multiple plots
+    plots <- list(p1, p2, p3)
+    grid.arrange(grobs = plots[!unlist(lapply(plots, FUN = is.null))],
+                 ncol = ncol)
+  }
 
 }
 
@@ -220,6 +257,9 @@ autoplot.default <- function(
   object,
   what = c("qq", "fitted", "covariate"),
   x = NULL,
+  fit = NULL,
+  distribution = qnorm,
+  ncol = NULL,
   alpha = 1,
   xlab = NULL,
   color = "#444444",

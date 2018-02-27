@@ -6,15 +6,16 @@
 \title{Residual Plots for Cumulative Link and General Regression Models}
 \usage{
 autoplot.resid(object, what = c("qq", "fitted", "covariate"), x = NULL,
-  fit = NULL, distribution = qnorm, alpha = 1, xlab = NULL,
-  color = "#444444", shape = 19, size = 2, qqpoint.color = "#444444",
-  qqpoint.shape = 19, qqpoint.size = 2, qqline.color = "#888888",
-  qqline.linetype = "dashed", qqline.size = 1, smooth = TRUE,
-  smooth.color = "red", smooth.linetype = 1, smooth.size = 1,
-  fill = NULL, ...)
+  fit = NULL, distribution = qnorm, ncol = NULL, alpha = 1,
+  xlab = NULL, color = "#444444", shape = 19, size = 2,
+  qqpoint.color = "#444444", qqpoint.shape = 19, qqpoint.size = 2,
+  qqline.color = "#888888", qqline.linetype = "dashed", qqline.size = 1,
+  smooth = TRUE, smooth.color = "red", smooth.linetype = 1,
+  smooth.size = 1, fill = NULL, ...)
 
 autoplot.default(object, what = c("qq", "fitted", "covariate"), x = NULL,
-  alpha = 1, xlab = NULL, color = "#444444", shape = 19, size = 2,
+  fit = NULL, distribution = qnorm, ncol = NULL, alpha = 1,
+  xlab = NULL, color = "#444444", shape = 19, size = 2,
   qqpoint.color = "#444444", qqpoint.shape = 19, qqpoint.size = 2,
   qqline.color = "#888888", qqline.linetype = "dashed", qqline.size = 1,
   smooth = TRUE, smooth.color = "red", smooth.linetype = 1,
@@ -22,8 +23,9 @@ autoplot.default(object, what = c("qq", "fitted", "covariate"), x = NULL,
 }
 \arguments{
 \item{object}{An object of class \code{\link[ordinal]{clm}},
-\code{\link[stats]{glm}}, \code{\link[rms]{lrm}}, \code{\link[rms]{orm}},
-\code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.}
+\code{\link[stats]{glm}} (jittering only), \code{\link[rms]{lrm}}, \code{\link[rms]{orm}},
+\code{\link[MASS]{polr}}, \code{\link[VGAM]{vgam}} (jittering only), or
+\code{\link[VGAM]{vglm}}.}
 
 \item{what}{Character string specifying what to plot. Default is \code{"qq"}
 which produces a quantile-quantile plots of the residuals.}
@@ -41,6 +43,9 @@ which is only appropriate for models using a probit link function. When
 \code{jitter.scale = "probability"}, the reference distribution is always
 U(-0.5, 0.5). (Only
 required if \code{object} inherits from class \code{"resid"}.)}
+
+\item{ncol}{Integer specifying the number of columns to use for the plot
+layout (if requesting multiple plots). Default is \code{NULL}.}
 
 \item{alpha}{A single values in the interval [0, 1] controlling the opacity
 alpha of the plotted points. Only used when \code{nsim} > 1.}
@@ -93,8 +98,8 @@ the boxplots for residual-by-covariate plots when \code{x} is of class
 \code{"factor"}. Default is \code{NULL} which colors the boxplots according
 to the factor levels.}
 
-\item{...}{Additional optional arguments to be passed on to
-\code{\link{resids}}.}
+\item{...}{Additional optional arguments to be passed onto
+\code{\link[sure]{resids}}.}
 }
 \value{
 A \code{"ggplot"} object.

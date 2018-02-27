@@ -1,7 +1,12 @@
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/sure)](https://cran.r-project.org/package=sure)
-[![Build Status](https://travis-ci.org/AFIT-R/sure.svg?branch=master)](https://travis-ci.org/AFIT-R/sure)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/AFIT-R/sure?branch=master&svg=true)](https://ci.appveyor.com/project/AFIT-R/sure)
-[![codecov](https://codecov.io/gh/AFIT-R/sure/branch/master/graph/badge.svg)](https://codecov.io/gh/AFIT-R/sure)
+---
+output: 
+  html_document: 
+    keep_md: yes
+---
+<!-- [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/sure)](https://cran.r-project.org/package=sure) -->
+[![Build Status](https://travis-ci.org/koalaverse/sure.svg?branch=master)](https://travis-ci.org/koalaverse/sure)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/koalaverse/sure?branch=master&svg=true)](https://ci.appveyor.com/project/koalaverse/sure)
+[![codecov](https://codecov.io/gh/koalaverse/sure/branch/master/graph/badge.svg)](https://codecov.io/gh/koalaverse/sure)
 
 
 
@@ -19,7 +24,7 @@ install.packages("sure")
   
 # Alternatively, install the development version from GitHub
 if (!requireNamespace("devtools")) install.packages("devtools")
-devtools::install_github("AFIT-R/sure")
+devtools::install_github("koalaverse/sure")
 ```
 
 

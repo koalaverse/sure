@@ -46,8 +46,10 @@ fit2 <- glm(y ~ x, data = d, family = binomial(link = "cloglog"))
 
 # Response scale
 grid.arrange(
-  autoplot(fit1, jitter.scale = "response", what = "covariate", x = d$x),
-  autoplot(fit2, jitter.scale = "response", what = "covariate", x = d$x),
+  autoplot(fit1, method = "jitter", jitter.scale = "response",
+           what = "covariate", x = d$x),
+  autoplot(fit2, method = "jitter", jitter.scale = "response",
+           what = "covariate", x = d$x),
   ncol = 2
 )
 
@@ -60,7 +62,7 @@ grid.arrange(
 
 # Probability scale
 grid.arrange(
-  autoplot(fit1, jitter.scale = "probability", what = "qq"),
-  autoplot(fit2, jitter.scale = "probability", what = "qq"),
+  autoplot(fit1, method = "jitter", jitter.scale = "probability", what = "qq"),
+  autoplot(fit2, method = "jitter", jitter.scale = "probability", what = "qq"),
   ncol = 2
 )
