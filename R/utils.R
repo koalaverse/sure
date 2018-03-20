@@ -609,7 +609,10 @@ generate_surrogate <- function(object, method = c("latent", "jitter"),
     } else {
       stop("Distribution not supported.", call. = FALSE)
     }
+
   } else {  # jittering approach
+
+    # Determine scale for jittering
     jitter.scale <- match.arg(jitter.scale)
     y <- getResponseValues(object)
     if (is.null(boot_id)) {
@@ -626,6 +629,7 @@ generate_surrogate <- function(object, method = c("latent", "jitter"),
       .max <- pbinom(y, size = 1, prob = prob[, 1L, drop = TRUE])  # F(y)
       runif(length(y), min = .min, max = .max)  # S|Y=y - E(S|X)
     }
+
   }
 
   # Return results
@@ -681,7 +685,9 @@ generate_residuals <- function(object, method = c("latent", "jitter"),
     if (is.null(boot_id)) {
       boot_id <- seq_along(y)
     }
+    print(head(y))
     y <- y[boot_id]
+    print(head(y))
     prob <- getFittedProbs(object)[boot_id, ]
     if (jitter.scale == "response") {  # jittering on the response scale
       j <- seq_len(ncol(prob))

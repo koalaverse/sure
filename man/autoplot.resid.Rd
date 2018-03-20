@@ -3,7 +3,7 @@
 \name{autoplot.resid}
 \alias{autoplot.resid}
 \alias{autoplot.default}
-\title{Residual Plots for Cumulative Link and General Regression Models}
+\title{Residual plots}
 \usage{
 autoplot.resid(object, what = c("qq", "fitted", "covariate"), x = NULL,
   fit = NULL, distribution = qnorm, ncol = NULL, alpha = 1,
@@ -23,9 +23,8 @@ autoplot.default(object, what = c("qq", "fitted", "covariate"), x = NULL,
 }
 \arguments{
 \item{object}{An object of class \code{\link[ordinal]{clm}},
-\code{\link[stats]{glm}} (jittering only), \code{\link[rms]{lrm}}, \code{\link[rms]{orm}},
-\code{\link[MASS]{polr}}, \code{\link[VGAM]{vgam}} (jittering only), or
-\code{\link[VGAM]{vglm}}.}
+\code{\link[stats]{glm}}, \code{\link[rms]{lrm}}, \code{\link[rms]{orm}},
+\code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.}
 
 \item{what}{Character string specifying what to plot. Default is \code{"qq"}
 which produces a quantile-quantile plots of the residuals.}

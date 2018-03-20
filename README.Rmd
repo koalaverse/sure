@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 
 # sure: Surrogate Residuals <img src="tools/sure-logo.png" align="right" />
 
-<!-- [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/sure)](https://cran.r-project.org/package=sure) -->
+<!-- [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/sure)](https://cran.r-project.org/package=sure) -->
 [![Build Status](https://travis-ci.org/koalaverse/sure.svg?branch=master)](https://travis-ci.org/koalaverse/sure)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/koalaverse/sure?branch=master&svg=true)](https://ci.appveyor.com/project/koalaverse/sure)
 [![codecov](https://codecov.io/gh/koalaverse/sure/branch/master/graph/badge.svg)](https://codecov.io/gh/koalaverse/sure)

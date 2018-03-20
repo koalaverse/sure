@@ -3,7 +3,7 @@
 \docType{data}
 \name{df3}
 \alias{df3}
-\title{Simulated Gumbel Data}
+\title{Simulated Gumbel data}
 \format{A data frame with 2000 rows and 2 variables.
 \itemize{
   \item \code{x} The predictor variable.

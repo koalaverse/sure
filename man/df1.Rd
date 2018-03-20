@@ -3,7 +3,7 @@
 \docType{data}
 \name{df1}
 \alias{df1}
-\title{Simulated Quadratic Data}
+\title{Simulated quadratic data}
 \format{A data frame with 2000 rows and 2 variables.
 \itemize{
   \item \code{x} The predictor variable.

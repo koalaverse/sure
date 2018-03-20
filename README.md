@@ -1,7 +1,7 @@
 sure: Surrogate Residuals <img src="tools/sure-logo.png" align="right" />
 =========================================================================
 
-<!-- [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/sure)](https://cran.r-project.org/package=sure) -->
+<!-- [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/sure)](https://cran.r-project.org/package=sure) -->
 [![Build Status](https://travis-ci.org/koalaverse/sure.svg?branch=master)](https://travis-ci.org/koalaverse/sure) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/koalaverse/sure?branch=master&svg=true)](https://ci.appveyor.com/project/koalaverse/sure) [![codecov](https://codecov.io/gh/koalaverse/sure/branch/master/graph/badge.svg)](https://codecov.io/gh/koalaverse/sure)
 
 An R package for constructing **SU**rrogate-based **RE**siduals and diagnostics for ordinal and general regression models; based on the approach described in [Dungang and Zhang (2017)](http://www.tandfonline.com/doi/abs/10.1080/01621459.2017.1292915?journalCode=uasa20).

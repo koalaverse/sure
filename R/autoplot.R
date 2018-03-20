@@ -1,12 +1,11 @@
-#' Residual Plots for Cumulative Link and General Regression Models
+#' Residual plots
 #'
 #' Residual-based diagnostic plots for cumulative link and general regression
 #' models using \code{\link[ggplot2]{ggplot2}} graphics.
 #'
 #' @param object An object of class \code{\link[ordinal]{clm}},
-#' \code{\link[stats]{glm}} (jittering only), \code{\link[rms]{lrm}}, \code{\link[rms]{orm}},
-#' \code{\link[MASS]{polr}}, \code{\link[VGAM]{vgam}} (jittering only), or
-#' \code{\link[VGAM]{vglm}}.
+#' \code{\link[stats]{glm}}, \code{\link[rms]{lrm}}, \code{\link[rms]{orm}},
+#' \code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.
 #'
 #' @param what Character string specifying what to plot. Default is \code{"qq"}
 #' which produces a quantile-quantile plots of the residuals.
@@ -149,14 +148,14 @@ autoplot.resid <- function(
   }
 
   # Deal with bootstrap replicates
-  if (is.null(attr(object, "boot.reps"))) {
+  if (is.null(attr(object, "boot_reps"))) {
     nsim <- 1
     res <- object
     if ("qq" %in% what) {
       res.med <- object
     }
   } else {
-    res.mat <- attr(object, "boot.reps")
+    res.mat <- attr(object, "boot_reps")
     res <- as.numeric(as.vector(res.mat))
     nsim <- ncol(res.mat)
     if ("qq" %in% what) {
@@ -164,10 +163,10 @@ autoplot.resid <- function(
                              decreasing = FALSE), MARGIN = 1, FUN = median)
     }
     if ("fitted" %in% what) {
-      mr <- mr[as.vector(attr(object, "boot.id"))]
+      mr <- mr[as.vector(attr(object, "boot_id"))]
     }
     if ("covariate" %in% what) {
-      x <- x[as.vector(attr(object, "boot.id"))]
+      x <- x[as.vector(attr(object, "boot_id"))]
     }
   }
 

@@ -1,11 +1,11 @@
-#' Surrogate Response
+#' Surrogate residuals
 #'
 #' Simulate surrogate response values for cumulative link regression models
 #' using the latent method described in Liu and Zhang (2017).
 #'
-#' @param object An object of class \code{\link[ordinal]{clm}}, \code{\link[stats]{glm}}
-#' \code{\link[rms]{lrm}}, \code{\link[rms]{orm}}, \code{\link[MASS]{polr}}, or
-#' \code{\link[VGAM]{vglm}}.
+#' @param object An object of class \code{\link[ordinal]{clm}},
+#' \code{\link[stats]{glm}}, \code{\link[rms]{lrm}}, \code{\link[rms]{orm}},
+#' \code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.
 #'
 #' @param nsim Integer specifying the number of bootstrap replicates to use.
 #' Default is \code{1L} meaning no bootstrap samples.
@@ -24,12 +24,12 @@
 #' the simulated surrogate response values. Additionally, if \code{nsim} > 1,
 #' then the result will contain the attributes:
 #' \describe{
-#'   \item{\code{boot.reps}}{A matrix  with \code{nsim} columns, one for each
+#'   \item{\code{boot_reps}}{A matrix  with \code{nsim} columns, one for each
 #'   bootstrap replicate of the surrogate values. Note, these are random and do
 #'   not correspond to the original ordering of the data;}
-#'   \item{\code{boot.id}}{A matrix  with \code{nsim} columns. Each column
+#'   \item{\code{boot_id}}{A matrix  with \code{nsim} columns. Each column
 #'   contains the observation number each surrogate value corresponds to in
-#'   \code{boot.reps}. (This is used for plotting purposes.)}
+#'   \code{boot_reps}. (This is used for plotting purposes.)}
 #' }
 #'
 #' @note
@@ -39,7 +39,7 @@
 #' distributions are based on modified versions of
 #' \code{\link[truncdist]{rtrunc}} and \code{\link[truncdist]{qtrunc}}.
 #'
-#' For \code{"glm"} objects, only the \code{"binomial"} family is supported.
+#' For \code{"glm"} objects, only the \code{binomial()} family is supported.
 #'
 #' @references
 #' Liu, Dungang and Zhang, Heping. Residuals and Diagnostics for Ordinal
@@ -89,20 +89,26 @@ resids <- function(object, nsim = 1L, method = c("latent", "jitter"),
   method <- match.arg(method)
   jitter.scale = match.arg(jitter.scale)
 
+  # Issue warning for jittering method
+  if (method == "jitter") {
+    warning("Jittering is an experimental feature, use at your own risk!",
+            call. = FALSE)
+  }
+
   # Generate surrogate response values
   r <- generate_residuals(object, method = method, jitter.scale = jitter.scale)
 
   # Multiple samples
   if (nsim > 1L) {  # bootstrap
-    boot.r <- boot_id <- matrix(nrow = nobs(object), ncol = nsim)
+    boot_reps <- boot_id <- matrix(nrow = nobs(object), ncol = nsim)
     for(i in seq_len(nsim)) {
       boot_id[, i] <- sample(nobs(object), replace = TRUE)
-      boot.r[, i] <-
+      boot_reps[, i] <-
         generate_residuals(object, method = method, jitter.scale = jitter.scale,
                            boot_id = boot_id[, i, drop = TRUE])
     }
-    attr(r, "boot.reps") <- boot.r
-    attr(r, "boot.id") <- boot_id
+    attr(r, "boot_reps") <- boot_reps
+    attr(r, "boot_id") <- boot_id
   }
 
   # Return residuals

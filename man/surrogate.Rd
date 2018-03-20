@@ -2,15 +2,15 @@
 % Please edit documentation in R/surrogate.R
 \name{surrogate}
 \alias{surrogate}
-\title{Surrogate Response}
+\title{Surrogate response}
 \usage{
 surrogate(object, nsim = 1L, method = c("latent", "jitter"),
   jitter.scale = c("response", "probability"), ...)
 }
 \arguments{
-\item{object}{An object of class \code{\link[ordinal]{clm}}, \code{\link[stats]{glm}}
-\code{\link[rms]{lrm}}, \code{\link[rms]{orm}}, \code{\link[MASS]{polr}}, or
-\code{\link[VGAM]{vglm}}.}
+\item{object}{An object of class \code{\link[ordinal]{clm}},
+\code{\link[stats]{glm}} \code{\link[rms]{lrm}}, \code{\link[rms]{orm}},
+\code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.}
 
 \item{nsim}{Integer specifying the number of bootstrap replicates to use.
 Default is \code{1L} meaning no bootstrap samples.}
@@ -30,12 +30,12 @@ A numeric vector of class \code{c("numeric", "surrogate")} containing
 the simulated surrogate response values. Additionally, if \code{nsim} > 1,
 then the result will contain the attributes:
 \describe{
-  \item{\code{boot.reps}}{A matrix  with \code{nsim} columns, one for each
+  \item{\code{boot_reps}}{A matrix  with \code{nsim} columns, one for each
   bootstrap replicate of the surrogate values. Note, these are random and do
   not correspond to the original ordering of the data;}
-  \item{\code{boot.id}}{A matrix  with \code{nsim} columns. Each column
+  \item{\code{boot_id}}{A matrix  with \code{nsim} columns. Each column
   contains the observation number each surrogate value corresponds to in
-  \code{boot.reps}. (This is used for plotting purposes.)}
+  \code{boot_reps}. (This is used for plotting purposes.)}
 }
 }
 \description{
@@ -49,14 +49,14 @@ consequently, the result will be different with every call to
 distributions are based on modified versions of
 \code{\link[truncdist]{rtrunc}} and \code{\link[truncdist]{qtrunc}}.
 
-For \code{"glm"} objects, only the \code{"binomial"} family is supported.
+For \code{"glm"} objects, only the \code{binomial()} family is supported.
 }
 \examples{
 # Generate data from a quadratic probit model
 set.seed(101)
 n <- 2000
 x <- runif(n, min = -3, max = 6)
-z <- 10 + 3 * x - 1 * x^2 + rnorm(n)
+z <- 10 + 3*x - 1*x^2 + rnorm(n)
 y <- ifelse(z <= 0, yes = 0, no = 1)
 
 # Scatterplot matrix
@@ -79,7 +79,7 @@ fm2 <- glm(y ~ x + I(x ^ 2), family = binomial(link = "probit"))
 s2 <- surrogate(fm2)
 scatter.smooth(x, s2 - fm2$linear.predictors,
                main = "Correctly specified model",
-               ylab = "SUrrogate residual",
+               ylab = "Surrogate residual",
                lpars = list(lwd = 3, col = "red2"))
 abline(h = 0, lty = 2, col = "blue2")
 }

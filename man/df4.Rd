@@ -3,7 +3,7 @@
 \docType{data}
 \name{df4}
 \alias{df4}
-\title{Simulated Proportionality Data}
+\title{Simulated proportionality data}
 \format{A data frame with 4000 rows and 2 variables.
 \itemize{
   \item \code{x} The predictor variable.

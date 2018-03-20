@@ -42,16 +42,18 @@ gof <- function(object, nsim = 10, test = c("ks", "ad", "cvm"), ...) {
 
 
 #' @rdname gof
+#'
 #' @export
 gof.default <- function(object, nsim = 10, test = c("ks", "ad", "cvm"), ...) {
   res <- resids(object, nsim = nsim)
   test <- match.arg(test)
   pfun <- getDistributionFunction(object)
-  sim.pvals(res, test = test, pfun = pfun)
+  sim_pvals(res, test = test, pfun = pfun)
 }
 
 
 #' @rdname gof
+#'
 #' @export
 plot.gof <- function(x, ...) {
   graphics::plot(stats::ecdf(x), xlab = "p-value", xlim = c(0, 1), ...)
@@ -60,11 +62,11 @@ plot.gof <- function(x, ...) {
 
 
 #' @keywords internal
-sim.pvals <- function(res, test, pfun) {
-  gof.test <- switch(test, "ks" = stats::ks.test, "ad" = goftest::ad.test,
+sim_pvals <- function(res, test, pfun) {
+  gof_test <- switch(test, "ks" = stats::ks.test, "ad" = goftest::ad.test,
                      "cvm" = goftest::cvm.test)
-  pvals <- apply(attr(res, "boot.reps"), MARGIN = 2, FUN = function(x) {
-    gof.test(x, pfun)$p.value
+  pvals <- apply(attr(res, "boot_reps"), MARGIN = 2, FUN = function(x) {
+    gof_test(x, pfun)$p.value
   })
   class(pvals) <- c("gof", "numeric")
   pvals

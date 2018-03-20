@@ -2,15 +2,15 @@
 % Please edit documentation in R/resids.R
 \name{resids}
 \alias{resids}
-\title{Surrogate Response}
+\title{Surrogate residuals}
 \usage{
 resids(object, nsim = 1L, method = c("latent", "jitter"),
   jitter.scale = c("response", "probability"), ...)
 }
 \arguments{
-\item{object}{An object of class \code{\link[ordinal]{clm}}, \code{\link[stats]{glm}}
-\code{\link[rms]{lrm}}, \code{\link[rms]{orm}}, \code{\link[MASS]{polr}}, or
-\code{\link[VGAM]{vglm}}.}
+\item{object}{An object of class \code{\link[ordinal]{clm}},
+\code{\link[stats]{glm}}, \code{\link[rms]{lrm}}, \code{\link[rms]{orm}},
+\code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.}
 
 \item{nsim}{Integer specifying the number of bootstrap replicates to use.
 Default is \code{1L} meaning no bootstrap samples.}
@@ -30,12 +30,12 @@ A numeric vector of class \code{c("numeric", "surrogate")} containing
 the simulated surrogate response values. Additionally, if \code{nsim} > 1,
 then the result will contain the attributes:
 \describe{
-  \item{\code{boot.reps}}{A matrix  with \code{nsim} columns, one for each
+  \item{\code{boot_reps}}{A matrix  with \code{nsim} columns, one for each
   bootstrap replicate of the surrogate values. Note, these are random and do
   not correspond to the original ordering of the data;}
-  \item{\code{boot.id}}{A matrix  with \code{nsim} columns. Each column
+  \item{\code{boot_id}}{A matrix  with \code{nsim} columns. Each column
   contains the observation number each surrogate value corresponds to in
-  \code{boot.reps}. (This is used for plotting purposes.)}
+  \code{boot_reps}. (This is used for plotting purposes.)}
 }
 }
 \description{
@@ -49,7 +49,7 @@ consequently, the result will be different with every call to
 distributions are based on modified versions of
 \code{\link[truncdist]{rtrunc}} and \code{\link[truncdist]{qtrunc}}.
 
-For \code{"glm"} objects, only the \code{"binomial"} family is supported.
+For \code{"glm"} objects, only the \code{binomial()} family is supported.
 }
 \examples{
 # Generate data from a quadratic probit model
