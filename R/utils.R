@@ -685,9 +685,7 @@ generate_residuals <- function(object, method = c("latent", "jitter"),
     if (is.null(boot_id)) {
       boot_id <- seq_along(y)
     }
-    print(head(y))
     y <- y[boot_id]
-    print(head(y))
     prob <- getFittedProbs(object)[boot_id, ]
     if (jitter.scale == "response") {  # jittering on the response scale
       j <- seq_len(ncol(prob))
