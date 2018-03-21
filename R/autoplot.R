@@ -299,8 +299,8 @@ autoplot.default <- function(
 
   # Call the default method
   autoplot.resid(
-    res, what = what, x = x, distribution = qfun, fit = object, alpha = alpha,
-    xlab = xlab, color = color, shape = shape, size = size,
+    res, what = what, x = x, distribution = qfun, fit = object, ncol = ncol,
+    alpha = alpha, xlab = xlab, color = color, shape = shape, size = size,
     qqpoint.color = qqpoint.color, qqpoint.shape = qqpoint.shape,
     qqpoint.size = qqpoint.size, qqline.color = qqline.color,
     qqline.linetype = qqline.linetype, qqline.size = qqline.size,
