@@ -28,8 +28,9 @@ greys <- RColorBrewer::brewer.pal(9, "Greys")
 
 # Hexagon logo
 g <- ggplot() +
-  geom_polygon(data = hex, aes(x, y), color = greys[7L], fill = greys[1L], size = 3) +
-  geom_subview(p, x = 0, y = 0, width = 1.75, height = 1.25) +
+  geom_polygon(data = hex, aes(x, y), color = greys[7L], fill = greys[1L],
+               size = 3) +
+  geom_subview(subview = p, x = 0, y = 0, width = 1.75, height = 1.25) +
   annotate(geom = "text", label = "sure", x = 0, y = -0.8,
            family = "Open Sans Light", color = greys[7L], size = 7) +
   annotate(geom = "text", label = "SUrrogate REsiduals", x = 0, y = 0.7,
@@ -42,10 +43,12 @@ g <- ggplot() +
   theme(axis.ticks.length = unit(0, "mm"))
 print(g)
 
-png("tools\\sure-logo.png", width = 181, height = 209, bg = "transparent", type = "cairo-png")
+png("tools/sure-logo.png", width = 181, height = 209, bg = "transparent",
+    type = "cairo-png")
 print(g)
 dev.off()
 
-svg("tools\\sure-logo.svg", width = 181 / 72, height = 209 / 72, bg = "transparent")
+svg("tools/sure-logo.svg", width = 181 / 72, height = 209 / 72,
+    bg = "transparent")
 print(g)
 dev.off()
