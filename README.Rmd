@@ -4,15 +4,17 @@ output:
     variant: markdown_github
 ---
 
-```{r, echo = FALSE}
+```{r setup, echo = FALSE}
 knitr::opts_chunk$set(
+  cache = TRUE,
   collapse = TRUE,
   comment = "#>",
-  fig.path = "tools/README-"
+  fig.align = "center",
+  fig.path = "man/figures/README-"
 )
 ```
 
-# sure: Surrogate Residuals <img src="tools/sure-logo.png" align="right" width="130" height="150" />
+# sure: Surrogate Residuals <img src="man/figures/sure-logo.png" align="right" width="130" height="150" />
 
 <!-- [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/sure)](https://cran.r-project.org/package=sure) -->
 [![Build Status](https://travis-ci.org/koalaverse/sure.svg?branch=master)](https://travis-ci.org/koalaverse/sure)
