@@ -3,7 +3,7 @@ Type: Package
 Title: Surrogate Residuals for Ordinal and General Regression Models
 Description: An implementation of the surrogate approach to residuals and 
   diagnostics for ordinal and general regression models; for details, see Liu 
-  and Zhang (2017, <doi:10.1080/01621459.2017.1292915>) and Greenwell et al. 
+  and Zhang (2017, <doi:https://doi.org/10.1080/01621459.2017.1292915>) and Greenwell et al. 
   (2017, <https://journal.r-project.org/archive/2018/RJ-2018-004/index.html>). 
   These residuals can be used to construct standard residual plots for model 
   diagnostics (e.g., residual-vs-fitted value plots, residual-vs-covariate plots, 
