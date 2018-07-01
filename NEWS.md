@@ -1,4 +1,4 @@
-# Changes for version 0.2.2
+# sure 0.2.2
 
 * Incorporated [pkgdown website](https://koalaverse.github.io/sure/index.html).
 
@@ -9,7 +9,7 @@
 * incorporated autoplot methods for glm, lrm, orm, polr, vglm
 
 
-# Changes for version 0.2.1
+# sure 0.2.1
 
 * `autoplot()` can now return multiple plots [(#16)](https://github.com/AFIT-R/sure/issues/16).
 
@@ -18,7 +18,7 @@
 * Specifying `method = "jittering"` now issues a warning (at least until it has been fully tested).
 
 
-### Changes for version 0.2.0
+# sure 0.2.0
 
 * New function `surrogate` for returning the surrogate response values used in calculating the surrogate-based residuals. The surrogate response values can be useful for checking the proportionality assumption of fitted cumulative link models, among other things.
 
@@ -29,6 +29,6 @@
 * New data sets `df4` and `df5` for illustrating various uses of the surrogate residual for diagnostics an ordinal regression models.
 
 
-# Changes for version 0.1.2
+# sure 0.1.2
 
 * Initial release.
