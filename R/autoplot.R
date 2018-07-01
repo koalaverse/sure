@@ -252,7 +252,7 @@ autoplot.resid <- function(
 #' @rdname autoplot.resid
 #'
 #' @export
-autoplot.default <- function(
+autoplot.clm <- function(
   object,
   what = c("qq", "fitted", "covariate"),
   x = NULL,
@@ -309,3 +309,33 @@ autoplot.default <- function(
   )
 
 }
+
+
+#' @rdname autoplot.resid
+#'
+#' @export
+autoplot.glm <- autoplot.clm
+
+
+#' @rdname autoplot.resid
+#'
+#' @export
+autoplot.lrm <- autoplot.clm
+
+
+#' @rdname autoplot.resid
+#'
+#' @export
+autoplot.orm <- autoplot.clm
+
+
+#' @rdname autoplot.resid
+#'
+#' @export
+autoplot.polr <- autoplot.clm
+
+
+#' @rdname autoplot.resid
+#'
+#' @export
+autoplot.vglm <- autoplot.clm

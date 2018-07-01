@@ -2,7 +2,12 @@
 % Please edit documentation in R/autoplot.R
 \name{autoplot.resid}
 \alias{autoplot.resid}
-\alias{autoplot.default}
+\alias{autoplot.clm}
+\alias{autoplot.glm}
+\alias{autoplot.lrm}
+\alias{autoplot.orm}
+\alias{autoplot.polr}
+\alias{autoplot.vglm}
 \title{Residual plots}
 \usage{
 autoplot.resid(object, what = c("qq", "fitted", "covariate"), x = NULL,
@@ -13,7 +18,47 @@ autoplot.resid(object, what = c("qq", "fitted", "covariate"), x = NULL,
   smooth = TRUE, smooth.color = "red", smooth.linetype = 1,
   smooth.size = 1, fill = NULL, ...)
 
-autoplot.default(object, what = c("qq", "fitted", "covariate"), x = NULL,
+autoplot.clm(object, what = c("qq", "fitted", "covariate"), x = NULL,
+  fit = NULL, distribution = qnorm, ncol = NULL, alpha = 1,
+  xlab = NULL, color = "#444444", shape = 19, size = 2,
+  qqpoint.color = "#444444", qqpoint.shape = 19, qqpoint.size = 2,
+  qqline.color = "#888888", qqline.linetype = "dashed", qqline.size = 1,
+  smooth = TRUE, smooth.color = "red", smooth.linetype = 1,
+  smooth.size = 1, fill = NULL, ...)
+
+autoplot.glm(object, what = c("qq", "fitted", "covariate"), x = NULL,
+  fit = NULL, distribution = qnorm, ncol = NULL, alpha = 1,
+  xlab = NULL, color = "#444444", shape = 19, size = 2,
+  qqpoint.color = "#444444", qqpoint.shape = 19, qqpoint.size = 2,
+  qqline.color = "#888888", qqline.linetype = "dashed", qqline.size = 1,
+  smooth = TRUE, smooth.color = "red", smooth.linetype = 1,
+  smooth.size = 1, fill = NULL, ...)
+
+autoplot.lrm(object, what = c("qq", "fitted", "covariate"), x = NULL,
+  fit = NULL, distribution = qnorm, ncol = NULL, alpha = 1,
+  xlab = NULL, color = "#444444", shape = 19, size = 2,
+  qqpoint.color = "#444444", qqpoint.shape = 19, qqpoint.size = 2,
+  qqline.color = "#888888", qqline.linetype = "dashed", qqline.size = 1,
+  smooth = TRUE, smooth.color = "red", smooth.linetype = 1,
+  smooth.size = 1, fill = NULL, ...)
+
+autoplot.orm(object, what = c("qq", "fitted", "covariate"), x = NULL,
+  fit = NULL, distribution = qnorm, ncol = NULL, alpha = 1,
+  xlab = NULL, color = "#444444", shape = 19, size = 2,
+  qqpoint.color = "#444444", qqpoint.shape = 19, qqpoint.size = 2,
+  qqline.color = "#888888", qqline.linetype = "dashed", qqline.size = 1,
+  smooth = TRUE, smooth.color = "red", smooth.linetype = 1,
+  smooth.size = 1, fill = NULL, ...)
+
+autoplot.polr(object, what = c("qq", "fitted", "covariate"), x = NULL,
+  fit = NULL, distribution = qnorm, ncol = NULL, alpha = 1,
+  xlab = NULL, color = "#444444", shape = 19, size = 2,
+  qqpoint.color = "#444444", qqpoint.shape = 19, qqpoint.size = 2,
+  qqline.color = "#888888", qqline.linetype = "dashed", qqline.size = 1,
+  smooth = TRUE, smooth.color = "red", smooth.linetype = 1,
+  smooth.size = 1, fill = NULL, ...)
+
+autoplot.vglm(object, what = c("qq", "fitted", "covariate"), x = NULL,
   fit = NULL, distribution = qnorm, ncol = NULL, alpha = 1,
   xlab = NULL, color = "#444444", shape = 19, size = 2,
   qqpoint.color = "#444444", qqpoint.shape = 19, qqpoint.size = 2,
