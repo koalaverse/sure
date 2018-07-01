@@ -75,6 +75,9 @@ models using ggplot2 graphics." />
   </a>
 </li>
 <li>
+  <a href="../articles/sure.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
@@ -121,7 +124,47 @@ models using <code><a href='http://www.rdocumentation.org/packages/ggplot2/topic
   <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>smooth.color</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>smooth.linetype</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>smooth.size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
 
-<span class='fu'>autoplot.default</span>(<span class='no'>object</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"qq"</span>, <span class='st'>"fitted"</span>, <span class='st'>"covariate"</span>), <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+<span class='fu'>autoplot.clm</span>(<span class='no'>object</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"qq"</span>, <span class='st'>"fitted"</span>, <span class='st'>"covariate"</span>), <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>fit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>distribution</span> <span class='kw'>=</span> <span class='no'>qnorm</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"#444444"</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>19</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>qqpoint.color</span> <span class='kw'>=</span> <span class='st'>"#444444"</span>, <span class='kw'>qqpoint.shape</span> <span class='kw'>=</span> <span class='fl'>19</span>, <span class='kw'>qqpoint.size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>qqline.color</span> <span class='kw'>=</span> <span class='st'>"#888888"</span>, <span class='kw'>qqline.linetype</span> <span class='kw'>=</span> <span class='st'>"dashed"</span>, <span class='kw'>qqline.size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>smooth.color</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>smooth.linetype</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>smooth.size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+
+<span class='fu'>autoplot.glm</span>(<span class='no'>object</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"qq"</span>, <span class='st'>"fitted"</span>, <span class='st'>"covariate"</span>), <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>fit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>distribution</span> <span class='kw'>=</span> <span class='no'>qnorm</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"#444444"</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>19</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>qqpoint.color</span> <span class='kw'>=</span> <span class='st'>"#444444"</span>, <span class='kw'>qqpoint.shape</span> <span class='kw'>=</span> <span class='fl'>19</span>, <span class='kw'>qqpoint.size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>qqline.color</span> <span class='kw'>=</span> <span class='st'>"#888888"</span>, <span class='kw'>qqline.linetype</span> <span class='kw'>=</span> <span class='st'>"dashed"</span>, <span class='kw'>qqline.size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>smooth.color</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>smooth.linetype</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>smooth.size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+
+<span class='fu'>autoplot.lrm</span>(<span class='no'>object</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"qq"</span>, <span class='st'>"fitted"</span>, <span class='st'>"covariate"</span>), <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>fit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>distribution</span> <span class='kw'>=</span> <span class='no'>qnorm</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"#444444"</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>19</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>qqpoint.color</span> <span class='kw'>=</span> <span class='st'>"#444444"</span>, <span class='kw'>qqpoint.shape</span> <span class='kw'>=</span> <span class='fl'>19</span>, <span class='kw'>qqpoint.size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>qqline.color</span> <span class='kw'>=</span> <span class='st'>"#888888"</span>, <span class='kw'>qqline.linetype</span> <span class='kw'>=</span> <span class='st'>"dashed"</span>, <span class='kw'>qqline.size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>smooth.color</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>smooth.linetype</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>smooth.size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+
+<span class='fu'>autoplot.orm</span>(<span class='no'>object</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"qq"</span>, <span class='st'>"fitted"</span>, <span class='st'>"covariate"</span>), <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>fit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>distribution</span> <span class='kw'>=</span> <span class='no'>qnorm</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"#444444"</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>19</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>qqpoint.color</span> <span class='kw'>=</span> <span class='st'>"#444444"</span>, <span class='kw'>qqpoint.shape</span> <span class='kw'>=</span> <span class='fl'>19</span>, <span class='kw'>qqpoint.size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>qqline.color</span> <span class='kw'>=</span> <span class='st'>"#888888"</span>, <span class='kw'>qqline.linetype</span> <span class='kw'>=</span> <span class='st'>"dashed"</span>, <span class='kw'>qqline.size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>smooth.color</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>smooth.linetype</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>smooth.size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+
+<span class='fu'>autoplot.polr</span>(<span class='no'>object</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"qq"</span>, <span class='st'>"fitted"</span>, <span class='st'>"covariate"</span>), <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>fit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>distribution</span> <span class='kw'>=</span> <span class='no'>qnorm</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"#444444"</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>19</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>qqpoint.color</span> <span class='kw'>=</span> <span class='st'>"#444444"</span>, <span class='kw'>qqpoint.shape</span> <span class='kw'>=</span> <span class='fl'>19</span>, <span class='kw'>qqpoint.size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>qqline.color</span> <span class='kw'>=</span> <span class='st'>"#888888"</span>, <span class='kw'>qqline.linetype</span> <span class='kw'>=</span> <span class='st'>"dashed"</span>, <span class='kw'>qqline.size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>smooth.color</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>smooth.linetype</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>smooth.size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+
+<span class='fu'>autoplot.vglm</span>(<span class='no'>object</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"qq"</span>, <span class='st'>"fitted"</span>, <span class='st'>"covariate"</span>), <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>fit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>distribution</span> <span class='kw'>=</span> <span class='no'>qnorm</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"#444444"</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>19</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
   <span class='kw'>qqpoint.color</span> <span class='kw'>=</span> <span class='st'>"#444444"</span>, <span class='kw'>qqpoint.shape</span> <span class='kw'>=</span> <span class='fl'>19</span>, <span class='kw'>qqpoint.size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
@@ -134,9 +177,9 @@ models using <code><a href='http://www.rdocumentation.org/packages/ggplot2/topic
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>An object of class <code>clm</code>,
-<code><a href='http://www.rdocumentation.org/packages/stats/topics/glm'>glm</a></code>, <code>lrm</code>, <code>orm</code>,
-<code><a href='http://www.rdocumentation.org/packages/MASS/topics/polr'>polr</a></code>, or <code>vglm</code>.</p></td>
+      <td><p>An object of class <code><a href='http://www.rdocumentation.org/packages/ordinal/topics/clm'>clm</a></code>,
+<code><a href='http://www.rdocumentation.org/packages/stats/topics/glm'>glm</a></code>, <code><a href='http://www.rdocumentation.org/packages/rms/topics/lrm'>lrm</a></code>, <code><a href='http://www.rdocumentation.org/packages/rms/topics/orm'>orm</a></code>,
+<code><a href='http://www.rdocumentation.org/packages/MASS/topics/polr'>polr</a></code>, or <code><a href='http://www.rdocumentation.org/packages/VGAM/topics/vglm'>vglm</a></code>.</p></td>
     </tr>
     <tr>
       <th>what</th>
@@ -254,7 +297,7 @@ to the factor levels.</p></td>
     <tr>
       <th>...</th>
       <td><p>Additional optional arguments to be passed onto
-<code>resids</code>.</p></td>
+<code><a href='resids.html'>resids</a></code>.</p></td>
     </tr>
     </table>
     

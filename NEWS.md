@@ -1,7 +1,15 @@
-# NEWS for sure package
+# Changes for version 0.2.2
+
+* Incorporated [pkgdown website](https://koalaverse.github.io/sure/index.html).
+
+* Added paper URLs and ORCIDs to DESCRIPTION file [(#30)](https://github.com/koalaverse/sure/issues/30).
+
+* Added `sure` vignette
+
+* incorporated autoplot methods for glm, lrm, orm, polr, vglm
 
 
-### Changes for version 0.2.1
+# Changes for version 0.2.1
 
 * `autoplot()` can now return multiple plots [(#16)](https://github.com/AFIT-R/sure/issues/16).
 
@@ -21,6 +29,6 @@
 * New data sets `df4` and `df5` for illustrating various uses of the surrogate residual for diagnostics an ordinal regression models.
 
 
-### Changes for version 0.1.2
+# Changes for version 0.1.2
 
 * Initial release.
