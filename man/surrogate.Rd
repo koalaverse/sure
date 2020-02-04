@@ -4,8 +4,13 @@
 \alias{surrogate}
 \title{Surrogate response}
 \usage{
-surrogate(object, nsim = 1L, method = c("latent", "jitter"),
-  jitter.scale = c("response", "probability"), ...)
+surrogate(
+  object,
+  nsim = 1L,
+  method = c("latent", "jitter"),
+  jitter.scale = c("response", "probability"),
+  ...
+)
 }
 \arguments{
 \item{object}{An object of class \code{\link[ordinal]{clm}},

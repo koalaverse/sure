@@ -3,7 +3,6 @@
 \docType{package}
 \name{sure}
 \alias{sure}
-\alias{sure-package}
 \title{sure: An R package for constructing surrogate-based residuals and diagnostics
 for ordinal and general regression models.}
 \description{

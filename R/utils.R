@@ -625,8 +625,12 @@ generate_surrogate <- function(object, method = c("latent", "jitter"),
       jmat <- matrix(rep(j, times = nrow(prob)), ncol = ncol(prob), byrow = TRUE)
       runif(length(y), min = y, max = y + 1)
     } else {  # jittering on the probability scale
-      .min <- pbinom(y - 1, size = 1, prob = prob[, 1L, drop = TRUE])  # F(y-1)
-      .max <- pbinom(y, size = 1, prob = prob[, 1L, drop = TRUE])  # F(y)
+      if (getDistributionName(object) != "logis") {
+        stop("Jittering on the probability scale is currently only supported",
+             " for logit-type models.", call. = FALSE)
+      }
+      .min <- pbinom(y - 2, size = 1, prob = prob[, 1L, drop = TRUE])  # F(y-1)
+      .max <- pbinom(y - 1, size = 1, prob = prob[, 1L, drop = TRUE])  # F(y)
       runif(length(y), min = .min, max = .max)  # S|Y=y - E(S|X)
     }
 
@@ -661,8 +665,8 @@ generate_residuals <- function(object, method = c("latent", "jitter"),
         boot_id <- seq_along(y)
       }
       mean_response <- getMeanResponse(object)  # mean response values
-      s <-       if (!inherits(object, what = "lrm") &&
-                     inherits(object, what = "glm")) {
+      s <- if (!inherits(object, what = "lrm") &&
+               inherits(object, what = "glm")) {
         sim_trunc(n = length(y), distribution = distribution,
                   # {0, 1} -> {1, 2}
                   a = ifelse(y[boot_id] == 1, yes = -Inf, no = 0),
@@ -692,8 +696,12 @@ generate_residuals <- function(object, method = c("latent", "jitter"),
       jmat <- matrix(rep(j, times = nrow(prob)), ncol = ncol(prob), byrow = TRUE)
       runif(length(y), min = y, max = y + 1) - rowSums((jmat + 0.5) * prob)
     } else {  # jittering on the probability scale
-      .min <- pbinom(y - 1, size = 1, prob = prob[, 1L, drop = TRUE])  # F(y-1)
-      .max <- pbinom(y, size = 1, prob = prob[, 1L, drop = TRUE])  # F(y)
+      if (getDistributionName(object) != "logis") {
+        stop("Jittering on the probability scale is currently only supported",
+             " for logit-type models.", call. = FALSE)
+      }
+      .min <- pbinom(y - 2, size = 1, prob = prob[, 1L, drop = TRUE])  # F(y-1)
+      .max <- pbinom(y - 1, size = 1, prob = prob[, 1L, drop = TRUE])  # F(y)
       runif(length(y), min = .min, max = .max) - 0.5  # S|Y=y - E(S|X)
     }
   }
