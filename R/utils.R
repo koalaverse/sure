@@ -276,7 +276,7 @@ getDistributionName.polr <- function(object) {
 #' @keywords internal
 getDistributionName.vglm <- function(object) {
   switch(object@family@infos()$link,
-         "logit" = "logis",
+         "logitlink" = "logis",
          "probit" = "norm",
          "loglog" = "gumbel",
          "cloglog" = "Gumbel",
